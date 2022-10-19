@@ -22,8 +22,3 @@ Word Automata Library/test**.txt
 # Directory for experiments
 scratch/
 
-
-# Intellij Idea Files
-.idea
-**/*.iml
-
