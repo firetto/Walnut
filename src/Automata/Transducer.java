@@ -616,8 +616,14 @@ public class Transducer extends Automaton {
 
         // verify that the automaton is indeed nondeterministic, i.e. it has undefined transitions. If it is not, transduce normally.
 
-        if (alphabetSize != M.alphabetSize) {
-            throw new Exception("Alphabet sizes of automaton and transducer must match.");
+        Set<Integer> outputAlphabet = new HashSet<Integer>();
+        for (int i = 0; i < M.O.size(); i++) {
+            outputAlphabet.add(M.O.get(i));
+        }
+
+        if (alphabetSize != outputAlphabet.size()) {
+            throw new Exception("Output alphabet size (" + alphabetSize +
+                    ") of automaton and transducer input alphabet size (" + outputAlphabet.size() + ") must match.");
         }
 
         boolean totalized = true;
