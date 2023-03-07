@@ -332,8 +332,8 @@ public class Transducer extends Automaton {
 
             int p, q;
 
-            // We will have
-            List<List<Map<Integer, Integer>>> iterateMaps = new ArrayList<List<Map<Integer, Integer>>>();
+            // Will be used for hashing the iterate maps.
+            HashMap<List<Map<Integer, Integer>>, Integer> iterateMapHash = new HashMap<List<Map<Integer, Integer>>, Integer>();
 
             // iterateStrings[i] will be a map from a state q of M to h^i(q).
             List<List<List<Integer>>> iterateStrings = new ArrayList<List<List<Integer>>>();
@@ -366,15 +366,14 @@ public class Transducer extends Automaton {
                 initStrings.add(Arrays.asList(i));
             }
 
-            iterateMaps.add(initMaps);
+            iterateMapHash.put(initMaps, 0);
+
 
             iterateStrings.add(initStrings);
 
             int mFound = -1, nFound = -1;
 
             for (int m = 1; ; m++) {
-
-                List<Map<Integer, Integer>> prevMaps = iterateMaps.get(iterateMaps.size() - 1);
 
                 List<List<Integer>> prevStrings = iterateStrings.get(iterateStrings.size() - 1);
 
@@ -419,25 +418,17 @@ public class Transducer extends Automaton {
 
                 }
 
-                iterateMaps.add(newMaps);
 
                 iterateStrings.add(newStrings);
 
-                for (int n = 0; n < m; n++) {
-
-                    boolean same = true;
-                    for (int i = 0; i < M.Q; i++) {
-                        if (!iterateMaps.get(n).get(i).equals(iterateMaps.get(m).get(i))) {
-                            same = false;
-                            break;
-                        }
-                    }
-                    if (same) {
-                        nFound = n;
-                        mFound = m;
-                        break;
-                    }
+                if (iterateMapHash.containsKey(newMaps)) {
+                    nFound = iterateMapHash.get(newMaps);
+                    mFound = m;
                 }
+                else {
+                    iterateMapHash.put(newMaps, m);
+                }
+
 
                 if (mFound != -1) {
                     break;

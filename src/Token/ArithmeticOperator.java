@@ -124,7 +124,7 @@ public class ArithmeticOperator extends Operator{
 		}
 		String c = getUniqueString();
 		Automaton M;
-		String preStep = prefix + "computing " + a+op+b;
+		String preStep = prefix + "Computing " + a+op+b;
 		log.append(preStep + UtilityMethods.newLine());
 		if(print){
 			System.out.println(preStep);
