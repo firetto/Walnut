@@ -141,7 +141,7 @@ public class Transducer extends Automaton {
                 }
             }
 
-            int[] pair = new int[2];
+            int[] singleton = new int[1];
             List<Integer> input = new ArrayList<Integer>();
             List<Integer> dest = new ArrayList<Integer>();
             List<Integer> output = new ArrayList<Integer>();
@@ -167,14 +167,14 @@ public class Transducer extends Automaton {
                     continue;
                 }
 
-                if(ParseMethods.parseStateDeclaration(line, pair)) {
+                if(ParseMethods.parseTransducerStateDeclaration(line, singleton)) {
                     Q++;
                     if(currentState == -1) {
-                        q0 = pair[0];
+                        q0 = singleton[0];
                     }
 
-                    currentState = pair[0];
-                    currentStateOutput = pair[1];
+                    currentState = singleton[0];
+                    currentStateOutput = 0; // state output does not matter for transducers.
                     state_output.put(currentState, currentStateOutput);
                     currentStateTransitions = new TreeMap<>();
                     state_transition.put(currentState, currentStateTransitions);
@@ -415,9 +415,7 @@ public class Transducer extends Automaton {
 
                     newMaps.add(mapSoFar);
 
-
                 }
-
 
                 iterateStrings.add(newStrings);
 
@@ -428,7 +426,6 @@ public class Transducer extends Automaton {
                 else {
                     iterateMapHash.put(newMaps, m);
                 }
-
 
                 if (mFound != -1) {
                     break;

@@ -33,8 +33,10 @@ public class ParseMethods {
 	static int ALPHABET_NUMBER_SYSTEM = 2;
 	static int STATE_DECLARATION_STATE_NAME = 1;
 	static int STATE_DECLARATION_OUTPUT = 2;
+	static int TRANSDUCER_STATE_DECLARATION_STATE_NAME = 1;
 	static int TRANSITION_INPUT = 1;
 	static int TRANSITION_DESTINATION = 6;
+
 	static int TRANSDUCER_TRANSITION_INPUT = 1;
 	static int TRANSDUCER_TRANSITION_DESTINATION = 6;
 	static int TRANSDUCER_TRANSITION_OUTPUT = 8; // character output by the transition, not the state.
@@ -53,6 +55,8 @@ public class ParseMethods {
 	static String REGEXP_FOR_STATE_DECLARATION = "^\\s*(\\d+)\\s+((\\+|\\-)?\\s*\\d+)\\s*$";
 	static Pattern PATTERN_FOR_STATE_DECLARATION = Pattern.compile(REGEXP_FOR_STATE_DECLARATION);
 
+
+
 	static String REGEXP_FOR_TRANSITION = "^\\s*((((\\+|\\-)?\\s*\\d+\\s*)|(\\s*\\*\\s*))+)\\s*\\->\\s*((\\d+\\s*)+)\\s*$";
 	static Pattern PATTERN_FOR_TRANSITION = Pattern.compile(REGEXP_FOR_TRANSITION);
 
@@ -60,6 +64,10 @@ public class ParseMethods {
 	static Pattern PATTERN_FOR_MAPPING_IN_morphism_COMMAND = Pattern.compile(REGEXP_FOR_MAPPING_IN_morphism_COMMAND);
 	static String REGEXP_FOR_MAPPING_IMAGE_IN_morphism_COMMAND = "\\[(\\+|\\-)?\\s*\\d+\\]|\\d";
 	static Pattern PATTERN_FOR_MAPPING_IMAGE_IN_morphism_COMMAND = Pattern.compile(REGEXP_FOR_MAPPING_IMAGE_IN_morphism_COMMAND);
+
+	static String REGEXP_FOR_TRANSDUCER_STATE_DECLARATION = "^\\s*(\\d+)\\s*$";
+	static Pattern PATTERN_FOR_TRANSDUCER_STATE_DECLARATION = Pattern.compile(REGEXP_FOR_TRANSDUCER_STATE_DECLARATION);
+
 
 	static String REGEXP_FOR_TRANSDUCER_TRANSITION = "^\\s*((((\\+|\\-)?\\s*\\d+\\s*)|(\\s*\\*\\s*))+)\\s*\\->\\s*((\\d+\\s*)+)\\s*\\/\\s*((\\+|\\-)?\\s*\\d+)\\s*$";
 	static Pattern PATTERN_FOR_TRANSDUCER_TRANSITION = Pattern.compile(REGEXP_FOR_TRANSDUCER_TRANSITION);
@@ -135,6 +143,16 @@ public class ParseMethods {
 		if(m.find()){
 			pair[0] = UtilityMethods.parseInt(m.group(STATE_DECLARATION_STATE_NAME));
 			pair[1] = UtilityMethods.parseInt(m.group(STATE_DECLARATION_OUTPUT));
+			return true;
+		}
+
+		return false;
+	}
+	
+	public static boolean parseTransducerStateDeclaration(String s, int[] singleton) {
+		Matcher m = PATTERN_FOR_TRANSDUCER_STATE_DECLARATION.matcher(s);
+		if (m.find()) {
+			singleton[0] = UtilityMethods.parseInt(m.group(TRANSDUCER_STATE_DECLARATION_STATE_NAME));
 			return true;
 		}
 
