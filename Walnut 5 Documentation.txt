@@ -20,13 +20,13 @@ One may now transduce automata (that have at most one edge per input per two sta
 
 	transduce <new> <TRANSDUCER> <old>
 
-For example, if trying to transduce a word automaton T saved in Word Automata Library/T.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one may write the following:
+For example, to transduce a word automaton T saved in Word Automata Library/T.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one writes the following:
 
 	transduce new_T RUNSUMmod2 T;
 
-The above command will save a new word automaton new_T in the directory Word Automata Library/.
+The above command saves a new word automaton new_T in the directory Word Automata Library/.
 
-To transduce automata saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the automaton name. For example, if trying to transduce the automaton xda saved in Automata Library/xda.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one may write the following:
+To transduce automata saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the automaton name. For example, if trying to transduce the automaton xda saved in Automata Library/xda.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one writes the following:
 
 	transduce another_T RUNSUMmod2 $xda;
 
@@ -36,22 +36,22 @@ To define a transducer, create a .txt file in the Transducer Library/ folder in 
 
 <input> -> <new state> / <output>
 
-Currently, as the implementation of transducers in Walnut involves an underlying automaton, state outputs and a number system must also be written (as in definitions for automata), however state outputs may just be arbitrarily set by the user (as they are not considered in the transduction algorithm). The number system should be set to msd_k, where k is the size of the input alphabet. This will be made optional in a future version. 
+The input alphabet should be set to msd_k, where k is the size of the input alphabet.
 
 Below is an example transducer definition with three states, computing the XOR of adjacent bits in a sequence over {0, 1} (with the first output always being 0):
 
 
 msd_2
 
-0 0
+0
 0 -> 1 / 0
 1 -> 2 / 0
 
-1 0
+1
 0 -> 1 / 0
 1 -> 2 / 1
 
-2 0
+2
 0 -> 1 / 1
 1 -> 2 / 0
 
@@ -69,7 +69,7 @@ For example, to transduce a Word Automaton T saved in Word Automata Library/T.tx
 
 The above command will save a new word automaton T_new in the directory Word Automata Library/.
 
-To convert the number system of an Automaton saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the old automaton's name. For example, if trying to transduce the Automaton quag saved in Automata Library/quag.txt from msd_2 to lsd_16 and save it as a Word Automaton, one runs:
+To convert the number system of an Automaton saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the old automaton's name. For example, if trying to convert the Automaton quag saved in Automata Library/quag.txt from msd_2 to lsd_16 and save it as a Word Automaton, one runs:
 
 	convert quag_new lsd_16 $quag;
 	
@@ -96,11 +96,11 @@ For example, if reversing a word automaton DEJ saved in Word Automata Library/DE
 
 	reverse DEJ_new DEJ;
 
-DEJ_new will be a Word Automatonthat is the reverse of DEJ, with a number system of lsd_19, and will be saved in Word Automata Library/.
+DEJ_new will be a Word Automaton that is the reverse of DEJ, with a number system of lsd_19, and will be saved in Word Automata Library/.
 
 NOTE: If trying to reverse a word automaton with undefined transitions, a distinguished dead state with an output of min{-1, min{outputs} - 1} will be created (where min{outputs} is the minimum output of the original word automaton) and all undefined transitions will be instead sent to this dead state.
 
-NOTE: To reverse Automata (those saved in Automata Library/), use the ` operator.
+NOTE: To reverse Automata (those saved in Automata Library/), use the already existing '`' operation.
 
 
 

@@ -1066,12 +1066,6 @@ public class Prover {
 	}
 
 
-	/**
-	 *
-	 * @param s
-	 * @return
-	 * @throws Exception
-	 */
 	public static TestCase convertCommand(String s) throws Exception {
 		try {
 			Matcher m = PATTERN_FOR_convert_COMMAND.matcher(s);

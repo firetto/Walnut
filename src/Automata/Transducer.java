@@ -604,18 +604,16 @@ public class Transducer extends Automaton {
      */
     public Automaton transduceNonDeterministic(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
 
-        // verify that the automaton is indeed nondeterministic, i.e. it has undefined transitions. If it is not, transduce normally.
 
-        Set<Integer> outputAlphabet = new HashSet<Integer>();
+        // Check that the output alphabet of the automaton is compatible with the input alphabet of the transducer.
         for (int i = 0; i < M.O.size(); i++) {
-            outputAlphabet.add(M.O.get(i));
+            int encoded = encode(Arrays.asList(M.O.get(i)));
+            if (!d.get(0).containsKey(encoded)) {
+                throw new Exception("Output alphabet of automaton must be compatible with the transducer input alphabet");
+            }
         }
 
-        if (alphabetSize != outputAlphabet.size()) {
-            throw new Exception("Output alphabet size (" + alphabetSize +
-                    ") of automaton and transducer input alphabet size (" + outputAlphabet.size() + ") must match.");
-        }
-
+        // verify that the automaton is indeed nondeterministic, i.e. it has undefined transitions. If it is not, transduce normally.
         boolean totalized = true;
         for(int q = 0 ; q < M.Q; q++){
             for(int x = 0; x < M.alphabetSize; x++){
