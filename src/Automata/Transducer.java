@@ -358,7 +358,7 @@ public class Transducer extends Automaton {
                 HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
                 for (int j = 0; j < Q; j++) {
-                    map.put(j, d.get(j).get(M.O.get(i)).get(0));
+                    map.put(j, d.get(j).get( encode(Arrays.asList(M.O.get(i))) ).get(0));
                 }
 
                 initMaps.add(map);
@@ -408,7 +408,7 @@ public class Transducer extends Automaton {
                     for (int u = 0; u < iString.size(); u++) {
                         HashMap<Integer, Integer> newMap = new HashMap<Integer, Integer>();
                         for (int l = 0; l < Q; l++) {
-                            newMap.put(l, d.get(mapSoFar.get(l)).get(M.O.get(iString.get(u))).get(0));
+                            newMap.put(l, d.get(mapSoFar.get(l)).get( encode(Arrays.asList(M.O.get(iString.get(u)))) ).get(0));
                         }
                         mapSoFar = newMap;
                     }
@@ -509,7 +509,8 @@ public class Transducer extends Automaton {
                 StateTuple currState = statesQueue.remove();
 
                 // set up the output of this state.
-                N.O.add(sigma.get(currState.iterates.get(0).get(q0)).get(M.O.get(currState.state)));
+
+                N.O.add(sigma.get(currState.iterates.get(0).get(q0)).get( encode(Arrays.asList(M.O.get(currState.state))) ));
 
                 N.d.add(new TreeMap<Integer,List<Integer>>());
 
@@ -572,6 +573,8 @@ public class Transducer extends Automaton {
                 N.reverseWithOutput(true, print, prefix+" ", log);
             }
 
+            N.minimizeSelfWithOutput(print, prefix+" ", log);
+
             long timeAfter = System.currentTimeMillis();
             if(print){
                 String msg = prefix + "transduced: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
@@ -579,7 +582,6 @@ public class Transducer extends Automaton {
                 System.out.println(msg);
             }
 
-            N.minimizeSelfWithOutput(print, prefix+" ", log);
 
             return N;
         } catch (Exception e) {
@@ -713,7 +715,7 @@ public class Transducer extends Automaton {
             for (int u = 0; u < currString.size(); u++) {
                 HashMap<Integer, Integer> newMap = new HashMap<Integer, Integer>();
                 for (int l = 0; l < Q; l++) {
-                    newMap.put(l, d.get(mapSoFar.get(l)).get(M.O.get(currString.get(u))).get(0));
+                    newMap.put(l, d.get(mapSoFar.get(l)).get( encode(Arrays.asList(M.O.get(currString.get(u)))) ).get(0));
                 }
                 mapSoFar = newMap;
             }
