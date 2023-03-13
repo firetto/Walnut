@@ -41,6 +41,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.TreeMap;
+import java.util.Iterator;
 
 import dk.brics.automaton.RegExp;
 import dk.brics.automaton.State;
@@ -946,7 +947,21 @@ public class Automaton {
                 System.out.println(msg);
             }
 
-            addDistinguishedDeadState(print, prefix, log);
+            boolean addedDeadState = addDistinguishedDeadState(print, prefix, log);
+
+            int minOutput = 0;
+            if (addedDeadState) {
+                // get state with smallest output. all states with this output will be removed.
+                // after transducing, all states with this minimum output will be removed.
+                
+                for (int i = 0; i < O.size(); i++) {
+                    if (O.get(i) < minOutput) {
+                        minOutput = O.get(i);
+                    }
+                }
+            }
+
+
 
             // need to define states, an initial state, transitions, and outputs.
 
@@ -1027,6 +1042,32 @@ public class Automaton {
             }
 
             minimizeSelfWithOutput(print, prefix+" ", log);
+
+            if (addedDeadState) {
+                // remove all states that have an output of minOutput
+                HashSet<Integer> statesRemoved = new HashSet<Integer>();
+
+                for (int q = 0; q < Q; q++) {
+                    if (O.get(q) == minOutput) {
+                        statesRemoved.add(q);
+                    }
+                }
+                for (int q = 0; q < Q; q++) {
+
+                    Iterator<Integer> iter = d.get(q).keySet().iterator();
+
+                    while (iter.hasNext()) {
+                        int x = iter.next();
+
+                        if (statesRemoved.contains(d.get(q).get(x).get(0))) {
+                            iter.remove();
+                        }
+                    }
+                }
+
+                canonized = false;
+                canonize();
+            }
 
             long timeAfter = System.currentTimeMillis();
             if(print){
@@ -2428,9 +2469,11 @@ public class Automaton {
 
     /**
      * This method adds a dead state with an output one less than the minimum output number of the word automaton.
+
+        Return whether a dead state was even added.
      * @throws Exception
      */
-    public void addDistinguishedDeadState(boolean print, String prefix, StringBuffer log) throws Exception {
+    public boolean addDistinguishedDeadState(boolean print, String prefix, StringBuffer log) throws Exception {
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "Adding distinguished dead state: " + Q + " states";
@@ -2480,6 +2523,7 @@ public class Automaton {
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
+        return !totalized;
     }
 
     /**

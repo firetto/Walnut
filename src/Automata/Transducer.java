@@ -272,7 +272,7 @@ public class Transducer extends Automaton {
     }
 
     /**
-     * Transduce an Automaton M as in Dekking (1994).
+     * Transduce an msd-k Automaton M as in Dekking (1994).
      *
      * @param M - automaton to transduce
      * @param print - whether to print details
@@ -281,7 +281,7 @@ public class Transducer extends Automaton {
      * @return The transduced Automaton after applying this Transducer to M.
      * @throws Exception
      */
-    public Automaton transduce(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
+    public Automaton transduceMsdDeterministic(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
 
         try {
             long timeBefore = System.currentTimeMillis();
@@ -291,12 +291,7 @@ public class Transducer extends Automaton {
                 System.out.println(msg);
             }
 
-            boolean toLsd = false;
-
-            if (!M.NS.get(0).isMsd()) {
-                toLsd = true;
-                M.reverseWithOutput(true, print, prefix+" ", log);
-            }
+            
 
             /**
              * N will be the returned Automaton, just have to build it up.
@@ -569,10 +564,6 @@ public class Transducer extends Automaton {
 
             N.alphabetSize = M.alphabetSize;
 
-            if (toLsd) {
-                N.reverseWithOutput(true, print, prefix+" ", log);
-            }
-
             N.minimizeSelfWithOutput(print, prefix+" ", log);
 
             long timeAfter = System.currentTimeMillis();
@@ -604,6 +595,11 @@ public class Transducer extends Automaton {
      */
     public Automaton transduceNonDeterministic(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
 
+        // check that the input automaton only has one input!
+        if (M.NS.size() != 1) {
+            throw new Exception("Automata with only one input can be transduced.");
+        }
+
 
         // Check that the output alphabet of the automaton is compatible with the input alphabet of the transducer.
         for (int i = 0; i < M.O.size(); i++) {
@@ -612,6 +608,20 @@ public class Transducer extends Automaton {
                 throw new Exception("Output alphabet of automaton must be compatible with the transducer input alphabet");
             }
         }
+
+        // make sure the number system is lsd.
+        boolean toLsd = false;
+
+        if (!M.NS.get(0).isMsd()) {
+            if(print){
+                String msg = prefix + "Automaton number system is lsd, reversing";
+                log.append(msg + UtilityMethods.newLine());
+                System.out.println(msg);
+            }
+            toLsd = true;
+            M.reverseWithOutput(true, print, prefix+" ", log);
+        }
+
 
         // verify that the automaton is indeed nondeterministic, i.e. it has undefined transitions. If it is not, transduce normally.
         boolean totalized = true;
@@ -625,9 +635,10 @@ public class Transducer extends Automaton {
                 }
             }
         }
+        Automaton N;
         if (totalized) {
             // transduce normally
-            return transduce(M, print, prefix, log);
+            N = transduceMsdDeterministic(M, print, prefix, log);
         }
         else {
             Automaton Mnew = M.clone();
@@ -651,7 +662,7 @@ public class Transducer extends Automaton {
                 Tnew.sigma.get(q).put(minOutput, minOutput);
             }
 
-            Automaton N = Tnew.transduce(Mnew, print, prefix+" ", log);
+            N = Tnew.transduceMsdDeterministic(Mnew, print, prefix+" ", log);
 
             // remove all states that have an output of minOutput
             HashSet<Integer> statesRemoved = new HashSet<Integer>();
@@ -676,9 +687,14 @@ public class Transducer extends Automaton {
 
             N.canonized = false;
             N.canonize();
-
-            return N;
+            
         }
+
+        if (toLsd) {
+            N.reverseWithOutput(true, print, prefix+" ", log);
+        }
+
+        return N;
     }
 
     /**
