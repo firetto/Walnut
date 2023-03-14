@@ -98,8 +98,6 @@ For example, if reversing a word automaton DEJ saved in Word Automata Library/DE
 
 DEJ_new will be a Word Automaton that is the reverse of DEJ, with a number system of lsd_19, and will be saved in Word Automata Library/.
 
-NOTE: If trying to reverse a word automaton with undefined transitions, a distinguished dead state with an output of min{-1, min{outputs} - 1} will be created (where min{outputs} is the minimum output of the original word automaton) and all undefined transitions will be instead sent to this dead state.
-
 NOTE: To reverse Automata (those saved in Automata Library/), use the already existing '`' operation.
 
 
