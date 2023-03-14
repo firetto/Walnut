@@ -690,10 +690,66 @@ public class IntegrationTest {
 		L.add("eval test522 \"?msd_neg_10 Ix 2*x = y & y >5\";");
 
 		// more split/rsplit tests
-		L.add("split test522 FTM[+]");
-		L.add("split test523 FASQ[-]");
-		L.add("rsplit test524[+] FASQ");
-		L.add("rsplit test525[-] FTM");
+		L.add("split test523 FTM[+]");
+		L.add("split test524 FASQ[-]");
+		L.add("rsplit test525[+] FASQ");
+		L.add("rsplit test526[-] FTM");
+
+
+		// transduce tests
+		L.add("transduce test527 RUNSUMmod2 T;"); // msd_2 transduce
+		L.add("transduce test528 RUNSUMmod3 MW;"); // msd_3 transduce
+		L.add("transduce test529 RUNSUMmod2 PR;"); // lsd_2 transduce
+		L.add("transduce test530 RUNSUMmod2 F;"); // msd_fib transduce
+		
+		L.add("reverse test531 F;"); // reverse F.
+		L.add("transduce test532 RUNSUMmod2 test531;"); // lsd_fib transduce
+		L.add("reverse test533 test532;");
+		L.add("eval test534 \"?msd_fib An test533[n] = test530[n]\";");
+
+
+
+		// check that reversal of reversal is the same as original
+		L.add("reverse test535 test531;");
+		L.add("eval test536 \"?msd_fib An test535[n] = F[n]\";");
+		
+		L.add("reverse test537 PR;");
+		L.add("reverse test538 test537;");
+		L.add("eval test539 \"?lsd_2 An test538[n] = PR[n]\";");
+
+
+
+		// convert tests
+		L.add("convert test540 msd_4 T;");
+		L.add("convert test541 lsd_2 test540;");
+		L.add("reverse test542 test541;");
+		L.add("eval test543 \"An test542[n] = T[n]\";");
+
+		L.add("convert test544 msd_2 HC;");
+		L.add("convert test545 msd_32 test544;");
+		L.add("convert test546 msd_32 HC;");
+		L.add("eval test547 \"?msd_32 An test545[n] = test546[n]\";");
+
+		// test incorrect base errors for convert.
+		L.add("convert test548 msd_5 T;");
+		L.add("convert test549 lsd_9 HC;");
+
+		// test transduce incorrect output error
+		L.add("transduce test550 RUNSUMmod2 TH;");
+		L.add("transduce test551 RUNSUMmod2 TR;");
+
+		// test transduce multiple inputs error.
+		L.add("transduce test552 RUNSUMmod3 PF;");
+		L.add("transduce test553 RUNSUMmod2 HS;");
+
+		// test not k automatic convert error.
+		L.add("convert test554 msd_2 FTM;");
+
+		// test that the number systems are different
+		L.add("convert test555 msd_2 T;"); 
+
+		// test multiple input converts.
+		L.add("convert test556 msd_4 PF;");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));
@@ -770,6 +826,8 @@ public class IntegrationTest {
 					failedTestsCount++;
 					System.out.flush();
 					System.out.println("Test " + i + " failed! Actual and expected error messages do not conform.\n");
+					System.out.println("Expected error: " + expected.error);
+					System.out.println("Actual error: " + e.getMessage());
 				}
 			}
 		}

@@ -1103,7 +1103,7 @@ public class Automaton {
             String base = nsName.substring(nsName.indexOf("_") + 1);
 
             if(!UtilityMethods.isNumber(base) || Integer.parseInt(base) <= 1) {
-                throw new Exception("Base of number system of original automaton must be a positive integer greater than 1");
+                throw new Exception("Base of number system of original automaton must be a positive integer greater than 1.");
             }
 
             int fromBase = Integer.parseInt(base);
@@ -1125,7 +1125,7 @@ public class Automaton {
             int commonRoot = UtilityMethods.commonRoot(fromBase, toBase);
 
             if (commonRoot == -1) {
-                throw new Exception("New and old number systems must have bases of the form k^i and k^j for integers i, j, k");
+                throw new Exception("New and old number systems must have bases of the form k^i and k^j for integers i, j, k.");
             }
 
             // if originally in lsd, reverse and convert to msd.

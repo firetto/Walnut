@@ -179,14 +179,20 @@ public class Prover {
 	public static void main(String[] args) throws Exception {
 		UtilityMethods.setPaths();
 
-		// to create test cases, run the following lines:
-//		IntegrationTest IT = new IntegrationTest(true);
-//		IT.createTestCases();
-// 		IT.runTestCases();
-
 		// to run test cases, run the following lines:
-//		IntegrationTest IT = new IntegrationTest(true);
-//		IT.runTestCases();
+		// IntegrationTest IT = new IntegrationTest(true);
+		// IT.runTestCases();
+
+
+
+		// WARNING: This will OVERRIDE THE EXISTING TESTS!!!
+		// CREATE THE TEST RESULTS MANUALLY INSTEAD!
+		// to create test cases, run the following lines:
+		// IntegrationTest IT = new IntegrationTest(true);
+		// IT.createTestCases();
+
+
+
 
 		// can also run these.
 //		IT.runPerformanceTest("Walnut with Valmari without refactoring", 5);
