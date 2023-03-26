@@ -602,9 +602,9 @@ public class Prover {
 			 * and then replace "%PLACEHOLDER%" with "[-2]". 
 			 */
 			baseexp = baseexp 
-				.replace("[-" + alphabetVectorCopy + "]", "%PLACEHOLDER%")
+				.replace("[-" + alphabetVectorCopy + "]", "§")
 				.replace(alphabetVectorCopy, replacementStr)
-				.replace("%PLACEHOLDER%", "[-" + alphabetVectorCopy + "]");
+				.replace("§", "[-" + alphabetVectorCopy + "]");
 		}
 		M.alphabetSize = 1;
 		for (List<Integer> alphlist : M.A) {

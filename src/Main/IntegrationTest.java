@@ -750,6 +750,11 @@ public class IntegrationTest {
 
 		// test multiple input converts.
 		L.add("convert test556 msd_4 PF;");
+
+		// test negative numbers in regex
+		L.add("reg test557 {-1,0,1} \"(11|[-1][-1])\";");
+		L.add("reg test558 {-1,0,1} \"([-1][-1]|11)\";");
+		L.add("eval test559 \"An $test557(n) <=> $test558(n) \";");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

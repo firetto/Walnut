@@ -134,3 +134,4 @@ Commands that involve determinizing or taking the cross product of automata that
 
 	- Fixed bug that prevented subset construction of automata with large amounts of states in certain cases.
 	- Fixed bug that did not allow to combine automata with negative integer outputs
+	- Fixed bug that produced incorrect automata when defining regular expressions with negative integers
