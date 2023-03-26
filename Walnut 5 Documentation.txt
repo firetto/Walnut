@@ -20,15 +20,15 @@ One may now transduce automata (that have at most one edge per input per two sta
 
 	transduce <new> <TRANSDUCER> <old>
 
-For example, to transduce a word automaton T saved in Word Automata Library/T.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one writes the following:
+For example, to transduce a word automaton T saved in Word Automata Library/T.txt using a transducer named RUNSUM2 saved in Transducer Library/RUNSUM2.txt, one writes the following:
 
-	transduce new_T RUNSUMmod2 T;
+	transduce new_T RUNSUM2 T;
 
 The above command saves a new word automaton new_T in the directory Word Automata Library/.
 
-To transduce automata saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the automaton name. For example, if trying to transduce the automaton xda saved in Automata Library/xda.txt using a transducer named RUNSUMmod2 saved in Transducer Library/RUNSUMmod2.txt, one writes the following:
+To transduce automata saved in Automata Library/, one may add a prefix of '$' (without the quotation marks) to the automaton name. For example, if trying to transduce the automaton xda saved in Automata Library/xda.txt using a transducer named RUNSUM2 saved in Transducer Library/RUNSUM2.txt, one writes the following:
 
-	transduce another_T RUNSUMmod2 $xda;
+	transduce another_T RUNSUM2 $xda;
 
 The above command will save a new word automaton another_T in the directory Word Automata Library/.
 
@@ -36,12 +36,10 @@ To define a transducer, create a .txt file in the Transducer Library/ folder in 
 
 <input> -> <new state> / <output>
 
-The input alphabet should be set to msd_k, where k is the size of the input alphabet.
-
 Below is an example transducer definition with three states, computing the XOR of adjacent bits in a sequence over {0, 1} (with the first output always being 0):
 
 
-msd_2
+{0, 1}
 
 0
 0 -> 1 / 0
@@ -111,7 +109,7 @@ One may now minimize a Word Automaton, with the following syntax:
 	
 For example, if minimizing a word automaton NOTMIN saved in Word Automata Library/NOTMIN.txt, one runs:
 
-	reverse MIN NOTMIN;
+	minimize MIN NOTMIN;
 
 MIN will be a minimal Word Automaton equivalent to NOTMIN, and will be saved in Word Automata Library/.
 
