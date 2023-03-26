@@ -697,13 +697,13 @@ public class IntegrationTest {
 
 
 		// transduce tests
-		L.add("transduce test527 RUNSUMmod2 T;"); // msd_2 transduce
-		L.add("transduce test528 RUNSUMmod3 MW;"); // msd_3 transduce
-		L.add("transduce test529 RUNSUMmod2 PR;"); // lsd_2 transduce
-		L.add("transduce test530 RUNSUMmod2 F;"); // msd_fib transduce
+		L.add("transduce test527 RUNSUM2 T;"); // msd_2 transduce
+		L.add("transduce test528 RUNSUM3 MW;"); // msd_3 transduce
+		L.add("transduce test529 RUNSUM2 PR;"); // lsd_2 transduce
+		L.add("transduce test530 RUNSUM2 F;"); // msd_fib transduce
 		
 		L.add("reverse test531 F;"); // reverse F.
-		L.add("transduce test532 RUNSUMmod2 test531;"); // lsd_fib transduce
+		L.add("transduce test532 RUNSUM2 test531;"); // lsd_fib transduce
 		L.add("reverse test533 test532;");
 		L.add("eval test534 \"?msd_fib An test533[n] = test530[n]\";");
 

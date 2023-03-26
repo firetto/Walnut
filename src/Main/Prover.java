@@ -186,7 +186,7 @@ public class Prover {
 
 
 		// WARNING: This will OVERRIDE THE EXISTING TESTS!!!
-		// CREATE THE TEST RESULTS MANUALLY INSTEAD!
+		// CREATE THE TEST RESULTS MANUALLY INSTEAD, IF YOU CAN!
 		// to create test cases, run the following lines:
 		// IntegrationTest IT = new IntegrationTest(true);
 		// IT.createTestCases();
@@ -573,11 +573,12 @@ public class Prover {
 			// needed to replace this string with the unicode mapping
 			String alphabetVectorCopy = alphabetVector;
 			if (alphabetVector.charAt(0) == '[') {
-				alphabetVector.substring(1, alphabetVector.length()-1); // truncate brackets [ ]
+				alphabetVector = alphabetVector.substring(1, alphabetVector.length()-1); // truncate brackets [ ]
 			}
+			
 			Matcher m3 = PATTERN_FOR_A_SINGLE_ELEMENT_OF_A_SET.matcher(alphabetVector);
 			while (m3.find()) {
-				L.add(UtilityMethods.parseInt(m3.group()));
+				L.add(UtilityMethods.parseInt(m3.group()));	
 			}
 			if (L.size() != M.A.size()) {
 				throw new Exception("Mismatch between vector length in regex and specified number of inputs to automaton");
@@ -589,7 +590,21 @@ public class Prover {
 			vectorEncoding += 128;
 			char replacement = (char)vectorEncoding;
 			String replacementStr = Character.toString(replacement);
-			baseexp = baseexp.replace(alphabetVectorCopy, replacementStr);
+			
+			/**
+			 * If alphabetVectorCopy is "2" and baseexp is "(22|[-2][-2])",
+			 * and you just run
+			 * baseexp.replace(alphabetVectorCopy, replacementStr)
+			 * normally, then this will turn baseexp to "(|[-][-])"
+			 * instead of "(|[-2][-2])".
+			 * Instead, we replace all occurences of "[-2]" with "%PLACEHOLDER%",
+			 * then run baseexp.replace(alphabetVectorCopy, replacementStr),
+			 * and then replace "%PLACEHOLDER%" with "[-2]". 
+			 */
+			baseexp = baseexp 
+				.replace("[-" + alphabetVectorCopy + "]", "%PLACEHOLDER%")
+				.replace(alphabetVectorCopy, replacementStr)
+				.replace("%PLACEHOLDER%", "[-" + alphabetVectorCopy + "]");
 		}
 		M.alphabetSize = 1;
 		for (List<Integer> alphlist : M.A) {

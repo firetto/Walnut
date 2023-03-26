@@ -504,6 +504,7 @@ public class Automaton {
     public Automaton(String regularExpression, List<List<Integer>> alphabet, Integer alphabetSize) throws Exception {
 
         this();
+
         if(alphabetSize > ((1<<Character.SIZE) -1)){
             throw new Exception("size of input alphabet exceeds the limit of " + ((1<<Character.SIZE) -1));
         }
