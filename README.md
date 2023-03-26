@@ -5,7 +5,7 @@ Please read the `Manual.pdf` file, included in the repository, to learn what Wal
 
 # Walnut 5 Documentation
 
-This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca).
+This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov, with direction from Jeffrey Shallit.
 
 The new capabilities are as follows:
 
