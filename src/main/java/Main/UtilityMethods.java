@@ -37,6 +37,7 @@ public class UtilityMethods {
 	static String ADDRESS_FOR_CUSTOM_BASES = "Custom Bases/";
 	static String ADDRESS_FOR_TEST_LIBRARY = "Test Library/";
 	static String ADDRESS_FOR_INTEGRATION_TEST_RESULTS = "Test Results/Integration Tests/";
+	static String ADDRESS_FOR_UNIT_TEST_INTEGRATION_TEST_RESULTS = "src/test/resources/integrationTests/";
 
 	static String PROMPT = "\n[Walnut]$ ";
 
@@ -82,6 +83,10 @@ public class UtilityMethods {
 		return dir + ADDRESS_FOR_TEST_LIBRARY;
 	}
 	public static String get_address_for_integration_test_results() {
+		return dir + ADDRESS_FOR_INTEGRATION_TEST_RESULTS;
+	}
+
+	public static String get_address_for_unit_test_integration_test_results() {
 		return dir + ADDRESS_FOR_INTEGRATION_TEST_RESULTS;
 	}
 

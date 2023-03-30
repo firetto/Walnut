@@ -36,6 +36,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Automata.Automaton;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 
 public class IntegrationTest {
 	String directoryAddress = UtilityMethods.get_address_for_integration_test_results();
@@ -100,14 +103,9 @@ public class IntegrationTest {
         }
 	}
 	public IntegrationTest(){
-		this(false);
-	}
-	public IntegrationTest(boolean should_initialize){
-		if(should_initialize){
-			initialize();
-		}
-		testCases = new ArrayList<TestCase>();
-		L = new ArrayList<String>();
+		initialize();
+		testCases = new ArrayList<>();
+		L = new ArrayList<>();
 		L.add("eval test0 \"(a = 4) & (b)=(5) & (6) = c & (17 = d)\";");
 		L.add("eval test1 \"?lsd_2 (a = 4) & (b)=(5) & (6) = c & (17 = d)\";");
 		L.add("eval test2 \"?msd_3 (a = 4) & (b)=(5) & (6) = c & (17 = d)\";");
@@ -782,7 +780,7 @@ public class IntegrationTest {
 		return runTestCases(begin,L.size());
 	}
 	public long runTestCases(int begin, int end) throws Exception{
-		loadTestCases();
+		loadTestCases(directoryAddress);
 		int failedTestsCount = 0;
 		int mplFailedTestsCount = 0;
 		int detailsFailedTestsCount = 0;
@@ -849,6 +847,36 @@ public class IntegrationTest {
 		return total;
 	}
 
+
+	@TestFactory
+	List<DynamicTest> runAllIntegrationTests() throws Exception {
+		loadTestCases(UtilityMethods.ADDRESS_FOR_UNIT_TEST_INTEGRATION_TEST_RESULTS);
+		List<DynamicTest> dynamicTests = new ArrayList<>(L.size());
+		for (int i = 0; i < L.size(); i++) {
+			int finalI = i;
+			dynamicTests.add(DynamicTest.dynamicTest("Test case " + i, () -> runSpecificTest(finalI)));
+		}
+		return dynamicTests;
+	}
+
+	private void runSpecificTest(int i) {
+		TestCase expected = testCases.get(i);
+		String command = L.get(i);
+		try{
+			TestCase actual = Prover.dispatchForIntegrationTest(command);
+			Assertions.assertTrue(conformMPL(expected.mpl.trim(),actual.mpl.trim()), "MPL does not conform");
+			Assertions.assertTrue(conformDetails(expected.details.trim(),actual.details.trim()), "Details do not conform");
+			Assertions.assertTrue(actual.result == null || expected.result != null);
+			Assertions.assertTrue(actual.result != null || expected.result == null);
+			// We don't use assertEquals here, since equals has been overridden in the Automaton class
+			Assertions.assertTrue(actual.result.equals(expected.result), "Results are not equal");
+		}
+		catch(Exception e){
+			Assertions.assertEquals(e.getMessage(), expected.error);
+		}
+	}
+
+
 	private boolean conformMPL(String expected_mpl,String actual_mpl){
 		if(expected_mpl == null && actual_mpl == null)return true;
 		if(expected_mpl.length() == 0 && actual_mpl.length() == 0) return true;
@@ -899,7 +927,7 @@ public class IntegrationTest {
 		return true;*/
 	}
 
-	public void loadTestCases() throws Exception{
+	void loadTestCases(String directoryAddress) throws Exception{
 		String command;
 		testCases = new ArrayList<TestCase>();
 		for(int i = 0 ; i < L.size();i++){
