@@ -46,6 +46,8 @@ import java.util.Iterator;
 import dk.brics.automaton.RegExp;
 import dk.brics.automaton.State;
 import dk.brics.automaton.Transition;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 /**
  * This class can represent different types of automaton: deterministic/non-deterministic and/or automata with output/automata without output.<bf>
@@ -273,7 +275,7 @@ public class Automaton {
 
     /* Minimization algorithm */
     void minimize_valmari(boolean print, String prefix,StringBuffer log) throws Exception{
-        HashSet<Integer> qqq = new HashSet<>();
+        IntSet qqq = new IntOpenHashSet();
         qqq.add(q0);
         subsetConstruction(qqq,print,prefix,log);
         num_states = Q;
@@ -894,7 +896,7 @@ public class Automaton {
             }
         }
         d = new_d;
-        HashSet<Integer> setOfFinalStates = new HashSet<>();
+        IntSet setOfFinalStates = new IntOpenHashSet();
         /**final states become non final*/
         for(int q = 0 ; q < Q;q++){
             if(O.get(q) != 0){
@@ -3434,7 +3436,7 @@ public class Automaton {
         return to_dk_bricks_automaton().isEmpty();
     }
 
-    private void subsetConstruction(HashSet<Integer> initial_state,boolean print, String prefix, StringBuffer log)throws Exception{
+    private void subsetConstruction(IntSet initial_state,boolean print, String prefix, StringBuffer log)throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "Determinizing: " + Q + " states";
@@ -3442,10 +3444,10 @@ public class Automaton {
             System.out.println(msg);
         }
         int number_of_states = 0,current_state = 0;
-        Hashtable<HashSet<Integer>,Integer> statesHash = new Hashtable<>();
-        List<HashSet<Integer>> statesList = new ArrayList<>();
+        Map<IntSet,Integer> statesHash = new HashMap<>();
+        List<IntSet> statesList = new ArrayList<>();
         statesList.add(initial_state);
-        statesHash.put(initial_state, statesList.size()-1);
+        statesHash.put(initial_state, 0);
         number_of_states++;
 
         List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
@@ -3464,11 +3466,11 @@ public class Automaton {
                 }
             }
 
-            HashSet<Integer> state = statesList.get(current_state);
+            IntSet state = statesList.get(current_state);
             new_d.add(new TreeMap<>());
-            HashSet<Integer> dest;
+            IntSet dest;
             for(int in = 0;in!=alphabetSize;++in){
-                dest = new HashSet<>();
+                dest = new IntOpenHashSet();
                 for(int q:state){
                     if(d.get(q).containsKey(in)) {
                         for(int p:d.get(q).get(in)) {
@@ -3499,7 +3501,7 @@ public class Automaton {
         Q = number_of_states;
         q0 = 0;
         List<Integer> newO = new ArrayList<>();
-        for(HashSet<Integer> state:statesList){
+        for(IntSet state:statesList){
             boolean flag = false;
             for(int q:state){
                 if(O.get(q)!=0){
@@ -3540,7 +3542,7 @@ public class Automaton {
             d.get(q0).get(zero).add(q0);
         }
 
-        HashSet<Integer> initial_state = zeroReachableStates();
+        IntSet initial_state = zeroReachableStates();
         subsetConstruction(initial_state,print,prefix+" ",log);
         minimize(print, prefix+" ", log);
         long timeAfter = System.currentTimeMillis();
@@ -3675,8 +3677,8 @@ public class Automaton {
 
     /**Returns the set of states reachable from the initial state by reading 0*
      */
-    private HashSet<Integer> zeroReachableStates(){
-        HashSet<Integer> result = new HashSet<>();
+    private IntSet zeroReachableStates(){
+        IntSet result = new IntOpenHashSet();
         Queue<Integer> queue = new LinkedList<>();
         queue.add(q0);
         List<Integer> ZERO = new ArrayList<>();//all zero input
