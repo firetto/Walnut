@@ -1,6 +1,10 @@
 *.class
 classes/
 
+# Gradle build
+.gradle/
+build/
+
 # Mac-specific files
 .DS_Store
 
