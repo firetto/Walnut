@@ -89,8 +89,8 @@ public class OstrowskiNumeration {
 
     public OstrowskiNumeration(String name, String preperiod, String period) throws Exception {
         this.name = name;
-        this.preperiod = new ArrayList<Integer>();
-        this.period = new ArrayList<Integer>();
+        this.preperiod = new ArrayList<>();
+        this.period = new ArrayList<>();
         ParseMethods.parseList(preperiod, this.preperiod);
         ParseMethods.parseList(period, this.period);
 
@@ -122,7 +122,7 @@ public class OstrowskiNumeration {
             }
         }
 
-        this.alpha = new ArrayList<Integer>();
+        this.alpha = new ArrayList<>();
         this.alpha.add(0);
         this.alpha.addAll(this.preperiod);
         this.alpha.addAll(this.period);
@@ -146,7 +146,7 @@ public class OstrowskiNumeration {
 
         // Declare the alphabet.
         repr.alphabetSize = d_max + 1;
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i <= d_max; i++) {
             list.add(i);
         }
@@ -154,7 +154,7 @@ public class OstrowskiNumeration {
         // Only 1 input to the repr automaton.
         repr.A.add(list);
         repr.NS.add(null);
-        repr.d = new ArrayList<TreeMap<Integer, List<Integer>>>();
+        repr.d = new ArrayList<>();
         repr.alphabetSize = d_max + 1;
         repr.Q = 0;
 
@@ -211,7 +211,7 @@ public class OstrowskiNumeration {
 
         // Declare the alphabet.
         adder.alphabetSize = 1;
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i <= d_max; i++) {
             list.add(i);
         }
@@ -223,7 +223,7 @@ public class OstrowskiNumeration {
         adder.NS.add(null);
         adder.NS.add(null);
         adder.NS.add(null);
-        adder.d = new ArrayList<TreeMap<Integer, List<Integer>>>();
+        adder.d = new ArrayList<>();
         adder.alphabetSize = (d_max + 1) * (d_max + 1) * (d_max + 1);
         adder.Q = 0;
 
@@ -364,7 +364,7 @@ public class OstrowskiNumeration {
         this.node_of_index.put(0, start_node);
         ++this.total_nodes;
 
-        Queue<Integer> queue = new LinkedList<Integer>();
+        Queue<Integer> queue = new LinkedList<>();
         this.state_transitions = new TreeMap<>();
 
         // These are the "0" states.
@@ -463,7 +463,7 @@ public class OstrowskiNumeration {
         this.node_of_index.put(0, start_node);
         ++this.total_nodes;
 
-        Queue<Integer> queue = new LinkedList<Integer>();
+        Queue<Integer> queue = new LinkedList<>();
         this.state_transitions = new TreeMap<>();
         int a;
 
@@ -475,7 +475,7 @@ public class OstrowskiNumeration {
             index_of_node.put(node, this.total_nodes);
             node_of_index.put(this.total_nodes, node);
             for (int inp = 0; inp < a; ++inp) {
-                this.state_transitions.get(0).putIfAbsent(inp, new ArrayList<Integer>());
+                this.state_transitions.get(0).putIfAbsent(inp, new ArrayList<>());
                 this.state_transitions.get(0).get(inp).add(this.total_nodes);
             }
 
@@ -485,7 +485,7 @@ public class OstrowskiNumeration {
             node = new NodeState(1, i, i);
             index_of_node.put(node, this.total_nodes);
             node_of_index.put(this.total_nodes, node);
-            this.state_transitions.get(0).putIfAbsent(a, new ArrayList<Integer>());
+            this.state_transitions.get(0).putIfAbsent(a, new ArrayList<>());
             this.state_transitions.get(0).get(a).add(this.total_nodes);
             queue.add(this.total_nodes);
             ++this.total_nodes;
@@ -519,7 +519,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<Integer>());
+                            .putIfAbsent(inp, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -530,7 +530,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<Integer>());
+                            .putIfAbsent(inp, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -545,7 +545,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<Integer>());
+                            .putIfAbsent(a, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -556,7 +556,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<Integer>());
+                            .putIfAbsent(a, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -582,7 +582,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<Integer>());
+                            .putIfAbsent(inp, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -593,7 +593,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<Integer>());
+                            .putIfAbsent(inp, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -608,7 +608,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<Integer>());
+                            .putIfAbsent(a, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -619,7 +619,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<Integer>());
+                            .putIfAbsent(a, new ArrayList<>());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -640,7 +640,7 @@ public class OstrowskiNumeration {
                 for (int z = 0; z <= d_max; ++z) {
                     if (z - x - y == diff) {
                         int input = inputEncode(x, y, z);
-                        current_state_transitions.putIfAbsent(input, new ArrayList<Integer>());
+                        current_state_transitions.putIfAbsent(input, new ArrayList<>());
                         current_state_transitions.get(input).add(encodedDestination);
                     }
                 }

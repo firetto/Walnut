@@ -75,7 +75,7 @@ public class Transducer extends Automaton {
     public Transducer() {
         super();
 
-        sigma = new ArrayList<TreeMap<Integer, Integer>>();
+        sigma = new ArrayList<>();
     }
 
     /**
@@ -142,23 +142,23 @@ public class Transducer extends Automaton {
             }
 
             int[] singleton = new int[1];
-            List<Integer> input = new ArrayList<Integer>();
-            List<Integer> dest = new ArrayList<Integer>();
-            List<Integer> output = new ArrayList<Integer>();
+            List<Integer> input = new ArrayList<>();
+            List<Integer> dest = new ArrayList<>();
+            List<Integer> output = new ArrayList<>();
             int currentState = -1;
             int currentStateOutput;
             TreeMap<Integer,List<Integer>> currentStateTransitions = new TreeMap<>();
             TreeMap<Integer, Integer> currentStateTransitionOutputs = new TreeMap<>();
-            TreeMap<Integer,Integer> state_output = new TreeMap<Integer,Integer>();
+            TreeMap<Integer,Integer> state_output = new TreeMap<>();
             TreeMap<Integer,TreeMap<Integer,List<Integer>>> state_transition =
-                    new TreeMap<Integer,TreeMap<Integer,List<Integer>>>();
+                    new TreeMap<>();
             TreeMap<Integer, TreeMap<Integer, Integer>> state_transition_output =
-                    new TreeMap<Integer, TreeMap<Integer, Integer>>();
+                    new TreeMap<>();
             /**
              * This will hold all states that are destination of some transition.
              * Then we make sure all these states are declared.
              */
-            Set<Integer> setOfDestinationStates = new HashSet<Integer>();
+            Set<Integer> setOfDestinationStates = new HashSet<>();
             Q = 0;
             while((line = in.readLine())!= null) {
                 lineNumber++;
@@ -209,9 +209,9 @@ public class Transducer extends Automaton {
                         }
                     }
 
-                    input = new ArrayList<Integer>();
-                    dest = new ArrayList<Integer>();
-                    output = new ArrayList<Integer>();
+                    input = new ArrayList<>();
+                    dest = new ArrayList<>();
+                    output = new ArrayList<>();
                 }
                 else{
                     in.close();
@@ -249,10 +249,10 @@ public class Transducer extends Automaton {
         T.canonized = canonized;
         T.labelSorted = labelSorted;
         for(int i = 0 ; i < A.size();i++){
-            T.A.add(new ArrayList<Integer>(A.get(i)));
+            T.A.add(new ArrayList<>(A.get(i)));
             T.NS.add(NS.get(i));
             if(encoder != null && encoder.size()>0){
-                if(T.encoder == null) T.encoder = new ArrayList<Integer>();
+                if(T.encoder == null) T.encoder = new ArrayList<>();
                 T.encoder.add(encoder.get(i));
             }
             if(label != null && label.size() == A.size())
@@ -260,9 +260,9 @@ public class Transducer extends Automaton {
         }
         for(int q = 0; q < Q; q++){
             T.O.add(O.get(q));
-            T.d.add(new TreeMap<Integer,List<Integer>>());
+            T.d.add(new TreeMap<>());
             for(int x:d.get(q).keySet()){
-                T.d.get(q).put(x, new ArrayList<Integer>(d.get(q).get(x)));
+                T.d.get(q).put(x, new ArrayList<>(d.get(q).get(x)));
             }
         }
         for (int i = 0; i < sigma.size(); i++) {
@@ -306,7 +306,7 @@ public class Transducer extends Automaton {
                 // Copy the encoder
                 if (M.encoder != null && M.encoder.size() > 0) {
                     if (N.encoder == null) {
-                        N.encoder = new ArrayList<Integer>();
+                        N.encoder = new ArrayList<>();
                     }
                     N.encoder.add(M.encoder.get(i));
                 }
@@ -328,19 +328,19 @@ public class Transducer extends Automaton {
             int p, q;
 
             // Will be used for hashing the iterate maps.
-            HashMap<List<Map<Integer, Integer>>, Integer> iterateMapHash = new HashMap<List<Map<Integer, Integer>>, Integer>();
+            HashMap<List<Map<Integer, Integer>>, Integer> iterateMapHash = new HashMap<>();
 
             // iterateStrings[i] will be a map from a state q of M to h^i(q).
-            List<List<List<Integer>>> iterateStrings = new ArrayList<List<List<Integer>>>();
+            List<List<List<Integer>>> iterateStrings = new ArrayList<>();
 
             // initMaps.get(i) will be the map phi_{M.O(i)}
-            List<Map<Integer, Integer>> initMaps = new ArrayList<Map<Integer, Integer>>();
+            List<Map<Integer, Integer>> initMaps = new ArrayList<>();
 
             // initStrings.get(j) = [j];
-            List<List<Integer>> initStrings = new ArrayList<List<Integer>>();
+            List<List<Integer>> initStrings = new ArrayList<>();
 
             // start with the empty string.
-            HashMap<Integer, Integer> identity = new HashMap<Integer, Integer>();
+            HashMap<Integer, Integer> identity = new HashMap<>();
 
             // identity will be the identity, so we want to iterate through the states of the transducer.
             for (int i = 0; i < Q; i++) {
@@ -350,7 +350,7 @@ public class Transducer extends Automaton {
             // will add M.Q maps to initMaps.
             for (int i = 0; i < M.Q; i++) {
 
-                HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+                HashMap<Integer, Integer> map = new HashMap<>();
 
                 for (int j = 0; j < Q; j++) {
                     map.put(j, d.get(j).get( encode(Arrays.asList(M.O.get(i))) ).get(0));
@@ -372,14 +372,14 @@ public class Transducer extends Automaton {
 
                 List<List<Integer>> prevStrings = iterateStrings.get(iterateStrings.size() - 1);
 
-                List<Map<Integer, Integer>> newMaps = new ArrayList<Map<Integer, Integer>>();
+                List<Map<Integer, Integer>> newMaps = new ArrayList<>();
 
-                List<List<Integer>> newStrings = new ArrayList<List<Integer>>();
+                List<List<Integer>> newStrings = new ArrayList<>();
 
                 for (int i = 0; i < M.Q; i++) {
 
                     // will be h^m(i)
-                    List<Integer> iString = new ArrayList<Integer>();
+                    List<Integer> iString = new ArrayList<>();
 
                     for (int u = 0; u < prevStrings.get(i).size(); u++) {
 
@@ -401,7 +401,7 @@ public class Transducer extends Automaton {
                     HashMap<Integer, Integer> mapSoFar = new HashMap<>(identity);
 
                     for (int u = 0; u < iString.size(); u++) {
-                        HashMap<Integer, Integer> newMap = new HashMap<Integer, Integer>();
+                        HashMap<Integer, Integer> newMap = new HashMap<>();
                         for (int l = 0; l < Q; l++) {
                             newMap.put(l, d.get(mapSoFar.get(l)).get( encode(Arrays.asList(M.O.get(iString.get(u)))) ).get(0));
                         }
@@ -486,9 +486,9 @@ public class Transducer extends Automaton {
                 }
             }
 
-            ArrayList<StateTuple> states = new ArrayList<StateTuple>();
+            ArrayList<StateTuple> states = new ArrayList<>();
 
-            HashMap<StateTuple, Integer> statesHash = new HashMap<StateTuple, Integer>();
+            HashMap<StateTuple, Integer> statesHash = new HashMap<>();
 
             Queue<StateTuple> statesQueue = new LinkedList<>();
 
@@ -507,10 +507,10 @@ public class Transducer extends Automaton {
 
                 N.O.add(sigma.get(currState.iterates.get(0).get(q0)).get( encode(Arrays.asList(M.O.get(currState.state))) ));
 
-                N.d.add(new TreeMap<Integer,List<Integer>>());
+                N.d.add(new TreeMap<>());
 
                 // get h(w) where w = currState.string .
-                List<Integer> newString = new ArrayList<Integer>();
+                List<Integer> newString = new ArrayList<>();
 
                 for (int u = 0; u < currState.string.size(); u++) {
 
@@ -526,7 +526,7 @@ public class Transducer extends Automaton {
                     }
                 }
 
-                List<Integer> stateMorphed = new ArrayList<Integer>();
+                List<Integer> stateMorphed = new ArrayList<>();
 
                 // relying on the di's to be sorted here...
                 for (int di : M.d.get(currState.state).keySet()) {
@@ -536,7 +536,7 @@ public class Transducer extends Automaton {
                 // look at all of the states that this state transitions to.
                 for (int di : M.d.get(currState.state).keySet()) {
                     // make new state string
-                    List<Integer> newStateString = new ArrayList<Integer>(newString);
+                    List<Integer> newStateString = new ArrayList<>(newString);
                     for (int u = 0; u < di; u++) {
                         newStateString.add(stateMorphed.get(u));
                     }
@@ -665,7 +665,7 @@ public class Transducer extends Automaton {
             N = Tnew.transduceMsdDeterministic(Mnew, print, prefix+" ", log);
 
             // remove all states that have an output of minOutput
-            HashSet<Integer> statesRemoved = new HashSet<Integer>();
+            HashSet<Integer> statesRemoved = new HashSet<>();
 
             for (int q = 0; q < N.Q; q++) {
                 if (N.O.get(q) == minOutput) {
@@ -708,16 +708,16 @@ public class Transducer extends Automaton {
      */
     private List<Map<Integer, Integer>> createIterates(Automaton M, List<Integer> string, int size) {
 
-        ArrayList<Map<Integer, Integer>> iterates = new ArrayList<Map<Integer, Integer>>();
+        ArrayList<Map<Integer, Integer>> iterates = new ArrayList<>();
         // start with the empty string.
-        HashMap<Integer, Integer> identity = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> identity = new HashMap<>();
 
         // we want to iterate through the states of the transducer.
         for (int i = 0; i < Q; i++) {
             identity.put(i, i);
         }
 
-        ArrayList<Integer> currString = new ArrayList<Integer>(string);
+        ArrayList<Integer> currString = new ArrayList<>(string);
 
         for (int i = 0; i < size; i++) {
 
@@ -727,7 +727,7 @@ public class Transducer extends Automaton {
             HashMap<Integer, Integer> mapSoFar = new HashMap<>(identity);
 
             for (int u = 0; u < currString.size(); u++) {
-                HashMap<Integer, Integer> newMap = new HashMap<Integer, Integer>();
+                HashMap<Integer, Integer> newMap = new HashMap<>();
                 for (int l = 0; l < Q; l++) {
                     newMap.put(l, d.get(mapSoFar.get(l)).get( encode(Arrays.asList(M.O.get(currString.get(u)))) ).get(0));
                 }
@@ -738,7 +738,7 @@ public class Transducer extends Automaton {
 
             // make new string currString to be h(currString), where h is the morphism associated with M.
             if (i != size - 1) {
-                ArrayList<Integer> newString = new ArrayList<Integer>();
+                ArrayList<Integer> newString = new ArrayList<>();
 
                 for (int u = 0; u < currString.size(); u++) {
 
@@ -784,12 +784,12 @@ public class Transducer extends Automaton {
 //        gv.addln("qi -> " + q0+";");
 //
 //        TreeMap<Integer, TreeMap<Integer, List<String>>> transitions =
-//                new TreeMap<Integer, TreeMap<Integer, List<String>>>();
+//                new TreeMap<>>>();
 //        for(int q = 0; q < Q; q++) {
 //            transitions.put(q, new TreeMap<>());
 //            for(int x : d.get(q).keySet()) {
 //                for(int dest : d.get(q).get(x)) {
-//                    transitions.get(q).putIfAbsent(dest, new ArrayList<String>());
+//                    transitions.get(q).putIfAbsent(dest, new ArrayList<>());
 //                    transitions.get(q).get(dest).add(
 //                            UtilityMethods.toTransitionLabel(decode(x)));
 //                }

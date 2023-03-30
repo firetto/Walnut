@@ -133,7 +133,7 @@ public class UtilityMethods {
 	 * @return
 	 */
 	public static <T> List<T> permute(List<T> L,int[] permutation){
-		List<T> R = new ArrayList<T>(L);
+		List<T> R = new ArrayList<>(L);
 		for(int i = 0 ; i < L.size();i++)
 			R.set(permutation[i],L.get(i));
 		return R;
@@ -178,7 +178,7 @@ public class UtilityMethods {
 	 */
 	public static <T> void removeDuplicates(List<T> L){
 		if(L == null || L.size() <= 1) return;
-		List<T> R = new ArrayList<T>();
+		List<T> R = new ArrayList<>();
 		for(int i = 0 ; i < L.size();i++){
 			boolean flag = true;
 			for(int j = 0 ; j < i;j++){
@@ -231,7 +231,7 @@ public class UtilityMethods {
 	 * @param indices
 	 */
 	public static <T> void removeIndices(List<T> L, List<Integer> indices) {
-		List<T> R = new ArrayList<T>();
+		List<T> R = new ArrayList<>();
 		for(int i = 0 ; i < L.size();i++){
 			if(indices.indexOf(i) == -1)
 				R.add(L.get(i));

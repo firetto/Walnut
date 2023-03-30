@@ -60,7 +60,7 @@ public class Morphism {
     public Morphism(String name, String mapString) throws Exception {
         this.name = name;
         this.mapping = ParseMethods.parseMorphism(mapString);
-        this.range = new HashSet<Integer>();
+        this.range = new HashSet<>();
         for (Integer key : mapping.keySet()) {
             for (Integer number : mapping.get(key)) {
                 range.add(number);
@@ -115,7 +115,7 @@ public class Morphism {
         promotion.Q = maxEntry+1;
         promotion.O = IntStream.rangeClosed(0, promotion.Q-1).boxed().collect(Collectors.toList());
         for (int x : mapping.keySet()) {
-            TreeMap<Integer, List<Integer>> xmap = new TreeMap<Integer, List<Integer>>();
+            TreeMap<Integer, List<Integer>> xmap = new TreeMap<>();
             for (int i=0; i<mapping.get(x).size(); i++) {
                 xmap.put(i, Collections.singletonList(mapping.get(x).get(i)));
             }

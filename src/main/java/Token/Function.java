@@ -43,7 +43,7 @@ public class Function extends Token {
 	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
 		if(S.size() < getArity())throw new Exception("function " + name + " requires " + getArity()+ " arguments");
 		Stack<Expression> temp = new Stack<Expression>();
-		List<Expression> args = new ArrayList<Expression>();
+		List<Expression> args = new ArrayList<>();
 		for(int i = 0; i < getArity();i++){
 			temp.push(S.pop());
 		}
@@ -54,8 +54,8 @@ public class Function extends Token {
 			System.out.println(preStep);
 		}
 		Automaton M = new Automaton(true);
-		List<String> identifiers = new ArrayList<String>();
-		List<String> quantify = new ArrayList<String>();
+		List<String> identifiers = new ArrayList<>();
+		List<String> quantify = new ArrayList<>();
 		for(int i = 0 ; i < getArity();i++){
 			args.add(temp.pop());
 			Expression currentArg = args.get(i);
@@ -115,7 +115,7 @@ public class Function extends Token {
 		
 		A.bind(identifiers);
 		A = A.and(M,print,prefix+" ",log);
-		A.quantify(new HashSet<String>(quantify),print,prefix + " ",log);
+		A.quantify(new HashSet<>(quantify),print,prefix + " ",log);
 		
 		stringValue += ")";
 		S.push(new Expression(stringValue,A));

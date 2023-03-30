@@ -134,14 +134,14 @@ public class RelationalOperator extends Operator{
 			a.W.compare(b.constant, op,print,prefix+" ",log);
 			Automaton M = a.W;
 			M = M.and(a.M,print,prefix+" ",log);
-			M.quantify(new HashSet<String>(a.list_of_identifiers_to_quantify),print,prefix+" ",log);
+			M.quantify(new HashSet<>(a.list_of_identifiers_to_quantify),print,prefix+" ",log);
 			S.push(new Expression(a+op+b,M));
 		}
 		else if((a.is(Type.numberLiteral) || a.is(Type.alphabetLetter)) && b.is(Type.word)){
 			b.W.compare(a.constant, reverseOperator(op),print,prefix+" ",log);
 			Automaton M = b.W;
 			M = M.and(b.M,print,prefix+" ",log);
-			M.quantify(new HashSet<String>(b.list_of_identifiers_to_quantify),print,prefix+" ",log);
+			M.quantify(new HashSet<>(b.list_of_identifiers_to_quantify),print,prefix+" ",log);
 			S.push(new Expression(a+op+b,M));
 		}
 		else{

@@ -267,7 +267,7 @@ public class NumberSystem {
 			applyAllRepresentations();
 		}
 
-		constantsDynamicTable = new HashMap<Integer, Automaton>();
+		constantsDynamicTable = new HashMap<>();
 		multiplicationsDynamicTable = new HashMap<>();
 		divisionsDynamicTable = new HashMap<>();
 	}
@@ -282,12 +282,12 @@ public class NumberSystem {
 		equality.q0 = 0;
 		equality.O.add(1);
 		equality.NS.add(this);equality.NS.add(this);
-		equality.A.add(new ArrayList<Integer>(alphabet));
-        equality.A.add(new ArrayList<Integer>(alphabet));
+		equality.A.add(new ArrayList<>(alphabet));
+        equality.A.add(new ArrayList<>(alphabet));
 		equality.alphabetSize = alphabet.size()*alphabet.size();
-		equality.d.add(new TreeMap<Integer,List<Integer>>());
+		equality.d.add(new TreeMap<>());
 		for(int i = 0 ; i < alphabet.size(); i++) {
-			List<Integer> dest = new ArrayList<Integer>();
+			List<Integer> dest = new ArrayList<>();
 			dest.add(0);
 			equality.d.get(0).put(i * alphabet.size() + i, dest);
 		}
@@ -300,31 +300,31 @@ public class NumberSystem {
 	 * @throws Exception
 	 */
 	private void lexicographicLessThan(List<Integer> alphabet) throws Exception{
-		alphabet = new ArrayList<Integer>(alphabet);
+		alphabet = new ArrayList<>(alphabet);
 		Collections.sort(alphabet);
 		lessThan = new Automaton();
 		lessThan.Q = 2;
 		lessThan.q0 = 0;
 		lessThan.O.add(0);lessThan.O.add(1);
 		lessThan.NS.add(this);lessThan.NS.add(this);
-		lessThan.A.add(new ArrayList<Integer>(alphabet));
-        lessThan.A.add(new ArrayList<Integer>(alphabet));
+		lessThan.A.add(new ArrayList<>(alphabet));
+        lessThan.A.add(new ArrayList<>(alphabet));
 		lessThan.alphabetSize = alphabet.size()*alphabet.size();
-		lessThan.d.add(new TreeMap<Integer,List<Integer>>());
-        lessThan.d.add(new TreeMap<Integer,List<Integer>>());
+		lessThan.d.add(new TreeMap<>());
+        lessThan.d.add(new TreeMap<>());
 		for(int i = 0; i < alphabet.size();i++){
 			for(int j = 0 ; j < alphabet.size();j++){
 				if(i == j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(0);
 					lessThan.d.get(0).put(j*alphabet.size()+i,dest);
 				}
 				if(i < j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(1);
 					lessThan.d.get(0).put(j*alphabet.size()+i, dest);
 				}
-				List<Integer> dest = new ArrayList<Integer>();
+				List<Integer> dest = new ArrayList<>();
 				dest.add(1);
 				lessThan.d.get(1).put(i*alphabet.size()+j, dest);
 			}
@@ -388,19 +388,19 @@ public class NumberSystem {
 	 * @throws Exception
 	 */
 	private void base_n_addition(int n) throws Exception{
-		List<Integer> alphabet = new ArrayList<Integer>();
+		List<Integer> alphabet = new ArrayList<>();
 		for(int i = 0 ; i < n;i++)alphabet.add(i);
 		addition = new Automaton();
 		addition.Q = 2;
 		addition.q0 = 0;
 		addition.O.add(1);addition.O.add(0);
-		addition.d.add(new TreeMap<Integer,List<Integer>>());
-        addition.d.add(new TreeMap<Integer,List<Integer>>());
+		addition.d.add(new TreeMap<>());
+        addition.d.add(new TreeMap<>());
 		addition.NS.add(this);
         addition.NS.add(this);
         addition.NS.add(this);
-		addition.A.add(new ArrayList<Integer>(alphabet));
-        addition.A.add(new ArrayList<Integer>(alphabet));
+		addition.A.add(new ArrayList<>(alphabet));
+        addition.A.add(new ArrayList<>(alphabet));
         addition.A.add(alphabet);
 		addition.alphabetSize = alphabet.size() * alphabet.size() * alphabet.size();
 		int l = 0;
@@ -408,22 +408,22 @@ public class NumberSystem {
 			for(int j = 0 ; j < n;j++){
 				for(int i = 0; i < n;i++){
 					if(i+j == k){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(0);
 						addition.d.get(0).put(l,dest);
 					}
 					if(i+j+1 == k){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(1);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j+1 == k+n){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(1);
 						addition.d.get(1).put(l, dest);
 					}
 					if(i+j == k+n){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(0);
 						addition.d.get(1).put(l, dest);
 					}
@@ -444,20 +444,20 @@ public class NumberSystem {
 	 * @throws Exception
 	 */
 	private void base_neg_n_addition(int n) throws Exception{
-		List<Integer> alphabet = new ArrayList<Integer>();
+		List<Integer> alphabet = new ArrayList<>();
 		for(int i = 0 ; i < n;i++)alphabet.add(i);
 		addition = new Automaton();
 		addition.Q = 3;
 		addition.q0 = 0;
 		addition.O.add(1);addition.O.add(0);addition.O.add(0);
-		addition.d.add(new TreeMap<Integer,List<Integer>>());
-		addition.d.add(new TreeMap<Integer,List<Integer>>());
-		addition.d.add(new TreeMap<Integer,List<Integer>>());
+		addition.d.add(new TreeMap<>());
+		addition.d.add(new TreeMap<>());
+		addition.d.add(new TreeMap<>());
 		addition.NS.add(this);
 		addition.NS.add(this);
 		addition.NS.add(this);
-		addition.A.add(new ArrayList<Integer>(alphabet));
-		addition.A.add(new ArrayList<Integer>(alphabet));
+		addition.A.add(new ArrayList<>(alphabet));
+		addition.A.add(new ArrayList<>(alphabet));
 		addition.A.add(alphabet);
 		addition.alphabetSize = alphabet.size() * alphabet.size() * alphabet.size();
 		int l = 0;
@@ -465,37 +465,37 @@ public class NumberSystem {
 			for(int j = 0 ; j < n;j++){
 				for(int i = 0; i < n;i++){
 					if(i+j == k){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(0);
 						addition.d.get(0).put(l,dest);
 					}
 					if(i+j+1 == k){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(1);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j-1 == k){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(2);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j == k+n){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(0);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i+j+1 == k+n){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(1);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i+j-1 == k+n){
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(2);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i == 0 && j == 0 && k == n-1) {
-						List<Integer> dest = new ArrayList<Integer>();
+						List<Integer> dest = new ArrayList<>();
 						dest.add(2);
 						addition.d.get(1).put(l, dest);
 					}
@@ -516,42 +516,42 @@ public class NumberSystem {
 	 * @throws Exception
 	 */
 	private void base_neg_n_less_than(int n) throws Exception{
-		List<Integer> alphabet = new ArrayList<Integer>();
+		List<Integer> alphabet = new ArrayList<>();
 		for(int i = 0 ; i < n;i++)alphabet.add(i);
 		lessThan = new Automaton();
 		lessThan.Q = 3;
 		lessThan.q0 = 0;
 		lessThan.O.add(0);lessThan.O.add(1);lessThan.O.add(0);
-		lessThan.d.add(new TreeMap<Integer,List<Integer>>());
-		lessThan.d.add(new TreeMap<Integer,List<Integer>>());
-		lessThan.d.add(new TreeMap<Integer,List<Integer>>());
+		lessThan.d.add(new TreeMap<>());
+		lessThan.d.add(new TreeMap<>());
+		lessThan.d.add(new TreeMap<>());
 		lessThan.NS.add(this);
 		lessThan.NS.add(this);
-		lessThan.A.add(new ArrayList<Integer>(alphabet));
+		lessThan.A.add(new ArrayList<>(alphabet));
 		lessThan.A.add(alphabet);
 		lessThan.alphabetSize = alphabet.size() * alphabet.size();
 		int l = 0;
 		for(int j = 0 ; j < n;j++){
 			for(int i = 0; i < n;i++){
 				if(i == j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(0);
 					lessThan.d.get(0).put(l,dest);
 				}
 				if(i < j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(1);
 					lessThan.d.get(0).put(l,dest);
 				}
 				if(j < i){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(2);
 					lessThan.d.get(0).put(l,dest);
 				}
-				List<Integer> dest_2 = new ArrayList<Integer>();
+				List<Integer> dest_2 = new ArrayList<>();
 				dest_2.add(2);
 				lessThan.d.get(1).put(l,dest_2);
-				List<Integer> dest_1 = new ArrayList<Integer>();
+				List<Integer> dest_1 = new ArrayList<>();
 				dest_1.add(1);
 				lessThan.d.get(2).put(l,dest_1);
 				l++;
@@ -571,7 +571,7 @@ public class NumberSystem {
 	 * @throws Exception
 	 */
 	private void base_n_base_change(int n) throws Exception {
-		List<Integer> alphabet = new ArrayList<Integer>();
+		List<Integer> alphabet = new ArrayList<>();
 		for (int i = 0; i < n; i++) alphabet.add(i);
 		baseChange = new Automaton();
 		baseChange.Q = 4;
@@ -580,10 +580,10 @@ public class NumberSystem {
 		baseChange.O.add(1);
 		baseChange.O.add(0);
 		baseChange.O.add(0);
-		baseChange.d.add(new TreeMap<Integer, List<Integer>>());
-		baseChange.d.add(new TreeMap<Integer, List<Integer>>());
-		baseChange.d.add(new TreeMap<Integer, List<Integer>>());
-		baseChange.d.add(new TreeMap<Integer, List<Integer>>());
+		baseChange.d.add(new TreeMap<>());
+		baseChange.d.add(new TreeMap<>());
+		baseChange.d.add(new TreeMap<>());
+		baseChange.d.add(new TreeMap<>());
 		if(is_msd) {
 			baseChange.NS.add(new NumberSystem("msd_"+n));
 			baseChange.NS.add(new NumberSystem("msd_neg_"+n));
@@ -591,39 +591,39 @@ public class NumberSystem {
 			baseChange.NS.add(new NumberSystem("lsd_"+n));
 			baseChange.NS.add(new NumberSystem("lsd_neg_"+n));
 		}
-		baseChange.A.add(new ArrayList<Integer>(alphabet));
+		baseChange.A.add(new ArrayList<>(alphabet));
 		baseChange.A.add(alphabet);
 		baseChange.alphabetSize = alphabet.size() * alphabet.size();
 		int l = 0;
 		for(int j = 0; j < n;j++){
 			for(int i = 0 ; i < n;i++){
 				if(i == 0 && j == 0){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(0);
 					baseChange.d.get(1).put(l,dest);
 				}
 				if(i == j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(1);
 					baseChange.d.get(0).put(l,dest);
 				}
 				if(i+1 == j){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(1);
 					baseChange.d.get(2).put(l,dest);
 				}
 				if(i+j == n){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(2);
 					baseChange.d.get(1).put(l,dest);
 				}
 				if(i+j == n-1){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(2);
 					baseChange.d.get(3).put(l,dest);
 				}
 				if(i == n-1 && j == 0){
-					List<Integer> dest = new ArrayList<Integer>();
+					List<Integer> dest = new ArrayList<>();
 					dest.add(3);
 					baseChange.d.get(2).put(l,dest);
 				}
@@ -1065,14 +1065,14 @@ public class NumberSystem {
 	}
 
 	private Automaton make_zero()throws Exception {
-		List<Integer> alph = new ArrayList<Integer>();
+		List<Integer> alph = new ArrayList<>();
 		alph.add(0);
 		alph.add(1);
 		Automaton M = new Automaton("0*",alph,this);
-		M.A = new ArrayList<List<Integer>>();
-		M.A.add(new ArrayList<Integer>(addition.A.get(0)));
+		M.A = new ArrayList<>();
+		M.A.add(new ArrayList<>(addition.A.get(0)));
 		M.alphabetSize = M.A.get(0).size();
-		M.encoder = new ArrayList<Integer>();
+		M.encoder = new ArrayList<>();
 		M.encoder.add(1);
 		M.canonize();
 		constantsDynamicTable.put(0, M);
@@ -1080,7 +1080,7 @@ public class NumberSystem {
 	}
 
 	private Automaton make_one() throws Exception {
-		List<Integer> alph = new ArrayList<Integer>();
+		List<Integer> alph = new ArrayList<>();
 		alph.add(0);
 		alph.add(1);
 		Automaton M = new Automaton("0*",alph,this);
@@ -1088,10 +1088,10 @@ public class NumberSystem {
 			M = new Automaton("0*1",alph,this);
 		else
 			M = new Automaton("10*",alph,this);
-		M.A = new ArrayList<List<Integer>>();
-		M.A.add(new ArrayList<Integer>(addition.A.get(0)));
+		M.A = new ArrayList<>();
+		M.A.add(new ArrayList<>(addition.A.get(0)));
 		M.alphabetSize = M.A.get(0).size();
-		M.encoder = new ArrayList<Integer>();
+		M.encoder = new ArrayList<>();
 		M.encoder.add(1);
 		M.canonize();
 		constantsDynamicTable.put(1, M);

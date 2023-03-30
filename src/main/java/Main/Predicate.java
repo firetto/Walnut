@@ -64,7 +64,7 @@ public class Predicate {
 	Matcher MATCHER_FOR_RIGHT_PARENTHESIS;
 	Matcher MATCHER_FOR_WHITESPACE;
 
-	static HashMap<String,NumberSystem> number_system_Hash = new HashMap<String,NumberSystem>();
+	static HashMap<String,NumberSystem> number_system_Hash = new HashMap<>();
 	public static HashMap<String,NumberSystem> get_number_system_Hash(){
 		return number_system_Hash;
 	}
@@ -126,7 +126,7 @@ public class Predicate {
 		String predicate,
 		int real_starting_position) throws Exception{
 		operator_Stack = new Stack<Operator>();
-		postOrder = new ArrayList<Token>();
+		postOrder = new ArrayList<>();
 		this.real_starting_position = real_starting_position;
 		this.predicate = predicate;
 		this.default_number_system = default_number_system;
@@ -136,7 +136,7 @@ public class Predicate {
 	}
 
 	private void tokenize_and_compute_post_order() throws Exception{
-		Stack<String> number_system_Stack = new Stack<String>();
+		Stack<String> number_system_Stack = new Stack<>();
 		number_system_Stack.push(default_number_system);
 		String current_number_system = default_number_system;
 		int index = 0;
@@ -252,7 +252,7 @@ public class Predicate {
 		String current_number_system = default_number_system;
 		while(!number_system_Stack.isEmpty()){
 			if(number_system_Stack.pop().equals("(")){
-				Stack<String> tmp = new Stack<String>();
+				Stack<String> tmp = new Stack<>();
 				while(!number_system_Stack.isEmpty()){
 					tmp.push(number_system_Stack.pop());
 					if(!tmp.peek().equals("(")){
@@ -297,7 +297,7 @@ public class Predicate {
 		Stack<Character> bracket_Stack = new Stack<Character>();
 		bracket_Stack.push('[');
 		int i = matcher.end();
-		List<Predicate> indices = new ArrayList<Predicate>();
+		List<Predicate> indices = new ArrayList<>();
 		StringBuffer buf = new StringBuffer();
 		int startingPosition = i;
 		while(i < predicate.length()){
@@ -343,7 +343,7 @@ public class Predicate {
 		Stack<Character> parenthesis_Stack = new Stack<Character>();
 		parenthesis_Stack.push('(');
 		int i = matcher.end();
-		List<Predicate> arguments = new ArrayList<Predicate>();
+		List<Predicate> arguments = new ArrayList<>();
 		StringBuffer buf = new StringBuffer();
 		int startingPosition = i;
 		while(i < predicate.length()){
@@ -411,7 +411,7 @@ public class Predicate {
 		Stack<Character> parenthesis_Stack = new Stack<Character>();
 		parenthesis_Stack.push('(');
 		int i = matcher.end();
-		List<String> arguments = new ArrayList<String>();
+		List<String> arguments = new ArrayList<>();
 		StringBuffer buf = new StringBuffer();
 		while(i < predicate.length()){
 			char ch = predicate.charAt(i);

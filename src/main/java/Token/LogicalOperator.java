@@ -109,7 +109,7 @@ public class LogicalOperator extends Operator{
 	private void actQuantifier(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
 		String stringValue = "("+op + " ";
 		Stack<Expression> temp = new Stack<Expression>();
-		List<Expression> operands = new ArrayList<Expression>();
+		List<Expression> operands = new ArrayList<>();
 		Automaton M = null;
 		for(int i = 0; i < getArity();i++){
 			temp.push(S.pop());
@@ -119,7 +119,7 @@ public class LogicalOperator extends Operator{
 		if(print){
 			System.out.println(preStep);
 		}
-		List<String> list_of_identifiers_to_quantify = new ArrayList<String>();
+		List<String> list_of_identifiers_to_quantify = new ArrayList<>();
 		for(int i = 0 ; i < getArity();i++){
 			operands.add(temp.pop());
 			if(i < getArity()-1){
@@ -138,10 +138,10 @@ public class LogicalOperator extends Operator{
 					throw new Exception("the last operand of "+op+" can only be of type " + Type.automaton);
 				M = operands.get(i).M;
 				if(op.equals("E")){
-					M.quantify(new HashSet<String>(list_of_identifiers_to_quantify),print,prefix+" ",log);
+					M.quantify(new HashSet<>(list_of_identifiers_to_quantify),print,prefix+" ",log);
 				} else if (op.equals("A")){
 					M.not(print,prefix+" ",log);
-					M.quantify(new HashSet<String>(list_of_identifiers_to_quantify),print,prefix+" ",log);
+					M.quantify(new HashSet<>(list_of_identifiers_to_quantify),print,prefix+" ",log);
 					M.not(print,prefix+" ",log);
 				} else {
 					M = M.removeLeadingZeroes(list_of_identifiers_to_quantify, print, prefix+" ", log);

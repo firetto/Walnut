@@ -90,7 +90,7 @@ public class ParseMethods {
 		int index = 0;
 		while(m.find(index)){
 			if(m.group(ALPHABET_SET) != null){
-				List<Integer> list = new ArrayList<Integer>();
+				List<Integer> list = new ArrayList<>();
 				parseList(m.group(ALPHABET_SET),list);
 				A.add(list);
 				bases.add(null);
@@ -199,13 +199,13 @@ public class ParseMethods {
 	}
 
 	public static TreeMap<Integer, List<Integer>> parseMorphism(String mapString) throws Exception {
-		TreeMap<Integer, List<Integer>> mapping = new TreeMap<Integer, List<Integer>>();
+		TreeMap<Integer, List<Integer>> mapping = new TreeMap<>();
 		
 		Matcher m1 = ParseMethods.PATTERN_FOR_MAPPING_IN_morphism_COMMAND.matcher(mapString);
 		while(m1.find()) {
 			String input = m1.group(1);
 			String imageString = m1.group(2);
-			List<Integer> image = new ArrayList<Integer>();
+			List<Integer> image = new ArrayList<>();
 
 			Matcher m2 = PATTERN_FOR_MAPPING_IMAGE_IN_morphism_COMMAND.matcher(imageString);
 			while(m2.find()) {

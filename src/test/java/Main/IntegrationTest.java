@@ -929,7 +929,7 @@ public class IntegrationTest {
 
 	void loadTestCases(String directoryAddress) throws Exception{
 		String command;
-		testCases = new ArrayList<TestCase>();
+		testCases = new ArrayList<>();
 		for(int i = 0 ; i < L.size();i++){
 			command = L.get(i);
 			Automaton M = null;

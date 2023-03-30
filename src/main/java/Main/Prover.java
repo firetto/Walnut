@@ -455,7 +455,7 @@ public class Prover {
 			throw new Exception("Invalid use of eval/def command.");
 		}
 
-		List<String> free_variables = new ArrayList<String>();
+		List<String> free_variables = new ArrayList<>();
 		if(m.group(ED_FREE_VARIABLES) != null) {
 			which_matrices_to_compute(m.group(ED_FREE_VARIABLES), free_variables);
 		}
@@ -517,8 +517,8 @@ public class Prover {
 		Matcher m = PATTERN_FOR_reg_COMMAND.matcher(s);
 		if(!m.find())throw new Exception("invalid use of reg command");
 		NumberSystem ns = null;
-		List<List<Integer>> alphabets = new ArrayList<List<Integer>>();
-		List<NumberSystem> numSys = new ArrayList<NumberSystem>();
+		List<List<Integer>> alphabets = new ArrayList<>();
+		List<NumberSystem> numSys = new ArrayList<>();
 		List<Integer> alphabet = null;
 		if(m.group(R_LIST_OF_ALPHABETS) == null) {
 			String base = "msd_2";
@@ -568,7 +568,7 @@ public class Prover {
 		Matcher m2 = PATTERN_FOR_AN_ALPHABET_VECTOR.matcher(baseexp);
 		// if we haven't had to replace any input vectors with unicode, we use the legacy method of constructing the automaton
 		while (m2.find()) {
-			List<Integer> L = new ArrayList<Integer>();
+			List<Integer> L = new ArrayList<>();
 			String alphabetVector = m2.group();
 			// needed to replace this string with the unicode mapping
 			String alphabetVectorCopy = alphabetVector;
@@ -639,8 +639,8 @@ public class Prover {
 		StringBuffer log = new StringBuffer();
 
 
-		List<String> automataNames = new ArrayList<String>();
-		List<Integer> outputs = new ArrayList<Integer>();
+		List<String> automataNames = new ArrayList<>();
+		List<Integer> outputs = new ArrayList<>();
 		int argumentCounter = 0;
 
 		Matcher m1 = PATTERN_FOR_AN_AUTOMATON_IN_combine_COMMAND.matcher(m.group(GROUP_COMBINE_AUTOMATA));
@@ -957,7 +957,7 @@ public class Prover {
 
 		String dotReg = "";
         int searchLength = 0;
-		List<String> accepted = new ArrayList<String>();
+		List<String> accepted = new ArrayList<>();
         while(true) {
             searchLength++;
             dotReg += ".";
@@ -1146,7 +1146,7 @@ public class Prover {
 	}
 
 	private static List<Integer> what_is_the_alphabet(String s){
-		List<Integer> L = new ArrayList<Integer>();
+		List<Integer> L = new ArrayList<>();
 		s = s.substring(1, s.length()-1); //truncation { and } from beginning and end
 		Matcher m = PATTERN_FOR_A_SINGLE_ELEMENT_OF_A_SET.matcher(s);
 		while(m.find()){
