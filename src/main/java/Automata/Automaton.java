@@ -196,12 +196,9 @@ public class Automaton {
     // number of final states
     public int num_finalstates;
 
-    // tails of transitions
-    Integer[] T;
+
     // labels of transitions
     Integer[] L;
-    // heads of transitions
-    Integer[] H;
 
     /* Adjacent transitions */
     int[] _A, _F;
@@ -228,7 +225,7 @@ public class Automaton {
     // we find that many
     public Integer maxNeeded;
 
-    void make_adjacent(Integer K[]) {
+    void make_adjacent(int K[]) {
         int q, t;
         for( q = 0; q <= num_states; ++q ) {
             _F[q] = 0;
@@ -257,7 +254,7 @@ public class Automaton {
         B.E[rr] = q; B.L[q] = rr++; }
     }
 
-    void rem_unreachable( Integer T[], Integer H[] ){
+    void rem_unreachable( int T[], int H[] ){
         make_adjacent( T ); int i, j;
         for( i = 0; i < rr; ++i ){
             for( j = _F[B.E[i]]; j < _F[B.E[i] + 1]; ++j ){
@@ -283,24 +280,32 @@ public class Automaton {
         num_transitions = 0;
         B = new Partition();
         C = new Partition();
-        ArrayList<Integer> _H = new ArrayList<>(),_L = new ArrayList<>(),_T= new ArrayList<>();
-        //System.out.println("-------------------------------------------");
+
+        // Pre-size the arrays. This is much more efficient than converting from ArrayLists
+        for(int q = 0; q != d.size();++q){
+            for(int l : d.get(q).keySet()) {
+                num_transitions += d.get(q).get(l).size();
+            }
+        }
+
+        // tails of transitions
+        int[] T = new int[num_transitions];
+        L = new Integer[num_transitions];
+        // heads of transitions
+        int[] H = new int[num_transitions];
+
+        int arrIndex = 0;
         for(int q = 0; q != d.size();++q){
             for(int l : d.get(q).keySet()) {
                 for(int p : d.get(q).get(l)) {
-                    num_transitions++;
-                    _H.add(p);
-                    _T.add(q);
-                    _L.add(l);
-                    //System.out.println(q + " -> " + p + " - " + l);
+                    H[arrIndex] = p;
+                    T[arrIndex] = q;
+                    L[arrIndex] = l;
+                    arrIndex++;
                 }
             }
         }
-        //System.out.println("-------------------------------------------");
-        T = new Integer[num_transitions];
-        L = new Integer[num_transitions];
-        H = new Integer[num_transitions];
-        _T.toArray(T); _L.toArray(L);_H.toArray(H);
+
         B.init( num_states );
         _A = new int[ num_transitions ]; _F = new int[ num_states+1 ];
 
