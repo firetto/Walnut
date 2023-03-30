@@ -1,0 +1,35 @@
+computing n23=10
+computed n23=10
+n23=10:5 states - 0ms
+ computing i=12
+ computed i=12
+ i=12:5 states - 0ms
+  computing n23=10&i=12
+   computing &:5 states - 5 states
+   Computing cross product:5 states - 5 states
+   computed cross product:25 states - 0ms
+    Minimizing: 25 states.
+     Determinizing: 25 states
+     Determinized: 25 states - 0ms
+    Minimized:5 states - 0ms.
+   computed &:5 states - 0ms
+  computed n23=10&i=12
+  (n23=10&i=12):5 states - 0ms
+   computing quantifier E
+    quantifying:5 states
+     Minimizing: 5 states.
+      Determinizing: 5 states
+      Determinized: 5 states - 0ms
+     Minimized:5 states - 0ms.
+    quantified:5 states - 0ms
+    fixing leading zeros:5 states
+     Determinizing: 5 states
+     Determinized: 5 states - 0ms
+     Minimizing: 5 states.
+      Determinizing: 5 states
+      Determinized: 5 states - 0ms
+     Minimized:5 states - 0ms.
+    fixed leading zeros:5 states - 0ms
+   computed quantifier (E i (n23=10&i=12))
+   (E i (n23=10&i=12)):5 states - 0ms
+Total computation time: 0ms.

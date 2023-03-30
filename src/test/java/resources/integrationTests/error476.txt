@@ -1,0 +1,2 @@
+constants cannot be divided by variables
+	: char at 6

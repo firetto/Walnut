@@ -1,0 +1,2 @@
+in computing cross product of two automaton, variables with the same label must have the same alphabet
+	: char at 8
