@@ -3447,7 +3447,7 @@ public class Automaton {
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
-        List<Int2IntMap> new_d = internalMinimize(newMemD, initial_state, print, prefix, log, timeBefore);
+        List<Int2IntMap> new_d = internalDeterminize(newMemD, initial_state, print, prefix, log, timeBefore);
 
         // We set this to null to save peak memory
         // It's recomputed in minimize_valmari
@@ -3462,7 +3462,9 @@ public class Automaton {
         return new_d;
     }
 
-    private List<Int2IntMap> internalMinimize(List<Int2IntMap> newMemD, IntSet initial_state, boolean print, String prefix, StringBuilder log, long timeBefore) {
+    private List<Int2IntMap> internalDeterminize(
+            List<Int2IntMap> newMemD, IntSet initial_state,
+            boolean print, String prefix, StringBuilder log, long timeBefore) {
         int number_of_states = 0,current_state = 0;
         Object2IntMap<IntSet> statesHash = new Object2IntOpenHashMap<>();
         List<IntSet> statesList = new ArrayList<>();
@@ -3488,6 +3490,7 @@ public class Automaton {
 
             IntSet state = statesList.get(current_state);
             new_d.add(new Int2IntOpenHashMap());
+            Int2IntMap currentStateMap = new_d.get(current_state);
             for(int in = 0;in!=alphabetSize;++in){
                 IntOpenHashSet dest = new IntOpenHashSet();
                 for(int q:state){
@@ -3517,32 +3520,16 @@ public class Automaton {
                         new_dValue = number_of_states;
                         number_of_states++;
                     }
-                    new_d.get(current_state).put(in, new_dValue);
+                    currentStateMap.put(in, new_dValue);
                 }
             }
             current_state++;
         }
+        d = null;
         Q = number_of_states;
         q0 = 0;
         O = calculateNewStateOutput(O, statesList);
         return new_d;
-    }
-
-    private static List<TreeMap<Integer,IntList>> convertTransitionFunctionMap(
-            final List<Int2IntMap> tempTransitionFunction) {
-        final List<TreeMap<Integer,IntList>> transitionFunction = new ArrayList<>(tempTransitionFunction.size());
-        for (int q=0;q<tempTransitionFunction.size();q++){
-            TreeMap<Integer, IntList> transitionEntry = new TreeMap<>();
-            transitionFunction.add(transitionEntry);
-            final Int2IntMap iMap = tempTransitionFunction.get(q);
-            for (int in: iMap.keySet()) {
-                IntList newList = new IntArrayList(1);
-                newList.add(iMap.get(in));
-                transitionEntry.put(in, newList);
-            }
-        }
-
-        return transitionFunction;
     }
 
 
