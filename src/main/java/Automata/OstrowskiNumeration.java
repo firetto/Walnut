@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
  * The class OstrowskiNumeration includes functionality to produce an adder automaton based on only the<
@@ -80,7 +82,7 @@ public class OstrowskiNumeration {
     // Maps to keep track of states and transitions.
     TreeMap<NodeState, Integer> index_of_node;
     TreeMap<Integer, NodeState> node_of_index;
-    TreeMap<Integer, TreeMap<Integer, List<Integer>>> state_transitions;
+    TreeMap<Integer, TreeMap<Integer, IntList>> state_transitions;
 
     int total_nodes;
 
@@ -475,7 +477,7 @@ public class OstrowskiNumeration {
             index_of_node.put(node, this.total_nodes);
             node_of_index.put(this.total_nodes, node);
             for (int inp = 0; inp < a; ++inp) {
-                this.state_transitions.get(0).putIfAbsent(inp, new ArrayList<>());
+                this.state_transitions.get(0).putIfAbsent(inp, new IntArrayList());
                 this.state_transitions.get(0).get(inp).add(this.total_nodes);
             }
 
@@ -485,7 +487,7 @@ public class OstrowskiNumeration {
             node = new NodeState(1, i, i);
             index_of_node.put(node, this.total_nodes);
             node_of_index.put(this.total_nodes, node);
-            this.state_transitions.get(0).putIfAbsent(a, new ArrayList<>());
+            this.state_transitions.get(0).putIfAbsent(a, new IntArrayList());
             this.state_transitions.get(0).get(a).add(this.total_nodes);
             queue.add(this.total_nodes);
             ++this.total_nodes;
@@ -519,7 +521,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<>());
+                            .putIfAbsent(inp, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -530,7 +532,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<>());
+                            .putIfAbsent(inp, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -545,7 +547,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<>());
+                            .putIfAbsent(a, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -556,7 +558,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<>());
+                            .putIfAbsent(a, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -582,7 +584,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<>());
+                            .putIfAbsent(inp, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -593,7 +595,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(inp, new ArrayList<>());
+                            .putIfAbsent(inp, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
@@ -608,7 +610,7 @@ public class OstrowskiNumeration {
                     if (index_of_node.containsKey(node)) {
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<>());
+                            .putIfAbsent(a, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -619,7 +621,7 @@ public class OstrowskiNumeration {
                         queue.add(this.total_nodes);
                         this.state_transitions
                             .get(cur_node_idx)
-                            .putIfAbsent(a, new ArrayList<>());
+                            .putIfAbsent(a, new IntArrayList());
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
@@ -632,7 +634,7 @@ public class OstrowskiNumeration {
     }
 
     private void addTransitions(
-        TreeMap<Integer, List<Integer>> current_state_transitions,
+        TreeMap<Integer, IntList> current_state_transitions,
         int diff,
         int encodedDestination) {
         for (int x = 0; x <= d_max; ++x) {
@@ -640,7 +642,7 @@ public class OstrowskiNumeration {
                 for (int z = 0; z <= d_max; ++z) {
                     if (z - x - y == diff) {
                         int input = inputEncode(x, y, z);
-                        current_state_transitions.putIfAbsent(input, new ArrayList<>());
+                        current_state_transitions.putIfAbsent(input, new IntArrayList());
                         current_state_transitions.get(input).add(encodedDestination);
                     }
                 }

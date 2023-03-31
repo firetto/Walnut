@@ -869,7 +869,7 @@ public class IntegrationTest {
 			Assertions.assertTrue(actual.result == null || expected.result != null);
 			Assertions.assertTrue(actual.result != null || expected.result == null);
 			// We don't use assertEquals here, since equals has been overridden in the Automaton class
-			Assertions.assertTrue(actual.result.equals(expected.result), "Results are not equal");
+			Assertions.assertTrue(actual.result.equals(expected.result), "Actual result: " + actual.result + " does not equal expected result: " + expected.result);
 		}
 		catch(Exception e){
 			Assertions.assertEquals(e.getMessage(), expected.error);

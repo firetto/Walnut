@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 /**
  * The class NumberSystem represents a number system.<br>
  * A number system consists of the following four: <br>
@@ -287,7 +290,7 @@ public class NumberSystem {
 		equality.alphabetSize = alphabet.size()*alphabet.size();
 		equality.d.add(new TreeMap<>());
 		for(int i = 0 ; i < alphabet.size(); i++) {
-			List<Integer> dest = new ArrayList<>();
+			IntList dest = new IntArrayList();
 			dest.add(0);
 			equality.d.get(0).put(i * alphabet.size() + i, dest);
 		}
@@ -315,16 +318,16 @@ public class NumberSystem {
 		for(int i = 0; i < alphabet.size();i++){
 			for(int j = 0 ; j < alphabet.size();j++){
 				if(i == j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(0);
 					lessThan.d.get(0).put(j*alphabet.size()+i,dest);
 				}
 				if(i < j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(1);
 					lessThan.d.get(0).put(j*alphabet.size()+i, dest);
 				}
-				List<Integer> dest = new ArrayList<>();
+				IntList dest = new IntArrayList();
 				dest.add(1);
 				lessThan.d.get(1).put(i*alphabet.size()+j, dest);
 			}
@@ -408,22 +411,22 @@ public class NumberSystem {
 			for(int j = 0 ; j < n;j++){
 				for(int i = 0; i < n;i++){
 					if(i+j == k){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(0);
 						addition.d.get(0).put(l,dest);
 					}
 					if(i+j+1 == k){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(1);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j+1 == k+n){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(1);
 						addition.d.get(1).put(l, dest);
 					}
 					if(i+j == k+n){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(0);
 						addition.d.get(1).put(l, dest);
 					}
@@ -465,37 +468,37 @@ public class NumberSystem {
 			for(int j = 0 ; j < n;j++){
 				for(int i = 0; i < n;i++){
 					if(i+j == k){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(0);
 						addition.d.get(0).put(l,dest);
 					}
 					if(i+j+1 == k){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(1);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j-1 == k){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(2);
 						addition.d.get(0).put(l, dest);
 					}
 					if(i+j == k+n){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(0);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i+j+1 == k+n){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(1);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i+j-1 == k+n){
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(2);
 						addition.d.get(2).put(l, dest);
 					}
 					if(i == 0 && j == 0 && k == n-1) {
-						List<Integer> dest = new ArrayList<>();
+						IntList dest = new IntArrayList();
 						dest.add(2);
 						addition.d.get(1).put(l, dest);
 					}
@@ -534,24 +537,24 @@ public class NumberSystem {
 		for(int j = 0 ; j < n;j++){
 			for(int i = 0; i < n;i++){
 				if(i == j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(0);
 					lessThan.d.get(0).put(l,dest);
 				}
 				if(i < j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(1);
 					lessThan.d.get(0).put(l,dest);
 				}
 				if(j < i){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(2);
 					lessThan.d.get(0).put(l,dest);
 				}
-				List<Integer> dest_2 = new ArrayList<>();
+				IntList dest_2 = new IntArrayList();
 				dest_2.add(2);
 				lessThan.d.get(1).put(l,dest_2);
-				List<Integer> dest_1 = new ArrayList<>();
+				IntList dest_1 = new IntArrayList();
 				dest_1.add(1);
 				lessThan.d.get(2).put(l,dest_1);
 				l++;
@@ -598,32 +601,32 @@ public class NumberSystem {
 		for(int j = 0; j < n;j++){
 			for(int i = 0 ; i < n;i++){
 				if(i == 0 && j == 0){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(0);
 					baseChange.d.get(1).put(l,dest);
 				}
 				if(i == j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(1);
 					baseChange.d.get(0).put(l,dest);
 				}
 				if(i+1 == j){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(1);
 					baseChange.d.get(2).put(l,dest);
 				}
 				if(i+j == n){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(2);
 					baseChange.d.get(1).put(l,dest);
 				}
 				if(i+j == n-1){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(2);
 					baseChange.d.get(3).put(l,dest);
 				}
 				if(i == n-1 && j == 0){
-					List<Integer> dest = new ArrayList<>();
+					IntList dest = new IntArrayList();
 					dest.add(3);
 					baseChange.d.get(2).put(l,dest);
 				}

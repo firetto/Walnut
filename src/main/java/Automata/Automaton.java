@@ -46,8 +46,7 @@ import java.util.Iterator;
 import dk.brics.automaton.RegExp;
 import dk.brics.automaton.State;
 import dk.brics.automaton.Transition;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.*;
 
 /**
  * This class can represent different types of automaton: deterministic/non-deterministic and/or automata with output/automata without output.<bf>
@@ -149,7 +148,7 @@ public class Automaton {
     /**State Outputs. In case of DFA/NFA accepting states have a nonzero integer as their output.
      * Rejecting states have output 0.
      * Example: O = [-1,2,...] then state 0 and 1 have outputs -1 and 2 respectively.*/
-    public List<Integer> O;
+    public IntList O;
 
     /**We would like to give label to inputs. For example we might want to call the first input by a and so on.
      * As an example when label = ["a","b","c"], the label of the first, second, and third inputs are a, b, and c respectively.
@@ -181,7 +180,7 @@ public class Automaton {
      * Recall that (0,-1) represents 0 in mixed-radix base (1,2) and alphabet A. We have this mixed-radix base (1,2) stored as encoder in
      * our program, so for more information on how we compute it read the information on List<Integer> encoder field.
      */
-    public List<TreeMap<Integer,List<Integer>>> d;
+    public List<TreeMap<Integer,IntList>> d;
 
     /**
      * Valmari fields
@@ -200,7 +199,7 @@ public class Automaton {
 
 
     // labels of transitions
-    Integer[] L;
+    int[] L;
 
     /* Adjacent transitions */
     int[] _A, _F;
@@ -209,23 +208,23 @@ public class Automaton {
     public int combineIndex;
 
     // for use in the combine command, allows crossProduct to determine what to set outputs to
-    public List<Integer> combineOutputs;
+    public IntList combineOutputs;
 
     // for use in inf command, keeps track of which states we have visited
-    public HashSet<Integer> visited;
+    public IntSet visited;
 
     // for use in inf command, records where we started our depth first search to find a cycle
-    public Integer started;
+    public int started;
 
     // for use in test command, to gather a list of all accepted values of a specified length in lexicographic order
     public List<String> accepted;
 
     // for use in test command, tells us what length of solutions we are currently searching for in this subautomaton
-    public Integer searchLength;
+    public int searchLength;
 
     // for use in test command, tells us the number of accepted strings remaining to be added to the main list, so we can end early if
     // we find that many
-    public Integer maxNeeded;
+    public int maxNeeded;
 
     void make_adjacent(int K[]) {
         int q, t;
@@ -292,7 +291,7 @@ public class Automaton {
 
         // tails of transitions
         int[] T = new int[num_transitions];
-        L = new Integer[num_transitions];
+        L = new int[num_transitions];
         // heads of transitions
         int[] H = new int[num_transitions];
 
@@ -313,7 +312,7 @@ public class Automaton {
 
           //reach( q0 ); rem_unreachable( T, H );
         for( int q = 0; q < num_states; ++q ){
-            if(O.get(q) != 0){
+            if(O.getInt(q) != 0){
                 reach( q );
             }
         }
@@ -368,7 +367,7 @@ public class Automaton {
         /* Turn the result back to Walnut format for Automata */
         Q = B.z;
         q0 = B.S[q0];
-        O = new ArrayList<>(Q);
+        O = new IntArrayList(Q);
         for( int q = 0; q < B.z; ++q ){
             if( B.F[q] < num_finalstates ){
                 O.add(1);
@@ -388,7 +387,7 @@ public class Automaton {
                 int l = L[t];
                 int p = B.S[H[t]];
                 if(!d.get(q).containsKey(l)){
-                    d.get(q).put(l, new ArrayList<>());
+                    d.get(q).put(l, new IntArrayList());
                 }
                 d.get(q).get(l).add(p);
             }
@@ -411,7 +410,7 @@ public class Automaton {
         NS = new ArrayList<>();
         encoder = null;
 
-        O = new ArrayList<>();
+        O = new IntArrayList();
 
         d = new ArrayList<>();
         label = new ArrayList<>();
@@ -482,12 +481,12 @@ public class Automaton {
             State state = setOfStates.get(q);
             if(state.isAccept())O.add(1);
             else O.add(0);
-            TreeMap<Integer,List<Integer>> currentStatesTransitions = new TreeMap<>();
+            TreeMap<Integer,IntList> currentStatesTransitions = new TreeMap<>();
             d.add(currentStatesTransitions);
             for(Transition t: state.getTransitions()){
                 for(char a = UtilityMethods.max(t.getMin(),'0');a <= UtilityMethods.min(t.getMax(),'9');a++){
                     if(alphabet.contains((int)(a-'0'))){
-                        List<Integer> dest = new ArrayList<>();
+                        IntList dest = new IntArrayList();
                         dest.add(setOfStates.indexOf(t.getDest()));
                         currentStatesTransitions.put(alphabet.indexOf((int)(a-'0')), dest);
                     }
@@ -529,7 +528,7 @@ public class Automaton {
         this.setThisAutomatonToRepresent(M);
         // We added 128 to the encoding of every input vector before to avoid reserved characters, now we subtract it again
         // to get back the standard encoding
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0; q < Q;q++)new_d.add(new TreeMap<>());
         for(int q = 0 ; q < Q;q++){
             for(int x:d.get(q).keySet()){
@@ -609,12 +608,12 @@ public class Automaton {
 
             int[] pair = new int[2];
             List<Integer> input = new ArrayList<>();
-            List<Integer> dest = new ArrayList<>();
+            IntList dest = new IntArrayList();
             int currentState = -1;
             int currentOutput;
-            TreeMap<Integer,List<Integer>> currentStateTransitions = new TreeMap<>();
+            TreeMap<Integer,IntList> currentStateTransitions = new TreeMap<>();
             TreeMap<Integer,Integer> state_output = new TreeMap<>();
-            TreeMap<Integer,TreeMap<Integer,List<Integer>>> state_transition =
+            TreeMap<Integer,TreeMap<Integer,IntList>> state_transition =
                 new TreeMap<>();
             /**
              * This will hold all states that are destination of some transition.
@@ -660,7 +659,7 @@ public class Automaton {
                     }
 
                     input = new ArrayList<>();
-                    dest = new ArrayList<>();
+                    dest = new IntArrayList();
                 }
                 else{
                     in.close();
@@ -715,7 +714,7 @@ public class Automaton {
             M.O.add(O.get(q));
             M.d.add(new TreeMap<>());
             for(int x:d.get(q).keySet()){
-                M.d.get(q).put(x, new ArrayList<>(d.get(q).get(x)));
+                M.d.get(q).put(x, new IntArrayList(d.get(q).get(x)));
             }
         }
         return M;
@@ -836,16 +835,16 @@ public class Automaton {
         List<Integer> permutation = new ArrayList<>();
         for(List<Integer> i:allInputs)
             permutation.add(encode(i));
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0; q < Q;q++){
-            TreeMap<Integer,List<Integer>> newTransitionFunction = new TreeMap<>();
+            TreeMap<Integer,IntList> newTransitionFunction = new TreeMap<>();
             new_d.add(newTransitionFunction);
             for(int x:d.get(q).keySet()){
                 int y = permutation.get(x);
                 if(newTransitionFunction.containsKey(y))
                     UtilityMethods.addAllWithoutRepetition(newTransitionFunction.get(y),d.get(q).get(x));
                 else
-                    newTransitionFunction.put(y,new ArrayList<>(d.get(q).get(x)));
+                    newTransitionFunction.put(y,new IntArrayList(d.get(q).get(x)));
             }
         }
         d = new_d;
@@ -880,7 +879,7 @@ public class Automaton {
         }
 
         // We change the direction of transitions first.
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0; q < Q;q++)new_d.add(new TreeMap<>());
         for(int q = 0 ; q < Q;q++){
             for(int x:d.get(q).keySet()){
@@ -888,7 +887,7 @@ public class Automaton {
                     if(new_d.get(dest).containsKey(x))
                         new_d.get(dest).get(x).add(q);
                     else{
-                        List<Integer> destinationSet = new ArrayList<>();
+                        IntList destinationSet = new IntArrayList();
                         destinationSet.add(q);
                         new_d.get(dest).put(x, destinationSet);
                     }
@@ -981,9 +980,9 @@ public class Automaton {
 
             Map<Integer, Integer> newInitState = new HashMap<>();
 
-            List<Integer> newO = new ArrayList<>();
+            IntList newO = new IntArrayList();
 
-            List<TreeMap<Integer,List<Integer>>> newD = new ArrayList<>();
+            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
 
             for (int i = 0; i < Q; i++) {
                 newInitState.put(i, O.get(i));
@@ -1022,7 +1021,7 @@ public class Automaton {
                     }
 
                     // set up the transition.
-                    newD.get(newD.size() - 1).put(l, Arrays.asList(newStatesHash.get(toState)));
+                    newD.get(newD.size() - 1).put(l, new IntArrayList(newStatesHash.get(toState)));
                 }
             }
 
@@ -1209,7 +1208,7 @@ public class Automaton {
                 System.out.println(msg);
             }
 
-            List<TreeMap<Integer,List<Integer>>> newD = new ArrayList<>();
+            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
 
             // need to generate the new morphism, which is h^{exponent}, where h is the original morphism.
 
@@ -1251,7 +1250,7 @@ public class Automaton {
                     int toState = prevMorphism.get(q).get(di);
 
                     // set up transition
-                    newD.get(q).put(di, Arrays.asList(toState));
+                    newD.get(q).put(di, new IntArrayList(toState));
                 }
             }
 
@@ -1343,9 +1342,9 @@ public class Automaton {
 
             HashMap<StateTuple, Integer> newStatesHash = new HashMap<>();
 
-            List<TreeMap<Integer,List<Integer>>> newD = new ArrayList<>();
+            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
 
-            List<Integer> newO = new ArrayList<>();
+            IntList newO = new IntArrayList();
 
             StateTuple initState = new StateTuple(q0, Arrays.asList());
 
@@ -1402,7 +1401,7 @@ public class Automaton {
                         newStatesHash.put(toState, newStates.size() - 1);
                     }
 
-                    newD.get(newD.size() - 1).put(di, Arrays.asList(newStatesHash.get(toState)));
+                    newD.get(newD.size() - 1).put(di, new IntArrayList(newStatesHash.get(toState)));
 
                 }
             }
@@ -1583,7 +1582,7 @@ public class Automaton {
             // state in the other Automaton.
             int p = s.get(0);
             int q = s.get(1);
-            TreeMap<Integer,List<Integer>> thisStatesTransitions = new TreeMap<>();
+            TreeMap<Integer,IntList> thisStatesTransitions = new TreeMap<>();
             N.d.add(thisStatesTransitions);
             switch(op){
                 case "&":
@@ -1644,7 +1643,7 @@ public class Automaton {
                 for(int y:M.d.get(q).keySet()){
                     int z = allInputsOfN.get(x*M.alphabetSize+y);
                     if(z != -1){
-                        List<Integer> dest = new ArrayList<>();
+                        IntList dest = new IntArrayList();
                         thisStatesTransitions.put(z, dest);
                         for(int dest1 : d.get(p).get(x)) {
                             for(int dest2 : M.d.get(q).get(y)) {
@@ -1928,7 +1927,7 @@ public class Automaton {
         return X.equals(Y);
     }
 
-    public Automaton combine(List<String> automataNames, List<Integer> outputs, boolean print, String prefix, StringBuffer log) throws Exception {
+    public Automaton combine(List<String> automataNames, IntList outputs, boolean print, String prefix, StringBuffer log) throws Exception {
         Queue<Automaton> subautomata =  new LinkedList<>();
 		for (String name : automataNames) {
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+name+".txt");
@@ -1937,7 +1936,7 @@ public class Automaton {
         return combine(subautomata, outputs, print, prefix, log);
     }
 
-    public Automaton combine(Queue<Automaton> subautomata, List<Integer> outputs, boolean print, String prefix, StringBuffer log) throws Exception {
+    public Automaton combine(Queue<Automaton> subautomata, IntList outputs, boolean print, String prefix, StringBuffer log) throws Exception {
         Automaton first = this.clone();
 
         // In an automaton without output, every non-zero output value represents an accepting state
@@ -1987,7 +1986,7 @@ public class Automaton {
      * which accepts if the output in our automaton is 0,1 or 2 respectively.
      * @throws Exception
      */
-    public List<Automaton> uncombine(List<Integer> outputs, boolean print, String prefix, StringBuffer log) throws Exception {
+    public List<Automaton> uncombine(IntList outputs, boolean print, String prefix, StringBuffer log) throws Exception {
         List<Automaton> automata = new ArrayList<>();
         for (Integer output : outputs) {
             Automaton M = clone();
@@ -2011,7 +2010,7 @@ public class Automaton {
      * @throws Exception
      */
     public Automaton minimizeWithOutput(boolean print, String prefix, StringBuffer log) throws Exception {
-        List<Integer> outputs = new ArrayList<>(O);
+        IntList outputs = new IntArrayList(O);
         UtilityMethods.removeDuplicates(outputs);
         List<Automaton> subautomata = uncombine(outputs,print,prefix,log);
         for (Automaton subautomaton : subautomata) {
@@ -2050,7 +2049,7 @@ public class Automaton {
     // trailing zeroes removed according to whether it was msd or lsd
     public String infinite() throws Exception {
         for (int i=0; i<Q; i++) {
-            visited = new HashSet<>();
+            visited = new IntOpenHashSet();
             started = i;
             String cycle = infiniteHelper(i, "");
             // once a cycle is detected, we compute a prefix leading to state i and a suffix from state i to an accepting state
@@ -2449,7 +2448,7 @@ public class Automaton {
         for(int q = 0 ; q < Q;q++){
             for(int x = 0; x < alphabetSize;x++){
                 if(!d.get(q).containsKey(x)){
-                    List<Integer> nullState = new ArrayList<>();
+                    IntList nullState = new IntArrayList();
                     nullState.add(Q);
                     d.get(q).put(x, nullState);
                     totalized = false;
@@ -2461,7 +2460,7 @@ public class Automaton {
             Q++;
             d.add(new TreeMap<>());
             for(int x = 0;x < alphabetSize;x++){
-                List<Integer> nullState = new ArrayList<>();
+                IntList nullState = new IntArrayList();
                 nullState.add(Q-1);
                 d.get(Q-1).put(x, nullState);
             }
@@ -2493,7 +2492,7 @@ public class Automaton {
         for(int q = 0 ; q < Q;q++){
             for(int x = 0; x < alphabetSize;x++){
                 if(!d.get(q).containsKey(x)){
-                    List<Integer> nullState = new ArrayList<>();
+                    IntList nullState = new IntArrayList();
                     nullState.add(Q);
                     d.get(q).put(x, nullState);
                     totalized = false;
@@ -2516,7 +2515,7 @@ public class Automaton {
             Q++;
             d.add(new TreeMap<>());
             for(int x = 0; x < alphabetSize; x++){
-                List<Integer> nullState = new ArrayList<>();
+                IntList nullState = new IntArrayList();
                 nullState.add(Q-1);
                 d.get(Q-1).put(x, nullState);
             }
@@ -2933,7 +2932,7 @@ public class Automaton {
         }
         int[][] M = new int[Q][Q];
         for(int p = 0 ; p < Q;++p){
-            TreeMap<Integer, List<Integer>> transitions_p = d.get(p);
+            TreeMap<Integer, IntList> transitions_p = d.get(p);
             for(int v : encoded_values){
                 if(transitions_p.containsKey(v)){
                     List<Integer> dest = transitions_p.get(v);
@@ -3104,18 +3103,18 @@ public class Automaton {
         List<State> setOfStates = new ArrayList<>(M.getStates());
         Q = setOfStates.size();
         q0 = setOfStates.indexOf(M.getInitialState());
-        O = new ArrayList<>();
+        O = new IntArrayList();
         d = new ArrayList<>();
         canonized = false;
         for(int q = 0 ; q < Q;q++){
             State state = setOfStates.get(q);
             if(state.isAccept())O.add(1);
             else O.add(0);
-            TreeMap<Integer,List<Integer>> currentStatesTransitions = new TreeMap<>();
+            TreeMap<Integer,IntList> currentStatesTransitions = new TreeMap<>();
             d.add(currentStatesTransitions);
             for(Transition t: state.getTransitions()){
                 for(char a = t.getMin();a <= t.getMax();a++){
-                    List<Integer> dest = new ArrayList<>();
+                    IntList dest = new IntArrayList();
                     dest.add(setOfStates.indexOf(t.getDest()));
                     currentStatesTransitions.put((int)a, dest);
                 }
@@ -3142,7 +3141,7 @@ public class Automaton {
 
         /**map holds the permutation we need to apply to Q. In other words if map = {(0,3),(1,10),...} then
         *we have got to send Q[0] to Q[3] and Q[1] to Q[10]*/
-        HashMap<Integer,Integer> map = new HashMap<>();
+        Int2IntMap map = new Int2IntOpenHashMap();
         map.put(q0,0);
         int i = 1;
         while(!state_queue.isEmpty()) {
@@ -3159,17 +3158,17 @@ public class Automaton {
 
         q0 = map.get(q0);
         int newQ = map.size();
-        List<Integer> newO = new ArrayList<>();
+        IntList newO = new IntArrayList();
         for(int q = 0 ; q < newQ;q++) {
             newO.add(0);
         }
         for(int q = 0; q < Q;q++) {
             if(map.containsKey(q)) {
-                newO.set(map.get(q),O.get(q));
+                newO.set(map.get(q),O.getInt(q));
             }
         }
 
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0 ; q < newQ;q++) {
             new_d.add(null);
         }
@@ -3185,7 +3184,7 @@ public class Automaton {
         d = new_d;
         for(int q = 0 ; q < Q;q++) {
             for(int x:d.get(q).keySet()) {
-                List<Integer> newDestination = new ArrayList<>();
+                IntList newDestination = new IntArrayList();
                 for(int p:d.get(q).get(x)) {
                     if(map.containsKey(p)) {
                         newDestination.add(map.get(p));
@@ -3268,7 +3267,7 @@ public class Automaton {
         NS = UtilityMethods.permute(NS,label_permutation);
 
         for(int q = 0; q < Q;q++){
-            TreeMap<Integer,List<Integer>> permuted_d = new TreeMap<>();
+            TreeMap<Integer,IntList> permuted_d = new TreeMap<>();
             for(int x:d.get(q).keySet())
                 permuted_d.put(encoded_input_permutation[x], d.get(q).get(x));
             d.set(q,permuted_d);
@@ -3289,7 +3288,7 @@ public class Automaton {
      * @return
      */
     private List<Integer> decode(int n){
-        List<Integer> l = new ArrayList<>();
+        List<Integer> l = new ArrayList<>(A.size());
         for(int i = 0 ; i < A.size();i++){
             l.add(A.get(i).get(n % A.get(i).size()));
             n = n / A.get(i).size();
@@ -3450,7 +3449,7 @@ public class Automaton {
         statesHash.put(initial_state, 0);
         number_of_states++;
 
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
 
         while(current_state < number_of_states){
 
@@ -3480,7 +3479,7 @@ public class Automaton {
                 }
                 if(!dest.isEmpty()){
                     if(statesHash.containsKey(dest)){
-                        List<Integer> destination = new ArrayList<>();
+                        IntList destination = new IntArrayList();
                         destination.add(statesHash.get(dest));
                         new_d.get(current_state).put(in, destination);
                     }
@@ -3488,7 +3487,7 @@ public class Automaton {
                         statesList.add(dest);
                         number_of_states++;
                         statesHash.put(dest,number_of_states-1);
-                        List<Integer> destination = new ArrayList<>();
+                        IntList destination = new IntArrayList();
                         destination.add(number_of_states-1);
                         new_d.get(current_state).put(in, destination);
                     }
@@ -3500,7 +3499,7 @@ public class Automaton {
         d = new_d;
         Q = number_of_states;
         q0 = 0;
-        List<Integer> newO = new ArrayList<>();
+        IntList newO = new IntArrayList();
         for(IntSet state:statesList){
             boolean flag = false;
             for(int q:state){
@@ -3536,7 +3535,7 @@ public class Automaton {
         for(List<Integer> i:A)ZERO.add(i.indexOf(0));
         int zero = encode(ZERO);
         if(!d.get(q0).containsKey(zero)){
-            d.get(q0).put(zero,new ArrayList<>());
+            d.get(q0).put(zero,new IntArrayList());
         }
         if(!d.get(q0).get(zero).contains(q0)){
             d.get(q0).get(zero).add(q0);
@@ -3660,14 +3659,14 @@ public class Automaton {
         M.alphabetSize = alphabetSize;
         M = M.clone();
 
-        List<Integer> dest = new ArrayList<>();
+        IntList dest = new IntArrayList();
         dest.add(1);
         for(int i = 0; i < alphabetSize; i++) {
             List<Integer> list = decode(i);
             if (list.get(n) != 0) {
-                M.d.get(0).put(i, new ArrayList<>(dest));
+                M.d.get(0).put(i, new IntArrayList(dest));
             }
-            M.d.get(1).put(i, new ArrayList<>(dest));
+            M.d.get(1).put(i, new IntArrayList(dest));
         }
         if (!NS.get(n).isMsd()) {
             M.reverse(print, prefix, log, false);
@@ -3788,9 +3787,9 @@ public class Automaton {
         List<Integer> map = new ArrayList<>();
         for(int n = 0 ; n < alphabetSize;n++)
             map.add(mapToReducedEncodedInput(n, I, newEncoder, newAlphabet));
-        List<TreeMap<Integer,List<Integer>>> new_d = new ArrayList<>();
+        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0 ; q < Q;q++){
-            TreeMap<Integer,List<Integer>> currentStatesTransition = new TreeMap<>();
+            TreeMap<Integer,IntList> currentStatesTransition = new TreeMap<>();
             new_d.add(currentStatesTransition);
             for(int n:d.get(q).keySet()){
                 int m = map.get(n);
@@ -3798,7 +3797,7 @@ public class Automaton {
                     if(currentStatesTransition.containsKey(m))
                         currentStatesTransition.get(m).addAll(d.get(q).get(n));
                     else
-                        currentStatesTransition.put(m, new ArrayList<>(d.get(q).get(n)));
+                        currentStatesTransition.put(m, new IntArrayList(d.get(q).get(n)));
                 }
             }
         }
@@ -3826,7 +3825,7 @@ public class Automaton {
         return encode(y, newAlphabet, newEncoder);
     }
 
-    public List<TreeMap<Integer,List<Integer>>> get_transition_function() {
+    public List<TreeMap<Integer,IntList>> get_transition_function() {
         return d;
     }
     /*private boolean connected(int p,int q,int i){

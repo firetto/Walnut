@@ -38,6 +38,8 @@ import Automata.Morphism;
 import Automata.NumberSystem;
 import Automata.OstrowskiNumeration;
 import Automata.Transducer;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
  * This class contains the main method. It is responsible to get a command from user
@@ -640,7 +642,7 @@ public class Prover {
 
 
 		List<String> automataNames = new ArrayList<>();
-		List<Integer> outputs = new ArrayList<>();
+		IntList outputs = new IntArrayList();
 		int argumentCounter = 0;
 
 		Matcher m1 = PATTERN_FOR_AN_AUTOMATON_IN_combine_COMMAND.matcher(m.group(GROUP_COMBINE_AUTOMATA));
@@ -793,7 +795,7 @@ public class Prover {
 		if(!hasInput || inputs.size() == 0) {
 			throw new Exception("Cannot split without inputs.");
 		}
-		List<Integer> outputs = new ArrayList<>(M.O);
+		IntList outputs = new IntArrayList(M.O);
 		UtilityMethods.removeDuplicates(outputs);
 		List<Automaton> subautomata = M.uncombine(outputs,printSteps,prefix,log);
 		for (int i = 0; i < subautomata.size(); i++) {
@@ -849,7 +851,7 @@ public class Prover {
 		if(!hasInput || inputs.size() == 0) {
 			throw new Exception("Cannot split without inputs.");
 		}
-		List<Integer> outputs = new ArrayList<>(M.O);
+		IntList outputs = new IntArrayList(M.O);
 		UtilityMethods.removeDuplicates(outputs);
 		List<Automaton> subautomata = M.uncombine(outputs,printSteps,prefix,log);
 		for (int i = 0; i < subautomata.size(); i++) {

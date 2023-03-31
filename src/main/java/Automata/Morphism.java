@@ -19,6 +19,8 @@
 package Automata;
 
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -113,11 +115,11 @@ public class Morphism {
             }
         }
         promotion.Q = maxEntry+1;
-        promotion.O = IntStream.rangeClosed(0, promotion.Q-1).boxed().collect(Collectors.toList());
+        promotion.O = IntArrayList.toList(IntStream.rangeClosed(0, promotion.Q -1));
         for (int x : mapping.keySet()) {
-            TreeMap<Integer, List<Integer>> xmap = new TreeMap<>();
+            TreeMap<Integer, IntList> xmap = new TreeMap<>();
             for (int i=0; i<mapping.get(x).size(); i++) {
-                xmap.put(i, Collections.singletonList(mapping.get(x).get(i)));
+                xmap.put(i, new IntArrayList(mapping.get(x).get(i)));
             }
             promotion.d.add(xmap);
         }
