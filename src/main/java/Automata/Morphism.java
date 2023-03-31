@@ -119,7 +119,9 @@ public class Morphism {
         for (int x : mapping.keySet()) {
             TreeMap<Integer, IntList> xmap = new TreeMap<>();
             for (int i=0; i<mapping.get(x).size(); i++) {
-                xmap.put(i, new IntArrayList(mapping.get(x).get(i)));
+                IntList newList = new IntArrayList();
+                newList.add(mapping.get(x).get(i));
+                xmap.put(i, newList);
             }
             promotion.d.add(xmap);
         }
