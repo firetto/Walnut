@@ -3448,10 +3448,8 @@ public class Automaton {
             System.out.println(msg);
         }
         List<Int2IntMap> new_d = internalDeterminize(newMemD, initial_state, print, prefix, log, timeBefore);
-
-        // We set this to null to save peak memory
-        // It's recomputed in minimize_valmari
-        d = null;
+        // NOTE: d is now null!
+        // It's recomputed in minimize_valmari via the memory-efficient newMemD
 
         long timeAfter = System.currentTimeMillis();
         if(print){
@@ -3526,6 +3524,8 @@ public class Automaton {
             current_state++;
         }
         d = null;
+        // NOTE: We set d to null to save peak memory
+        // It's recomputed in minimize_valmari via the memory-efficient newMemD
         Q = number_of_states;
         q0 = 0;
         O = calculateNewStateOutput(O, statesList);
