@@ -284,7 +284,7 @@ public class Transducer extends Automaton {
      * @return The transduced Automaton after applying this Transducer to M.
      * @throws Exception
      */
-    public Automaton transduceMsdDeterministic(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
+    public Automaton transduceMsdDeterministic(Automaton M, boolean print, String prefix, StringBuilder log) throws Exception {
 
         try {
             long timeBefore = System.currentTimeMillis();
@@ -598,7 +598,7 @@ public class Transducer extends Automaton {
      * @return The transduced Automaton after applying this Transducer to M.
      * @throws Exception
      */
-    public Automaton transduceNonDeterministic(Automaton M, boolean print, String prefix, StringBuffer log) throws Exception {
+    public Automaton transduceNonDeterministic(Automaton M, boolean print, String prefix, StringBuilder log) throws Exception {
 
         // check that the input automaton only has one input!
         if (M.NS.size() != 1) {

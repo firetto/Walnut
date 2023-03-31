@@ -245,7 +245,7 @@ public class UtilityMethods {
 	 */
 	public static int parseInt(String s){
 		String[] part = s.split("\\s+");
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		for(String x:part){
 			b.append(x);
 		}

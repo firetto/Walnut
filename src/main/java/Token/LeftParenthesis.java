@@ -22,7 +22,7 @@ import java.util.Stack;
 
 
 public class LeftParenthesis extends Operator{
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{}
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{}
 	public LeftParenthesis(int position){
 		this.op = "(";
 		setPositionInPredicate(position);

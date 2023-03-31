@@ -33,14 +33,14 @@ public class Computer {
 	String predicate_string;
 	Expression result;
 	Automaton D;
-	StringBuffer log;
-	StringBuffer log_details;
+	StringBuilder log;
+	StringBuilder log_details;
 	String mpl;
 	boolean printSteps;
 	boolean printDetails;
 	public Computer(String predicate, boolean printSteps, boolean printDetails) throws Exception {
-		this.log = new StringBuffer();
-		this.log_details = new StringBuffer();
+		this.log = new StringBuilder();
+		this.log_details = new StringBuilder();
 		mpl = "";
 		this.predicate_string = predicate;
 		predicate_object = new Predicate(predicate);

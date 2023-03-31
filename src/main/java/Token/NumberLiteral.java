@@ -35,7 +35,7 @@ public class NumberLiteral extends Token {
 	public String toString(){
 		return Integer.toString(value);
 	}
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		S.push(new Expression(Integer.toString(value), value,base));
 	}
 }

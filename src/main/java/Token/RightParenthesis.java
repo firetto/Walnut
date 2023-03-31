@@ -24,7 +24,7 @@ import java.util.Stack;
 
 public class RightParenthesis extends Operator{
 	
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{}
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{}
 	public RightParenthesis(int position){
 		setPositionInPredicate(position);
 	}

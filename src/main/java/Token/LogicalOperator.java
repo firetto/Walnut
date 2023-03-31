@@ -49,7 +49,7 @@ public class LogicalOperator extends Operator{
 		setPositionInPredicate(position);
 	}
 
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		if(S.size() < getArity())throw new Exception("operator " + op + " requires " + getArity()+ " operands");
 		
 		if(this.isNegation(op) || op.equals("`")){
@@ -84,7 +84,7 @@ public class LogicalOperator extends Operator{
 		throw new Exception("operator " + op + " cannot be applied to operands "+a +" and "+b +" of types " + a.getType() +" and " + b.getType() + " respectively");
 			
 	}
-	private void actNegationOrReverse(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	private void actNegationOrReverse(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		Expression a = S.pop();
 		if(a.is(Type.automaton)){
 			String preStep = prefix + "computing "+op + a;
@@ -106,7 +106,7 @@ public class LogicalOperator extends Operator{
 		}
 		throw new Exception("operator " + op + " cannot be applied to the operand "+a +" of type " + a.getType());
 	}
-	private void actQuantifier(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	private void actQuantifier(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		String stringValue = "("+op + " ";
 		Stack<Expression> temp = new Stack<Expression>();
 		List<Expression> operands = new ArrayList<>();

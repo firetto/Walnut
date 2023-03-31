@@ -933,9 +933,9 @@ public class IntegrationTest {
 		for(int i = 0 ; i < L.size();i++){
 			command = L.get(i);
 			Automaton M = null;
-			StringBuffer error = new StringBuffer();
-			StringBuffer details = new StringBuffer();
-			StringBuffer mpl = new StringBuffer();
+			StringBuilder error = new StringBuilder();
+			StringBuilder details = new StringBuilder();
+			StringBuilder mpl = new StringBuilder();
 			if(new File(directoryAddress+"automaton"+Integer.toString(i)+".txt").isFile()){
 				M = new Automaton(directoryAddress+"automaton"+i+".txt");
 			}

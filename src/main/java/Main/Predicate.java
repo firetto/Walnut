@@ -298,7 +298,7 @@ public class Predicate {
 		bracket_Stack.push('[');
 		int i = matcher.end();
 		List<Predicate> indices = new ArrayList<>();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		int startingPosition = i;
 		while(i < predicate.length()){
 			char ch = predicate.charAt(i);
@@ -307,7 +307,7 @@ public class Predicate {
 				bracket_Stack.pop();
 				if(bracket_Stack.isEmpty()){
 					indices.add(new Predicate(default_number_system, buf.toString(), real_starting_position + startingPosition));
-					buf = new StringBuffer();
+					buf = new StringBuilder();
 					if(m_leftBracket.find(i+1)){
 						bracket_Stack.push('[');
 						i = m_leftBracket.end();
@@ -344,7 +344,7 @@ public class Predicate {
 		parenthesis_Stack.push('(');
 		int i = matcher.end();
 		List<Predicate> arguments = new ArrayList<>();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		int startingPosition = i;
 		while(i < predicate.length()){
 			char ch = predicate.charAt(i);
@@ -363,7 +363,7 @@ public class Predicate {
 			else if(ch == ','){
 				if(parenthesis_Stack.size()!=1)throw new Exception("unbalanced parenthesis: char at " + (real_starting_position + i));
 				arguments.add(new Predicate(default_number_system, buf.toString(), real_starting_position + startingPosition));
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 				startingPosition = i+1;
 			}
 			else{
@@ -412,7 +412,7 @@ public class Predicate {
 		parenthesis_Stack.push('(');
 		int i = matcher.end();
 		List<String> arguments = new ArrayList<>();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		while(i < predicate.length()){
 			char ch = predicate.charAt(i);
 			if(ch == '#' || ch == '$'){
@@ -430,7 +430,7 @@ public class Predicate {
 			else if(ch == ','){
 				if(parenthesis_Stack.size()!=1)throw new Exception("unbalanced parenthesis: char at " + (real_starting_position + i));
 				arguments.add(buf.toString());
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 			}
 			else{
 				buf.append(ch);

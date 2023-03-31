@@ -43,7 +43,7 @@ public class ArithmeticOperator extends Operator{
 	public String toString(){
 		return op+"_"+number_system;
 	}
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		if(S.size() < getArity())throw new Exception("operator " + op + " requires " + getArity()+ " operands");
 		Expression b = S.pop();
 		if(!(b.is(Type.alphabetLetter) || b.is(Type.word) || b.is(Type.arithmetic) || b.is(Type.variable) || b.is(Type.numberLiteral)))

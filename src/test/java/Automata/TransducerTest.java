@@ -7,7 +7,7 @@ class TransducerTest {
     @Test
     void testTransducerRUNSUM2_T() throws Exception {
         // Adapting an integration test to a unit test
-        StringBuffer log = new StringBuffer();
+        StringBuilder log = new StringBuilder();
 
         Automaton M =  new Automaton("Word Automata Library/T.txt");
         Assertions.assertEquals(2, M.Q);

@@ -40,7 +40,7 @@ public abstract class Token {
 		postOrder.add(this);
 	}
 
-	public abstract void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception;
+	public abstract void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception;
 	public boolean isOperator(){
 		return false;
 	}

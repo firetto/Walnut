@@ -33,7 +33,7 @@ public class Variable extends Token{
 	public String toString(){
 		return name;
 	}
-	public void act(Stack<Expression> S,boolean print,String prefix,StringBuffer log) throws Exception{
+	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
 		S.push(new Expression(name));
 	}
 }

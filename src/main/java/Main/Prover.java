@@ -244,7 +244,7 @@ public class Prover {
 	 */
 	public static boolean readBuffer(BufferedReader in, boolean console){
 		try{
-		    StringBuffer buffer = new StringBuffer();
+		    StringBuilder buffer = new StringBuilder();
 			while(true) {
 				if (console) {
 					System.out.print(UtilityMethods.PROMPT);
@@ -288,7 +288,7 @@ public class Prover {
 		    			System.err.flush();
 		    		}
 
-		    		buffer = new StringBuffer();
+		    		buffer = new StringBuilder();
 		    	} else {
 		    		buffer.append(s);
 		    	}
@@ -638,7 +638,7 @@ public class Prover {
 		boolean printDetails = m.group(GROUP_COMBINE_END).equals("::");
 
 		String prefix = new String();
-		StringBuffer log = new StringBuffer();
+		StringBuilder log = new StringBuilder();
 
 
 		List<String> automataNames = new ArrayList<>();
@@ -782,7 +782,7 @@ public class Prover {
 		boolean printSteps = m.group(GROUP_SPLIT_END).equals(":");
 		boolean printDetails = m.group(GROUP_SPLIT_END).equals("::");
 		String prefix = new String();
-		StringBuffer log = new StringBuffer();
+		StringBuilder log = new StringBuilder();
 
 		Matcher m1 = PATTERN_FOR_INPUT_IN_split_COMMAND.matcher(m.group(GROUP_SPLIT_INPUT));
 		List<String> inputs = new ArrayList<>();
@@ -838,7 +838,7 @@ public class Prover {
 		boolean printSteps = m.group(GROUP_RSPLIT_END).equals(":");
 		boolean printDetails = m.group(GROUP_RSPLIT_END).equals("::");
 		String prefix = new String();
-		StringBuffer log = new StringBuffer();
+		StringBuilder log = new StringBuilder();
 
 		Matcher m1 = PATTERN_FOR_INPUT_IN_rsplit_COMMAND.matcher(m.group(GROUP_RSPLIT_INPUT));
 		List<String> inputs = new ArrayList<>();
@@ -880,7 +880,7 @@ public class Prover {
 		boolean printSteps = m.group(GROUP_JOIN_END).equals(":");
 		boolean printDetails = m.group(GROUP_JOIN_END).equals("::");
 		String prefix = new String();
-		StringBuffer log = new StringBuffer();
+		StringBuilder log = new StringBuilder();
 
 		Matcher m1 = PATTERN_FOR_AN_AUTOMATON_IN_join_COMMAND.matcher(m.group(GROUP_JOIN_AUTOMATA));
 		List<Automaton> subautomata = new ArrayList<>();
@@ -1013,7 +1013,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_TRANSDUCE_END).equals(":");
 			boolean printDetails = m.group(GROUP_TRANSDUCE_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			Transducer T = new Transducer(UtilityMethods.get_address_for_transducer_library()+m.group(GROUP_TRANSDUCE_TRANSDUCER)+".txt");
 			String library = UtilityMethods.get_address_for_words_library();
@@ -1044,7 +1044,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_REVERSE_END).equals(":");
 			boolean printDetails = m.group(GROUP_REVERSE_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			Automaton M = new Automaton(UtilityMethods.get_address_for_words_library() +
 					m.group(GROUP_REVERSE_OLD_NAME) + ".txt");
@@ -1071,7 +1071,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_MINIMIZE_END).equals(":");
 			boolean printDetails = m.group(GROUP_MINIMIZE_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			Automaton M = new Automaton(UtilityMethods.get_address_for_words_library() +
 					m.group(GROUP_MINIMIZE_OLD_NAME) + ".txt");
@@ -1106,7 +1106,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_CONVERT_END).equals(":");
 			boolean printDetails = m.group(GROUP_CONVERT_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			String library = UtilityMethods.get_address_for_words_library();
 			if (m.group(GROUP_CONVERT_OLD_DOLLAR_SIGN).equals("$")) {
