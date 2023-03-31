@@ -379,6 +379,7 @@ public class Automaton {
         d = new ArrayList<>(Q);
         for( int q = 0; q < Q;++q){
             d.add(new TreeMap<>());
+            Int2ObjectRBTreeMap
         }
         for( int t = 0; t < num_transitions; ++t ){
             if( B.L[T[t]] == B.F[B.S[T[t]]] ){
@@ -3492,10 +3493,9 @@ public class Automaton {
                 IntOpenHashSet dest = new IntOpenHashSet();
                 for(int q:state){
                     if(newMemD == null) {
-                        if (d.get(q).containsKey(in)) {
-                            for (int p : d.get(q).get(in)) {
-                                dest.add(p);
-                            }
+                        IntList values = d.get(q).get(in);
+                        if (values != null) {
+                            dest.addAll(values);
                         }
                     } else {
                         Int2IntMap iMap = newMemD.get(q);
