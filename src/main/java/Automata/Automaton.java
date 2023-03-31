@@ -47,6 +47,8 @@ import dk.brics.automaton.RegExp;
 import dk.brics.automaton.State;
 import dk.brics.automaton.Transition;
 import it.unimi.dsi.fastutil.ints.*;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 /**
  * This class can represent different types of automaton: deterministic/non-deterministic and/or automata with output/automata without output.<bf>
@@ -273,20 +275,18 @@ public class Automaton {
     }
 
     /* Minimization algorithm */
-    void minimize_valmari(boolean print, String prefix,StringBuffer log) throws Exception{
+    void minimize_valmari(List<Int2IntMap> newMemD, boolean print, String prefix,StringBuffer log) throws Exception{
         IntSet qqq = new IntOpenHashSet();
         qqq.add(q0);
-        subsetConstruction(qqq,print,prefix,log);
+        newMemD = subsetConstruction(newMemD, qqq,print,prefix,log);
         num_states = Q;
         num_transitions = 0;
         B = new Partition();
         C = new Partition();
 
         // Pre-size the arrays. This is much more efficient than converting from ArrayLists
-        for(int q = 0; q != d.size();++q){
-            for(int l : d.get(q).keySet()) {
-                num_transitions += d.get(q).get(l).size();
-            }
+        for(int q = 0; q != newMemD.size();++q){
+            num_transitions += newMemD.get(q).keySet().size();
         }
 
         // tails of transitions
@@ -296,14 +296,13 @@ public class Automaton {
         int[] H = new int[num_transitions];
 
         int arrIndex = 0;
-        for(int q = 0; q != d.size();++q){
-            for(int l : d.get(q).keySet()) {
-                for(int p : d.get(q).get(l)) {
-                    H[arrIndex] = p;
-                    T[arrIndex] = q;
-                    L[arrIndex] = l;
-                    arrIndex++;
-                }
+        for(int q = 0; q != newMemD.size();++q){
+            for(int l : newMemD.get(q).keySet()) {
+                int p = newMemD.get(q).get(l);
+                H[arrIndex] = p;
+                T[arrIndex] = q;
+                L[arrIndex] = l;
+                arrIndex++;
             }
         }
 
@@ -837,18 +836,18 @@ public class Automaton {
             permutation.add(encode(i));
         List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
         for(int q = 0; q < Q;q++){
-            TreeMap<Integer,IntList> newTransitionFunction = new TreeMap<>();
-            new_d.add(newTransitionFunction);
+            TreeMap<Integer,IntList> newMemDransitionFunction = new TreeMap<>();
+            new_d.add(newMemDransitionFunction);
             for(int x:d.get(q).keySet()){
                 int y = permutation.get(x);
-                if(newTransitionFunction.containsKey(y))
-                    UtilityMethods.addAllWithoutRepetition(newTransitionFunction.get(y),d.get(q).get(x));
+                if(newMemDransitionFunction.containsKey(y))
+                    UtilityMethods.addAllWithoutRepetition(newMemDransitionFunction.get(y),d.get(q).get(x));
                 else
-                    newTransitionFunction.put(y,new IntArrayList(d.get(q).get(x)));
+                    newMemDransitionFunction.put(y,new IntArrayList(d.get(q).get(x)));
             }
         }
         d = new_d;
-        minimize(print,prefix +" ",log);
+        minimize(null, print,prefix +" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
             String msg = prefix + "quantified:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
@@ -905,9 +904,9 @@ public class Automaton {
         }
         O.set(q0, 1);/**initial state becomes the final state.*/
 
-        subsetConstruction(setOfFinalStates,print,prefix+" ",log);
+        List<Int2IntMap> newMemD = subsetConstruction(null, setOfFinalStates,print,prefix+" ",log);
 
-        minimize(print,prefix+" ",log);
+        minimize(newMemD, print,prefix+" ",log);
 
         // flip the number system from msd to lsd and vice versa.
         if (reverseMsd) {
@@ -1713,7 +1712,7 @@ public class Automaton {
         }
 
         Automaton N = crossProduct(M,"&",print,prefix,log);
-        N.minimize(print,prefix+" ",log);
+        N.minimize(null, print,prefix+" ",log);
 
         long timeAfter = System.currentTimeMillis();
         if(print){
@@ -1748,7 +1747,7 @@ public class Automaton {
         M.totalize(print,prefix+" ",log);
         Automaton N = crossProduct(M,"|",print,prefix,log);
 
-        N.minimize(print,prefix +" ",log);
+        N.minimize(null, print,prefix +" ",log);
         N.applyAllRepresentations();
 
         long timeAfter = System.currentTimeMillis();
@@ -1795,7 +1794,7 @@ public class Automaton {
         totalize(print,prefix+" ",log);
         M.totalize(print,prefix+" ",log);
         Automaton N = crossProduct(M,"^",print,prefix + " ", log);
-        N.minimize(print,prefix+" ",log);
+        N.minimize(null, print,prefix+" ",log);
         N.applyAllRepresentations();
 
         long timeAfter = System.currentTimeMillis();
@@ -1831,7 +1830,7 @@ public class Automaton {
         totalize(print,prefix+" ",log);
         M.totalize(print,prefix+" ",log);
         Automaton N = crossProduct(M,"=>",print,prefix+" ",log);
-        N.minimize(print,prefix+" ",log);
+        N.minimize(null, print,prefix+" ",log);
         N.applyAllRepresentations();
 
         long timeAfter = System.currentTimeMillis();
@@ -1876,7 +1875,7 @@ public class Automaton {
         totalize(print,prefix+" ",log);
         M.totalize(print,prefix+" ",log);
         Automaton N = crossProduct(M,"<=>",print,prefix+" ",log);
-        N.minimize(print,prefix+" ",log);
+        N.minimize(null, print,prefix+" ",log);
         N.applyAllRepresentations();
 
         long timeAfter = System.currentTimeMillis();
@@ -1910,7 +1909,7 @@ public class Automaton {
         for(int q = 0 ; q < Q;q++)
             O.set(q, O.get(q) != 0 ? 0 : 1 );
 
-        minimize(print,prefix+" ",log);
+        minimize(null, print,prefix+" ",log);
         applyAllRepresentations();
 
         long timeAfter = System.currentTimeMillis();
@@ -2020,7 +2019,7 @@ public class Automaton {
         UtilityMethods.removeDuplicates(outputs);
         List<Automaton> subautomata = uncombine(outputs,print,prefix,log);
         for (Automaton subautomaton : subautomata) {
-            subautomaton.minimize(print, prefix, log);
+            subautomaton.minimize(null, print, prefix, log);
         }
         Automaton N = subautomata.remove(0);
         List<String> label = new ArrayList<>(N.label); // We keep the old labels, since they are replaced in the combine
@@ -2675,7 +2674,7 @@ public class Automaton {
             System.out.println(msg);
         }
         Automaton M = crossProduct(W,operator,print,prefix+" ",log);
-        M.minimize(print,prefix+" ",log);
+        M.minimize(null, print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
             String msg = prefix + "compared ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms";
@@ -2723,7 +2722,7 @@ public class Automaton {
                 break;
             }
         }
-        minimize(print,prefix+" ",log);
+        minimize(null, print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
             String msg = prefix + "compared ("+operator+ ") against "+o+":" + Q + " states - "+(timeAfter-timeBefore)+"ms";
@@ -3023,7 +3022,7 @@ public class Automaton {
      * We can choose to do Valmari or Hopcroft.
      * @throws Exception
      */
-    public void minimize(boolean print, String prefix, StringBuffer log) throws Exception {
+    public void minimize(List<Int2IntMap> newMemD, boolean print, String prefix, StringBuffer log) throws Exception {
         long timeBefore = System.currentTimeMillis();
         if(print) {
             String msg = prefix + "Minimizing: " + Q + " states.";
@@ -3031,7 +3030,7 @@ public class Automaton {
             log.append(msg + UtilityMethods.newLine());
         }
 
-        minimize_valmari(print, prefix + " ", log);
+        minimize_valmari(newMemD, print, prefix + " ", log);
         //minimize_hopcroft();
 
         long timeAfter = System.currentTimeMillis();
@@ -3441,21 +3440,37 @@ public class Automaton {
         return to_dk_bricks_automaton().isEmpty();
     }
 
-    private void subsetConstruction(IntSet initial_state,boolean print, String prefix, StringBuffer log)throws Exception{
+    private List<Int2IntMap> subsetConstruction(List<Int2IntMap> newMemD, IntSet initial_state,boolean print, String prefix, StringBuffer log)throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "Determinizing: " + Q + " states";
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
+        List<Int2IntMap> new_d = internalMinimize(newMemD, initial_state, print, prefix, log, timeBefore);
+
+        // We set this to null to save peak memory
+        // It's recomputed in minimize_valmari
+        d = null;
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+        return new_d;
+    }
+
+    private List<Int2IntMap> internalMinimize(List<Int2IntMap> newMemD, IntSet initial_state, boolean print, String prefix, StringBuffer log, long timeBefore) {
         int number_of_states = 0,current_state = 0;
-        Map<IntSet,Integer> statesHash = new HashMap<>();
+        Object2IntMap<IntSet> statesHash = new Object2IntOpenHashMap<>();
         List<IntSet> statesList = new ArrayList<>();
         statesList.add(initial_state);
         statesHash.put(initial_state, 0);
         number_of_states++;
 
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
+        List<Int2IntMap> new_d = new ArrayList<>();
 
         while(current_state < number_of_states){
 
@@ -3465,51 +3480,77 @@ public class Automaton {
                 if (statesSoFar == 1e2 || statesSoFar == 1e3 || statesSoFar % 1e4 == 0) {
                     String msg = prefix + "  Progress: Added " + statesSoFar + " states - "
                             + (number_of_states-statesSoFar) + " states left in queue - "
-                            + number_of_states + " reachable states - " + (timeAfter-timeBefore)+"ms";
+                            + number_of_states + " reachable states - " + (timeAfter- timeBefore)+"ms";
                     log.append(msg + UtilityMethods.newLine());
                     System.out.println(msg);
                 }
             }
 
             IntSet state = statesList.get(current_state);
-            new_d.add(new TreeMap<>());
-            IntSet dest;
+            new_d.add(new Int2IntOpenHashMap());
             for(int in = 0;in!=alphabetSize;++in){
-                dest = new IntOpenHashSet();
+                IntOpenHashSet dest = new IntOpenHashSet();
                 for(int q:state){
-                    if(d.get(q).containsKey(in)) {
-                        for(int p:d.get(q).get(in)) {
-                            dest.add(p);
+                    if(newMemD == null) {
+                        if (d.get(q).containsKey(in)) {
+                            for (int p : d.get(q).get(in)) {
+                                dest.add(p);
+                            }
+                        }
+                    } else {
+                        Int2IntMap iMap = newMemD.get(q);
+                        if (iMap.containsKey(in)) {
+                            dest.add(iMap.get(in));
                         }
                     }
                 }
                 if(!dest.isEmpty()){
+                    int new_dValue;
                     if(statesHash.containsKey(dest)){
-                        IntList destination = new IntArrayList();
-                        destination.add(statesHash.get(dest));
-                        new_d.get(current_state).put(in, destination);
+                        new_dValue = statesHash.getInt(dest);
                     }
                     else{
+                        dest.trim();
                         statesList.add(dest);
                         number_of_states++;
                         statesHash.put(dest,number_of_states-1);
-                        IntList destination = new IntArrayList();
-                        destination.add(number_of_states-1);
-                        new_d.get(current_state).put(in, destination);
+                        new_dValue = number_of_states-1;
                     }
+                    new_d.get(current_state).put(in, new_dValue);
                 }
             }
             current_state++;
         }
-
-        d = new_d;
         Q = number_of_states;
         q0 = 0;
+        O = calculateNewStateOutput(O, statesList);
+        return new_d;
+    }
+
+    private static List<TreeMap<Integer,IntList>> convertTransitionFunctionMap(
+            final List<Int2IntMap> tempTransitionFunction) {
+        final List<TreeMap<Integer,IntList>> transitionFunction = new ArrayList<>(tempTransitionFunction.size());
+        for (int q=0;q<tempTransitionFunction.size();q++){
+            TreeMap<Integer, IntList> transitionEntry = new TreeMap<>();
+            transitionFunction.add(transitionEntry);
+            final Int2IntMap iMap = tempTransitionFunction.get(q);
+            for (int in: iMap.keySet()) {
+                IntList newList = new IntArrayList(1);
+                newList.add(iMap.get(in));
+                transitionEntry.put(in, newList);
+            }
+        }
+
+        return transitionFunction;
+    }
+
+
+    private static IntList calculateNewStateOutput(IntList O, List<IntSet> statesList) {
         IntList newO = new IntArrayList();
-        for(IntSet state:statesList){
+        for(IntSet state: statesList){
             boolean flag = false;
             for(int q:state){
-                if(O.get(q)!=0){
+                if(O.getInt(q)!=0){
                     newO.add(1);
                     flag=true;
                     break;
@@ -3519,13 +3560,7 @@ public class Automaton {
                 newO.add(0);
             }
         }
-        O = newO;
-        long timeAfter = System.currentTimeMillis();
-        if(print){
-            String msg = prefix + "Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
-        }
+        return newO;
     }
 
     private void fixLeadingZerosProblem(boolean print, String prefix,StringBuffer log)throws Exception{
@@ -3548,8 +3583,8 @@ public class Automaton {
         }
 
         IntSet initial_state = zeroReachableStates();
-        subsetConstruction(initial_state,print,prefix+" ",log);
-        minimize(print, prefix+" ", log);
+        List<Int2IntMap> newMemD = subsetConstruction(null, initial_state,print,prefix+" ",log);
+        minimize(newMemD, print, prefix+" ", log);
         long timeAfter = System.currentTimeMillis();
         if(print){
             String msg = prefix + "fixed leading zeros:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
@@ -3579,7 +3614,7 @@ public class Automaton {
             }*/
         }
 
-        minimize(print,prefix+" ",log);
+        minimize(null, print,prefix+" ",log);
 
         long timeAfter = System.currentTimeMillis();
         if(print){

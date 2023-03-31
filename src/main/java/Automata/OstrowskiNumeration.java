@@ -178,7 +178,7 @@ public class OstrowskiNumeration {
             repr.d.add(this.state_transitions.get(q));
         }
 
-        repr.minimize(false, "", null);
+        repr.minimize(null,false, "", null);
         repr.canonize();
 
         boolean zeroStateNeeded =
@@ -237,7 +237,7 @@ public class OstrowskiNumeration {
             adder.d.add(this.state_transitions.get(q));
         }
 
-        adder.minimize(false, "", null);
+        adder.minimize(null, false, "", null);
 
         // We need to canonize and remove the first state.
         // The automaton will work with this state as well, but it is useless. This happens
