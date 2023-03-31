@@ -3446,7 +3446,7 @@ public class Automaton {
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
-        List<Int2IntMap> new_d = internalDeterminize(newMemD, initial_state, print, prefix, log, timeBefore);
+        List<Int2IntMap> new_d = internalSubsetConstruction(newMemD, initial_state, print, prefix, log, timeBefore);
         // NOTE: d is now null!
         // It's recomputed in minimize_valmari via the memory-efficient newMemD
 
@@ -3459,7 +3459,7 @@ public class Automaton {
         return new_d;
     }
 
-    private List<Int2IntMap> internalDeterminize(
+    private List<Int2IntMap> internalSubsetConstruction(
             List<Int2IntMap> newMemD, IntSet initial_state,
             boolean print, String prefix, StringBuilder log, long timeBefore) {
         int number_of_states = 0,current_state = 0;
