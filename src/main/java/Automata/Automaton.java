@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1591,56 +1590,56 @@ public class Automaton {
             N.d.add(thisStatesTransitions);
             switch(op){
                 case "&":
-                    N.O.add((O.get(p) != 0 && M.O.get(q) != 0) ? 1 : 0);
+                    N.O.add((O.getInt(p) != 0 && M.O.getInt(q) != 0) ? 1 : 0);
                     break;
                 case "|":
-                    N.O.add((O.get(p) != 0 || M.O.get(q) != 0) ? 1 : 0);
+                    N.O.add((O.getInt(p) != 0 || M.O.getInt(q) != 0) ? 1 : 0);
                     break;
                 case "^":
-                    N.O.add(((O.get(p) != 0 && M.O.get(q) == 0)||(O.get(p) == 0 && M.O.get(q) != 0)) ? 1 : 0);
+                    N.O.add(((O.getInt(p) != 0 && M.O.getInt(q) == 0)||(O.getInt(p) == 0 && M.O.getInt(q) != 0)) ? 1 : 0);
                     break;
                 case "=>":
-                    N.O.add((O.get(p) == 0 || M.O.get(q) != 0) ? 1 : 0);
+                    N.O.add((O.getInt(p) == 0 || M.O.getInt(q) != 0) ? 1 : 0);
                     break;
                 case "<=>":
-                    N.O.add(((O.get(p) == 0 && M.O.get(q) == 0) || (O.get(p) != 0 && M.O.get(q) != 0)) ? 1 : 0);
+                    N.O.add(((O.getInt(p) == 0 && M.O.getInt(q) == 0) || (O.getInt(p) != 0 && M.O.getInt(q) != 0)) ? 1 : 0);
                     break;
                 case "<":
-                    N.O.add((O.get(p) < M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) < M.O.getInt(q)) ? 1 : 0);
                     break;
                 case ">":
-                    N.O.add((O.get(p) > M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) > M.O.getInt(q)) ? 1 : 0);
                     break;
                 case "=":
-                    N.O.add((O.get(p) == M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) == M.O.getInt(q)) ? 1 : 0);
                     break;
                 case "!=":
-                    N.O.add((O.get(p) != M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) != M.O.getInt(q)) ? 1 : 0);
                     break;
                 case "<=":
-                    N.O.add((O.get(p) <= M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) <= M.O.getInt(q)) ? 1 : 0);
                     break;
                 case ">=":
-                    N.O.add((O.get(p) >= M.O.get(q)) ? 1 : 0);
+                    N.O.add((O.getInt(p) >= M.O.getInt(q)) ? 1 : 0);
                     break;
                 case "+":
-                    N.O.add(O.get(p) + M.O.get(q));
+                    N.O.add(O.getInt(p) + M.O.getInt(q));
                     break;
                 case "-":
-                    N.O.add(O.get(p) - M.O.get(q));
+                    N.O.add(O.getInt(p) - M.O.getInt(q));
                     break;
                 case "*":
-                    N.O.add(O.get(p) * M.O.get(q));
+                    N.O.add(O.getInt(p) * M.O.getInt(q));
                     break;
                 case "/":
-                    if(M.O.get(q) == 0)throw new Exception("division by zero");
-                    N.O.add(Math.floorDiv(O.get(p), M.O.get(q)));
+                    if(M.O.getInt(q) == 0)throw new Exception("division by zero");
+                    N.O.add(Math.floorDiv(O.getInt(p), M.O.getInt(q)));
                     break;
                 case "combine":
-                    N.O.add((M.O.get(q) == 1) ? combineOutputs.get(combineIndex) : O.get(p));
+                    N.O.add((M.O.getInt(q) == 1) ? combineOutputs.getInt(combineIndex) : O.getInt(p));
                     break;
                 case "first":
-                    N.O.add(O.get(p) == 0 ? M.O.get(q) : O.get(p));
+                    N.O.add(O.getInt(p) == 0 ? M.O.getInt(q) : O.getInt(p));
                     break;
             }
 
@@ -2258,7 +2257,7 @@ public class Automaton {
         List<Integer> distance = new ArrayList<>(Collections.nCopies(Q, -1));
         List<Integer> prev = new ArrayList<>(Collections.nCopies(Q, -1));
         List<Integer> input = new ArrayList<>(Collections.nCopies(Q, -1));
-        Integer counter = 0;
+        int counter = 0;
         boolean found = false;
         distance.set(q0, 0);
 
@@ -2270,8 +2269,8 @@ public class Automaton {
             for (int i=0; i<Q; i++) {
                 if (distance.get(i)!=counter)
                     continue;
-                for (Integer x : d.get(i).keySet()) {
-                    for (Integer y : d.get(i).get(x)) {
+                for (int x : d.get(i).keySet()) {
+                    for (int y : d.get(i).get(x)) {
                         if (y == target)
                             found = true;
                         if (distance.get(y) == -1) {
@@ -2304,22 +2303,22 @@ public class Automaton {
         List<Integer> distance = new ArrayList<>(Collections.nCopies(Q, -1));
         List<Integer> prev = new ArrayList<>(Collections.nCopies(Q, -1));
         List<Integer> input = new ArrayList<>(Collections.nCopies(Q, -1));
-        Integer counter = 0;
+        int counter = 0;
         boolean found = false;
-        Integer endState = 0;
+        int endState = 0;
         distance.set(target, 0);
 
         // the starting state may indeed by accepting
-        if (O.get(target) != 0) {
+        if (O.getInt(target) != 0) {
             return "";
         }
         while(!found) {
             for (int i=0; i<Q; i++) {
                 if (distance.get(i)!=counter)
                     continue;
-                for (Integer x : d.get(i).keySet()) {
-                    for (Integer y : d.get(i).get(x)) {
-                        if (O.get(y) != 0) {
+                for (int x : d.get(i).keySet()) {
+                    for (int y : d.get(i).get(x)) {
+                        if (O.getInt(y) != 0) {
                             found = true;
                             endState = y;
                         }
@@ -2334,7 +2333,7 @@ public class Automaton {
             counter++;
         }
         List<Integer> path = new ArrayList<>();
-        Integer current = endState;
+        int current = endState;
 
         while (current != target) {
             path.add(input.get(current));

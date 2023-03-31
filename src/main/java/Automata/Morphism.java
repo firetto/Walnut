@@ -154,24 +154,24 @@ public class Morphism {
 
     // Generates a command to define an intermediary word automaton given an integer i that accepts iff an i appears in position n of a word
     // These can then be combined efficiently with a combine command as they have disjoint domains
-    public String makeInterCommand(Integer i, String baseAutomatonName, String numSys) {
+    public String makeInterCommand(int i, String baseAutomatonName, String numSys) {
         if (numSys != "") {
             numSys = "?" + numSys;
         }
-        String interCommand = "def " + baseAutomatonName + "_" + i.toString();
+        String interCommand = "def " + baseAutomatonName + "_" + i;
 		interCommand += " \"" + numSys + " E q, r (n=" + length.toString() + "*q+r & r>=0 & r<" + length.toString();
 		for (Integer key : this.mapping.keySet()) {
 			boolean exists = false;
 			String clause = " & (" + baseAutomatonName + "[q]";
             List<Integer> symbolImage = this.mapping.get(key);
-			for (Integer j=0; j<symbolImage.size(); j++) {
+			for (int j = 0; j<symbolImage.size(); j++) {
     			if (symbolImage.get(j) == i) {
 					if(! exists) {
-						clause += "= @" + key.toString() + " => (r=" + j.toString();
+						clause += "= @" + key.toString() + " => (r=" + Integer.toString(j);
 						exists = true;
 					}
 					else {
-						clause += "|r=" + j.toString();
+						clause += "|r=" + Integer.toString(j);
 					}
 				}
 			}
