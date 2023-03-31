@@ -711,7 +711,7 @@ public class Automaton {
                 M.label.add(label.get(i));
         }
         for(int q = 0;q < Q;q++){
-            M.O.add(O.get(q));
+            M.O.add(O.getInt(q));
             M.d.add(new TreeMap<>());
             for(int x:d.get(q).keySet()){
                 M.d.get(q).put(x, new IntArrayList(d.get(q).get(x)));
@@ -1021,7 +1021,9 @@ public class Automaton {
                     }
 
                     // set up the transition.
-                    newD.get(newD.size() - 1).put(l, new IntArrayList(newStatesHash.get(toState)));
+                    IntList newList = new IntArrayList();
+                    newList.add(newStatesHash.get(toState));
+                    newD.get(newD.size() - 1).put(l, newList);
                 }
             }
 
@@ -1250,7 +1252,9 @@ public class Automaton {
                     int toState = prevMorphism.get(q).get(di);
 
                     // set up transition
-                    newD.get(q).put(di, new IntArrayList(toState));
+                    IntList newList = new IntArrayList();
+                    newList.add(toState);
+                    newD.get(q).put(di, newList);
                 }
             }
 
@@ -1401,7 +1405,9 @@ public class Automaton {
                         newStatesHash.put(toState, newStates.size() - 1);
                     }
 
-                    newD.get(newD.size() - 1).put(di, new IntArrayList(newStatesHash.get(toState)));
+                    IntList newList = new IntArrayList();
+                    newList.add(newStatesHash.get(toState));
+                    newD.get(newD.size() - 1).put(di, newList);
 
                 }
             }
@@ -1986,7 +1992,7 @@ public class Automaton {
      * which accepts if the output in our automaton is 0,1 or 2 respectively.
      * @throws Exception
      */
-    public List<Automaton> uncombine(IntList outputs, boolean print, String prefix, StringBuffer log) throws Exception {
+    public List<Automaton> uncombine(List<Integer> outputs, boolean print, String prefix, StringBuffer log) throws Exception {
         List<Automaton> automata = new ArrayList<>();
         for (Integer output : outputs) {
             Automaton M = clone();

@@ -558,7 +558,9 @@ public class Transducer extends Automaton {
                     }
 
                     // set up the transition.
-                    N.d.get(N.d.size() - 1).put(di, new IntArrayList(statesHash.get(newState)));
+                    IntList newList = new IntArrayList();
+                    newList.add(statesHash.get(newState));
+                    N.d.get(N.d.size() - 1).put(di, newList);
                 }
             }
 
@@ -660,7 +662,9 @@ public class Transducer extends Automaton {
             Transducer Tnew = clone();
 
             for (int q = 0; q < Tnew.Q; q++) {
-                Tnew.d.get(q).put(minOutput, new IntArrayList(q));
+                IntList newList = new IntArrayList();
+                newList.add(q);
+                Tnew.d.get(q).put(minOutput, newList);
                 Tnew.sigma.get(q).put(minOutput, minOutput);
             }
 
