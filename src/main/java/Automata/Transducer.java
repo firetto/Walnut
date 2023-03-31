@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.lang.Math;
 
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -149,10 +150,10 @@ public class Transducer extends Automaton {
             List<Integer> output = new ArrayList<>();
             int currentState = -1;
             int currentStateOutput;
-            TreeMap<Integer,IntList> currentStateTransitions = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> currentStateTransitions = new Int2ObjectRBTreeMap<>();
             TreeMap<Integer, Integer> currentStateTransitionOutputs = new TreeMap<>();
             TreeMap<Integer,Integer> state_output = new TreeMap<>();
-            TreeMap<Integer,TreeMap<Integer, IntList>> state_transition =
+            TreeMap<Integer, Int2ObjectRBTreeMap<IntList>> state_transition =
                     new TreeMap<>();
             TreeMap<Integer, TreeMap<Integer, Integer>> state_transition_output =
                     new TreeMap<>();
@@ -178,7 +179,7 @@ public class Transducer extends Automaton {
                     currentState = singleton[0];
                     currentStateOutput = 0; // state output does not matter for transducers.
                     state_output.put(currentState, currentStateOutput);
-                    currentStateTransitions = new TreeMap<>();
+                    currentStateTransitions = new Int2ObjectRBTreeMap<>();
                     state_transition.put(currentState, currentStateTransitions);
                     currentStateTransitionOutputs = new TreeMap<>();
                     state_transition_output.put(currentState, currentStateTransitionOutputs);
@@ -262,7 +263,7 @@ public class Transducer extends Automaton {
         }
         for(int q = 0; q < Q; q++){
             T.O.add(O.getInt(q));
-            T.d.add(new TreeMap<>());
+            T.d.add(new Int2ObjectRBTreeMap<>());
             for(int x:d.get(q).keySet()){
                 T.d.get(q).put(x, new IntArrayList(d.get(q).get(x)));
             }
@@ -509,7 +510,7 @@ public class Transducer extends Automaton {
 
                 N.O.add(sigma.get(currState.iterates.get(0).get(q0)).get( encode(Arrays.asList(M.O.getInt(currState.state))) ));
 
-                N.d.add(new TreeMap<>());
+                N.d.add(new Int2ObjectRBTreeMap<>());
 
                 // get h(w) where w = currState.string .
                 List<Integer> newString = new ArrayList<>();

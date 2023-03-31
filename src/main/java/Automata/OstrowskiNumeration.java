@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -82,7 +83,7 @@ public class OstrowskiNumeration {
     // Maps to keep track of states and transitions.
     TreeMap<NodeState, Integer> index_of_node;
     TreeMap<Integer, NodeState> node_of_index;
-    TreeMap<Integer, TreeMap<Integer, IntList>> state_transitions;
+    TreeMap<Integer, Int2ObjectRBTreeMap<IntList>> state_transitions;
 
     int total_nodes;
 
@@ -174,7 +175,7 @@ public class OstrowskiNumeration {
                 repr.O.add(0);
             }
 
-            this.state_transitions.putIfAbsent(q, new TreeMap<>());
+            this.state_transitions.putIfAbsent(q, new Int2ObjectRBTreeMap<>());
             repr.d.add(this.state_transitions.get(q));
         }
 
@@ -233,7 +234,7 @@ public class OstrowskiNumeration {
         adder.Q = this.total_nodes;
         for(int q = 0; q < this.total_nodes; q++) {
             adder.O.add(isFinal(q)?1:0);
-            this.state_transitions.putIfAbsent(q, new TreeMap<>());
+            this.state_transitions.putIfAbsent(q, new Int2ObjectRBTreeMap<>());
             adder.d.add(this.state_transitions.get(q));
         }
 
@@ -370,7 +371,7 @@ public class OstrowskiNumeration {
         this.state_transitions = new TreeMap<>();
 
         // These are the "0" states.
-        this.state_transitions.put(0, new TreeMap<>());
+        this.state_transitions.put(0, new Int2ObjectRBTreeMap<>());
         for (int i = 1; i < this.sz_alpha; i++) {
             NodeState node = new NodeState(0, i, i);
             index_of_node.put(node, this.total_nodes);
@@ -403,7 +404,7 @@ public class OstrowskiNumeration {
 
                 if (seen_index > 1) {
                     NodeState node = new NodeState(st, start_index, seen_index - 1);
-                    this.state_transitions.putIfAbsent(cur_node_idx, new TreeMap<>());
+                    this.state_transitions.putIfAbsent(cur_node_idx, new Int2ObjectRBTreeMap<>());
                     a = alphaI(seen_index - 1);
                     if (index_of_node.containsKey(node)) {
                         // This node already exists, don't create a new NodeState.
@@ -430,7 +431,7 @@ public class OstrowskiNumeration {
                     NodeState node = new NodeState(st, start_index, sz_alpha - 1);
 
                     // Create the map if does not exist.
-                    this.state_transitions.putIfAbsent(cur_node_idx, new TreeMap<>());
+                    this.state_transitions.putIfAbsent(cur_node_idx, new Int2ObjectRBTreeMap<>());
 
                     a = alphaI(sz_alpha - 1);
                     if (index_of_node.containsKey(node)) {
@@ -470,7 +471,7 @@ public class OstrowskiNumeration {
         int a;
 
         // These are the "0" states.
-        this.state_transitions.put(0, new TreeMap<>());
+        this.state_transitions.put(0, new Int2ObjectRBTreeMap<>());
         for (int i = 1; i < this.sz_alpha; ++i) {
             NodeState node = new NodeState(0, i, i);
             a = alphaI(i);
@@ -513,7 +514,7 @@ public class OstrowskiNumeration {
                     a = 1;
                 }
 
-                this.state_transitions.putIfAbsent(cur_node_idx, new TreeMap<>());
+                this.state_transitions.putIfAbsent(cur_node_idx, new Int2ObjectRBTreeMap<>());
 
                 // Will go to state 0 for all transitions < a.
                 NodeState node = new NodeState(0, start_index, seen_index - 1);
@@ -578,7 +579,7 @@ public class OstrowskiNumeration {
                 }
 
                 // Create the map if does not exist.
-                this.state_transitions.putIfAbsent(cur_node_idx, new TreeMap<>());
+                this.state_transitions.putIfAbsent(cur_node_idx, new Int2ObjectRBTreeMap<>());
                 NodeState node = new NodeState(0, start_index, sz_alpha - 1);
                 for (int inp = 0; inp < a; ++inp) {
                     if (index_of_node.containsKey(node)) {
@@ -634,7 +635,7 @@ public class OstrowskiNumeration {
     }
 
     private void addTransitions(
-        TreeMap<Integer, IntList> current_state_transitions,
+            Int2ObjectRBTreeMap<IntList> current_state_transitions,
         int diff,
         int encodedDestination) {
         for (int x = 0; x <= d_max; ++x) {

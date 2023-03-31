@@ -182,7 +182,7 @@ public class Automaton {
      * Recall that (0,-1) represents 0 in mixed-radix base (1,2) and alphabet A. We have this mixed-radix base (1,2) stored as encoder in
      * our program, so for more information on how we compute it read the information on List<Integer> encoder field.
      */
-    public List<TreeMap<Integer,IntList>> d;
+    public List<Int2ObjectRBTreeMap<IntList>> d;
 
     /**
      * Valmari fields
@@ -378,8 +378,7 @@ public class Automaton {
 
         d = new ArrayList<>(Q);
         for( int q = 0; q < Q;++q){
-            d.add(new TreeMap<>());
-            Int2ObjectRBTreeMap
+            d.add(new Int2ObjectRBTreeMap<>());
         }
         for( int t = 0; t < num_transitions; ++t ){
             if( B.L[T[t]] == B.F[B.S[T[t]]] ){
@@ -481,7 +480,7 @@ public class Automaton {
             State state = setOfStates.get(q);
             if(state.isAccept())O.add(1);
             else O.add(0);
-            TreeMap<Integer,IntList> currentStatesTransitions = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> currentStatesTransitions = new Int2ObjectRBTreeMap<>();
             d.add(currentStatesTransitions);
             for(Transition t: state.getTransitions()){
                 for(char a = UtilityMethods.max(t.getMin(),'0');a <= UtilityMethods.min(t.getMax(),'9');a++){
@@ -528,8 +527,8 @@ public class Automaton {
         this.setThisAutomatonToRepresent(M);
         // We added 128 to the encoding of every input vector before to avoid reserved characters, now we subtract it again
         // to get back the standard encoding
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
-        for(int q = 0; q < Q;q++)new_d.add(new TreeMap<>());
+        List<Int2ObjectRBTreeMap<IntList>> new_d = new ArrayList<>();
+        for(int q = 0; q < Q;q++)new_d.add(new Int2ObjectRBTreeMap<>());
         for(int q = 0 ; q < Q;q++){
             for(int x:d.get(q).keySet()){
                 new_d.get(q).put(x-128, d.get(q).get(x));
@@ -611,9 +610,9 @@ public class Automaton {
             IntList dest = new IntArrayList();
             int currentState = -1;
             int currentOutput;
-            TreeMap<Integer,IntList> currentStateTransitions = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> currentStateTransitions = new Int2ObjectRBTreeMap<>();
             TreeMap<Integer,Integer> state_output = new TreeMap<>();
-            TreeMap<Integer,TreeMap<Integer,IntList>> state_transition =
+            TreeMap<Integer,Int2ObjectRBTreeMap<IntList>> state_transition =
                 new TreeMap<>();
             /**
              * This will hold all states that are destination of some transition.
@@ -636,7 +635,7 @@ public class Automaton {
                     currentState = pair[0];
                     currentOutput = pair[1];
                     state_output.put(currentState, currentOutput);
-                    currentStateTransitions = new TreeMap<>();
+                    currentStateTransitions = new Int2ObjectRBTreeMap<>();
                     state_transition.put(currentState, currentStateTransitions);
                 } else if(ParseMethods.parseTransition(line, input, dest)) {
                     setOfDestinationStates.addAll(dest);
@@ -712,7 +711,7 @@ public class Automaton {
         }
         for(int q = 0;q < Q;q++){
             M.O.add(O.getInt(q));
-            M.d.add(new TreeMap<>());
+            M.d.add(new Int2ObjectRBTreeMap<>());
             for(int x:d.get(q).keySet()){
                 M.d.get(q).put(x, new IntArrayList(d.get(q).get(x)));
             }
@@ -835,9 +834,9 @@ public class Automaton {
         List<Integer> permutation = new ArrayList<>();
         for(List<Integer> i:allInputs)
             permutation.add(encode(i));
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
+        List<Int2ObjectRBTreeMap<IntList>> new_d = new ArrayList<>();
         for(int q = 0; q < Q;q++){
-            TreeMap<Integer,IntList> newMemDransitionFunction = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> newMemDransitionFunction = new Int2ObjectRBTreeMap<>();
             new_d.add(newMemDransitionFunction);
             for(int x:d.get(q).keySet()){
                 int y = permutation.get(x);
@@ -879,8 +878,8 @@ public class Automaton {
         }
 
         // We change the direction of transitions first.
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
-        for(int q = 0; q < Q;q++)new_d.add(new TreeMap<>());
+        List<Int2ObjectRBTreeMap<IntList>> new_d = new ArrayList<>();
+        for(int q = 0; q < Q;q++)new_d.add(new Int2ObjectRBTreeMap<>());
         for(int q = 0 ; q < Q;q++){
             for(int x:d.get(q).keySet()){
                 for(int dest:d.get(q).get(x)){
@@ -982,7 +981,7 @@ public class Automaton {
 
             IntList newO = new IntArrayList();
 
-            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
+            List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
 
             for (int i = 0; i < Q; i++) {
                 newInitState.put(i, O.get(i));
@@ -1000,7 +999,7 @@ public class Automaton {
                 // set up the output of this state to be g(q0), where g = currState.
                 newO.add(currState.get(q0));
 
-                newD.add(new TreeMap<>());
+                newD.add(new Int2ObjectRBTreeMap<>());
 
                 // assume that the
                 // System.out.println("alphabet: " + d.get(q0) + ", " + d + ", " + alphabetSize);
@@ -1210,7 +1209,7 @@ public class Automaton {
                 System.out.println(msg);
             }
 
-            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
+            List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
 
             // need to generate the new morphism, which is h^{exponent}, where h is the original morphism.
 
@@ -1246,7 +1245,7 @@ public class Automaton {
             }
 
             for (int q = 0; q < Q; q++) {
-                newD.add(new TreeMap<>());
+                newD.add(new Int2ObjectRBTreeMap<>());
                 for (int di = 0; di < prevMorphism.get(q).size(); di++) {
 
                     int toState = prevMorphism.get(q).get(di);
@@ -1346,7 +1345,7 @@ public class Automaton {
 
             HashMap<StateTuple, Integer> newStatesHash = new HashMap<>();
 
-            List<TreeMap<Integer,IntList>> newD = new ArrayList<>();
+            List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
 
             IntList newO = new IntArrayList();
 
@@ -1360,7 +1359,7 @@ public class Automaton {
             while (newStatesQueue.size() > 0) {
                 StateTuple currState = newStatesQueue.remove();
 
-                newD.add(new TreeMap<>());
+                newD.add(new Int2ObjectRBTreeMap<>());
 
                 if (currState.string.size() == 0) {
                     newO.add(O.get(currState.state));
@@ -1588,7 +1587,7 @@ public class Automaton {
             // state in the other Automaton.
             int p = s.get(0);
             int q = s.get(1);
-            TreeMap<Integer,IntList> thisStatesTransitions = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> thisStatesTransitions = new Int2ObjectRBTreeMap<>();
             N.d.add(thisStatesTransitions);
             switch(op){
                 case "&":
@@ -2464,7 +2463,7 @@ public class Automaton {
         if(!totalized){
             O.add(0);
             Q++;
-            d.add(new TreeMap<>());
+            d.add(new Int2ObjectRBTreeMap<>());
             for(int x = 0;x < alphabetSize;x++){
                 IntList nullState = new IntArrayList();
                 nullState.add(Q-1);
@@ -2519,7 +2518,7 @@ public class Automaton {
             }
             O.add(min-1);
             Q++;
-            d.add(new TreeMap<>());
+            d.add(new Int2ObjectRBTreeMap<>());
             for(int x = 0; x < alphabetSize; x++){
                 IntList nullState = new IntArrayList();
                 nullState.add(Q-1);
@@ -2938,7 +2937,7 @@ public class Automaton {
         }
         int[][] M = new int[Q][Q];
         for(int p = 0 ; p < Q;++p){
-            TreeMap<Integer, IntList> transitions_p = d.get(p);
+            Int2ObjectRBTreeMap<IntList> transitions_p = d.get(p);
             for(int v : encoded_values){
                 if(transitions_p.containsKey(v)){
                     List<Integer> dest = transitions_p.get(v);
@@ -3116,7 +3115,7 @@ public class Automaton {
             State state = setOfStates.get(q);
             if(state.isAccept())O.add(1);
             else O.add(0);
-            TreeMap<Integer,IntList> currentStatesTransitions = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> currentStatesTransitions = new Int2ObjectRBTreeMap<>();
             d.add(currentStatesTransitions);
             for(Transition t: state.getTransitions()){
                 for(char a = t.getMin();a <= t.getMax();a++){
@@ -3174,7 +3173,7 @@ public class Automaton {
             }
         }
 
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
+        List<Int2ObjectRBTreeMap<IntList>> new_d = new ArrayList<>();
         for(int q = 0 ; q < newQ;q++) {
             new_d.add(null);
         }
@@ -3273,7 +3272,7 @@ public class Automaton {
         NS = UtilityMethods.permute(NS,label_permutation);
 
         for(int q = 0; q < Q;q++){
-            TreeMap<Integer,IntList> permuted_d = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> permuted_d = new Int2ObjectRBTreeMap<>();
             for(int x:d.get(q).keySet())
                 permuted_d.put(encoded_input_permutation[x], d.get(q).get(x));
             d.set(q,permuted_d);
@@ -3692,8 +3691,8 @@ public class Automaton {
         M.Q = 2;
         M.q0 = 0;
         M.O.add(1);M.O.add(1);
-        M.d.add(new TreeMap<>());
-        M.d.add(new TreeMap<>());
+        M.d.add(new Int2ObjectRBTreeMap<>());
+        M.d.add(new Int2ObjectRBTreeMap<>());
         M.NS = NS;
         M.A = A;
         M.label = label;
@@ -3828,9 +3827,9 @@ public class Automaton {
         List<Integer> map = new ArrayList<>();
         for(int n = 0 ; n < alphabetSize;n++)
             map.add(mapToReducedEncodedInput(n, I, newEncoder, newAlphabet));
-        List<TreeMap<Integer,IntList>> new_d = new ArrayList<>();
+        List<Int2ObjectRBTreeMap<IntList>> new_d = new ArrayList<>();
         for(int q = 0 ; q < Q;q++){
-            TreeMap<Integer,IntList> currentStatesTransition = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> currentStatesTransition = new Int2ObjectRBTreeMap<>();
             new_d.add(currentStatesTransition);
             for(int n:d.get(q).keySet()){
                 int m = map.get(n);
@@ -3866,7 +3865,7 @@ public class Automaton {
         return encode(y, newAlphabet, newEncoder);
     }
 
-    public List<TreeMap<Integer,IntList>> get_transition_function() {
+    public List<Int2ObjectRBTreeMap<IntList>> get_transition_function() {
         return d;
     }
     /*private boolean connected(int p,int q,int i){

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -288,7 +289,7 @@ public class NumberSystem {
 		equality.A.add(new ArrayList<>(alphabet));
         equality.A.add(new ArrayList<>(alphabet));
 		equality.alphabetSize = alphabet.size()*alphabet.size();
-		equality.d.add(new TreeMap<>());
+		equality.d.add(new Int2ObjectRBTreeMap<>());
 		for(int i = 0 ; i < alphabet.size(); i++) {
 			IntList dest = new IntArrayList();
 			dest.add(0);
@@ -313,8 +314,8 @@ public class NumberSystem {
 		lessThan.A.add(new ArrayList<>(alphabet));
         lessThan.A.add(new ArrayList<>(alphabet));
 		lessThan.alphabetSize = alphabet.size()*alphabet.size();
-		lessThan.d.add(new TreeMap<>());
-        lessThan.d.add(new TreeMap<>());
+		lessThan.d.add(new Int2ObjectRBTreeMap<>());
+        lessThan.d.add(new Int2ObjectRBTreeMap<>());
 		for(int i = 0; i < alphabet.size();i++){
 			for(int j = 0 ; j < alphabet.size();j++){
 				if(i == j){
@@ -397,8 +398,8 @@ public class NumberSystem {
 		addition.Q = 2;
 		addition.q0 = 0;
 		addition.O.add(1);addition.O.add(0);
-		addition.d.add(new TreeMap<>());
-        addition.d.add(new TreeMap<>());
+		addition.d.add(new Int2ObjectRBTreeMap<>());
+        addition.d.add(new Int2ObjectRBTreeMap<>());
 		addition.NS.add(this);
         addition.NS.add(this);
         addition.NS.add(this);
@@ -453,9 +454,9 @@ public class NumberSystem {
 		addition.Q = 3;
 		addition.q0 = 0;
 		addition.O.add(1);addition.O.add(0);addition.O.add(0);
-		addition.d.add(new TreeMap<>());
-		addition.d.add(new TreeMap<>());
-		addition.d.add(new TreeMap<>());
+		addition.d.add(new Int2ObjectRBTreeMap<>());
+		addition.d.add(new Int2ObjectRBTreeMap<>());
+		addition.d.add(new Int2ObjectRBTreeMap<>());
 		addition.NS.add(this);
 		addition.NS.add(this);
 		addition.NS.add(this);
@@ -525,9 +526,9 @@ public class NumberSystem {
 		lessThan.Q = 3;
 		lessThan.q0 = 0;
 		lessThan.O.add(0);lessThan.O.add(1);lessThan.O.add(0);
-		lessThan.d.add(new TreeMap<>());
-		lessThan.d.add(new TreeMap<>());
-		lessThan.d.add(new TreeMap<>());
+		lessThan.d.add(new Int2ObjectRBTreeMap<>());
+		lessThan.d.add(new Int2ObjectRBTreeMap<>());
+		lessThan.d.add(new Int2ObjectRBTreeMap<>());
 		lessThan.NS.add(this);
 		lessThan.NS.add(this);
 		lessThan.A.add(new ArrayList<>(alphabet));
@@ -583,10 +584,10 @@ public class NumberSystem {
 		baseChange.O.add(1);
 		baseChange.O.add(0);
 		baseChange.O.add(0);
-		baseChange.d.add(new TreeMap<>());
-		baseChange.d.add(new TreeMap<>());
-		baseChange.d.add(new TreeMap<>());
-		baseChange.d.add(new TreeMap<>());
+		baseChange.d.add(new Int2ObjectRBTreeMap<>());
+		baseChange.d.add(new Int2ObjectRBTreeMap<>());
+		baseChange.d.add(new Int2ObjectRBTreeMap<>());
+		baseChange.d.add(new Int2ObjectRBTreeMap<>());
 		if(is_msd) {
 			baseChange.NS.add(new NumberSystem("msd_"+n));
 			baseChange.NS.add(new NumberSystem("msd_neg_"+n));

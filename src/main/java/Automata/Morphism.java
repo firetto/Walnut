@@ -19,6 +19,7 @@
 package Automata;
 
 import Main.UtilityMethods;
+import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -117,7 +118,7 @@ public class Morphism {
         promotion.Q = maxEntry+1;
         promotion.O = IntArrayList.toList(IntStream.rangeClosed(0, promotion.Q -1));
         for (int x : mapping.keySet()) {
-            TreeMap<Integer, IntList> xmap = new TreeMap<>();
+            Int2ObjectRBTreeMap<IntList> xmap = new Int2ObjectRBTreeMap<>();
             for (int i=0; i<mapping.get(x).size(); i++) {
                 IntList newList = new IntArrayList();
                 newList.add(mapping.get(x).get(i));
