@@ -184,15 +184,15 @@ public class OstrowskiNumeration {
 
         boolean zeroStateNeeded =
             repr.d.stream().anyMatch(
-                tm -> tm.entrySet().stream().anyMatch(
-                    es -> es.getValue().get(0) == 0));
+                tm -> tm.int2ObjectEntrySet().stream().anyMatch(
+                    es -> es.getValue().getInt(0) == 0));
         if (!zeroStateNeeded) {
             repr.d.remove(0);
-            repr.O.remove(0);
+            repr.O.removeInt(0);
             --repr.Q;
             repr.d.forEach(tm -> {
                 tm.forEach((k, v) -> {
-                    int dest = v.get(0) - 1;
+                    int dest = v.getInt(0) - 1;
                     v.set(0, dest);
                 });
             });
@@ -247,16 +247,16 @@ public class OstrowskiNumeration {
 
         boolean zeroStateNeeded =
             adder.d.stream().anyMatch(
-                tm -> tm.entrySet().stream().anyMatch(
-                    es -> es.getValue().get(0) == 0));
+                tm -> tm.int2ObjectEntrySet().stream().anyMatch(
+                    es -> es.getValue().getInt(0) == 0));
 
         if (!zeroStateNeeded) {
             adder.d.remove(0);
-            adder.O.remove(0);
+            adder.O.removeInt(0);
             --adder.Q;
             adder.d.forEach(tm -> {
                 tm.forEach((k, v) -> {
-                    int dest = v.get(0) - 1;
+                    int dest = v.getInt(0) - 1;
                     // System.out.println(k + " -> " + v);
                     v.set(0, dest);
                 });
