@@ -202,10 +202,6 @@ public class Automaton {
     // number of final states
     public int num_finalstates;
 
-
-    // labels of transitions
-    int[] L;
-
     /* Adjacent transitions */
     int[] _A, _F;
 
@@ -260,7 +256,7 @@ public class Automaton {
         B.E[rr] = q; B.L[q] = rr++; }
     }
 
-    void rem_unreachable( int T[], int H[] ){
+    void rem_unreachable( int T[], int H[], int L[] ){
         make_adjacent( T ); int i, j;
         for( i = 0; i < rr; ++i ){
             for( j = _F[B.E[i]]; j < _F[B.E[i] + 1]; ++j ){
@@ -294,7 +290,8 @@ public class Automaton {
 
         // tails of transitions
         int[] T = new int[num_transitions];
-        L = new int[num_transitions];
+        // labels of transitions
+        int[] L = new int[num_transitions];
         // heads of transitions
         int[] H = new int[num_transitions];
 
@@ -318,7 +315,7 @@ public class Automaton {
                 reach( q );
             }
         }
-        num_finalstates = rr; rem_unreachable( H, T );
+        num_finalstates = rr; rem_unreachable( H, T, L);
 
         /* Make initial partition */
         Partition.W = new int[ num_transitions+1 ]; Partition.M = new int[ num_transitions+1];
