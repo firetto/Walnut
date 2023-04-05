@@ -180,6 +180,10 @@ public class Automaton {
      * to state 1.
      * Recall that (0,-1) represents 0 in mixed-radix base (1,2) and alphabet A. We have this mixed-radix base (1,2) stored as encoder in
      * our program, so for more information on how we compute it read the information on List<Integer> encoder field.
+     *
+     * For memory reduction, during determinization the transition function d is set to null and temporarily represented with
+     * the memory-efficient newMemD, which only stores single-state transitions output by the Subset Construction algorithm.
+     * The transition function d is then regenerated during the minimize_valmari method, once the states are minimized.
      */
     public List<Int2ObjectRBTreeMap<IntList>> d;
 
@@ -283,7 +287,7 @@ public class Automaton {
         B = new Partition();
         C = new Partition();
 
-        // Pre-size the arrays. This is much more efficient than converting from ArrayLists
+        // Pre-size the arrays. This is much more efficient than creating new ArrayLists and then copying from them.
         for(int q = 0; q != newMemD.size();++q){
             num_transitions += newMemD.get(q).keySet().size();
         }
@@ -364,6 +368,7 @@ public class Automaton {
 
         /* Turn the result back to Walnut format for Automata */
         Q = B.z;
+
         q0 = B.S[q0];
         O = new IntArrayList(Q);
         for( int q = 0; q < B.z; ++q ){
@@ -2010,7 +2015,7 @@ public class Automaton {
     /**
      * @return A minimized DFA with output recognizing the same language as the current DFA (possibly also with output).
      * We minimize a DFA with output by first uncombining into automata without output, minimizing the uncombined automata, and
-     * then recombining. It follows that if the ubcombined autoamta are minimal, then the combined automata is also minimal
+     * then recombining. It follows that if the uncombined automata are minimal, then the combined automata is also minimal
      * @throws Exception
      */
     public Automaton minimizeWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {
@@ -3439,29 +3444,24 @@ public class Automaton {
         return to_dk_bricks_automaton().isEmpty();
     }
 
-    private List<Int2IntMap> subsetConstruction(List<Int2IntMap> newMemD, IntSet initial_state,boolean print, String prefix, StringBuilder log)throws Exception{
+    /**
+     * Subset Construction (Determinizing).
+     * @param initial_state
+     * @param print
+     * @param prefix
+     * @param log
+     * @return A memory-efficient representation of a determinized transition function
+     * @throws Exception
+     */
+    private List<Int2IntMap> subsetConstruction(
+            List<Int2IntMap> newMemD, IntSet initial_state,boolean print, String prefix, StringBuilder log) {
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "Determinizing: " + Q + " states";
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
-        List<Int2IntMap> new_d = internalSubsetConstruction(newMemD, initial_state, print, prefix, log, timeBefore);
-        // NOTE: d is now null!
-        // It's recomputed in minimize_valmari via the memory-efficient newMemD
 
-        long timeAfter = System.currentTimeMillis();
-        if(print){
-            String msg = prefix + "Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
-        }
-        return new_d;
-    }
-
-    private List<Int2IntMap> internalSubsetConstruction(
-            List<Int2IntMap> newMemD, IntSet initial_state,
-            boolean print, String prefix, StringBuilder log, long timeBefore) {
         int number_of_states = 0,current_state = 0;
         Object2IntMap<IntSet> statesHash = new Object2IntOpenHashMap<>();
         List<IntSet> statesList = new ArrayList<>();
@@ -3489,31 +3489,17 @@ public class Automaton {
             new_d.add(new Int2IntOpenHashMap());
             Int2IntMap currentStateMap = new_d.get(current_state);
             for(int in = 0;in!=alphabetSize;++in){
-                IntOpenHashSet dest = new IntOpenHashSet();
-                for(int q:state){
-                    if(newMemD == null) {
-                        IntList values = d.get(q).get(in);
-                        if (values != null) {
-                            dest.addAll(values);
-                        }
-                    } else {
-                        Int2IntMap iMap = newMemD.get(q);
-                        int key = iMap.getOrDefault(in, -1);
-                        if (key != -1) {
-                            dest.add(key);
-                        }
-                    }
-                }
-                if(!dest.isEmpty()){
+                IntOpenHashSet stateSubset = determineStateSubset(newMemD, state, in);
+                if(!stateSubset.isEmpty()){
                     int new_dValue;
-                    int key = statesHash.getOrDefault(dest, -1);
+                    int key = statesHash.getOrDefault(stateSubset, -1);
                     if (key != -1){
                         new_dValue = key;
                     }
                     else{
-                        dest.trim();
-                        statesList.add(dest);
-                        statesHash.put(dest,number_of_states);
+                        stateSubset.trim(); // reduce memory footprint of set before storing
+                        statesList.add(stateSubset);
+                        statesHash.put(stateSubset,number_of_states);
                         new_dValue = number_of_states;
                         number_of_states++;
                     }
@@ -3523,15 +3509,53 @@ public class Automaton {
             current_state++;
         }
         d = null;
-        // NOTE: We set d to null to save peak memory
+        // NOTE: d is now null! This is to save peak memory
         // It's recomputed in minimize_valmari via the memory-efficient newMemD
         Q = number_of_states;
         q0 = 0;
         O = calculateNewStateOutput(O, statesList);
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
         return new_d;
     }
 
+    /**
+     * Build up a new subset of states in the subset construction algorithm.
+     * @param newMemD - memory-efficient transition function
+     * @param state -
+     * @param in - index into alphabet
+     * @return Subset of states used in Subset Construction
+     */
+    private IntOpenHashSet determineStateSubset(List<Int2IntMap> newMemD, IntSet state, int in) {
+        IntOpenHashSet dest = new IntOpenHashSet();
+        for(int q: state){
+            if(newMemD == null) {
+                IntList values = d.get(q).get(in);
+                if (values != null) {
+                    dest.addAll(values);
+                }
+            } else {
+                Int2IntMap iMap = newMemD.get(q);
+                int key = iMap.getOrDefault(in, -1);
+                if (key != -1) {
+                    dest.add(key);
+                }
+            }
+        }
+        return dest;
+    }
 
+    /**
+     * Calculate new state output (O), from previous O and statesList.
+     * @param O - previous O
+     * @param statesList
+     * @return new O
+     */
     private static IntList calculateNewStateOutput(IntList O, List<IntSet> statesList) {
         IntList newO = new IntArrayList();
         for(IntSet state: statesList){

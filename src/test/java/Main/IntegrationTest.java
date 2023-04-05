@@ -23,21 +23,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Automata.Automaton;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 public class IntegrationTest {
@@ -879,6 +874,7 @@ public class IntegrationTest {
 
 	private boolean conformMPL(String expected_mpl,String actual_mpl){
 		if(expected_mpl == null && actual_mpl == null)return true;
+		if(expected_mpl == null) return false;
 		if(expected_mpl.length() == 0 && actual_mpl.length() == 0) return true;
 		//if(expected_mpl.length() != actual_mpl.length()){
 		//	return false;
@@ -889,6 +885,7 @@ public class IntegrationTest {
 
 	private boolean conformDetails(String expected_details,String actual_details){
 		if(expected_details == null && actual_details == null)return true;
+		if(expected_details == null) return false;
 		if(expected_details.length() == 0 && actual_details.length() == 0) return true;
 		expected_details = expected_details.replaceAll("\\d+ms", "");
 		actual_details = actual_details.replaceAll("\\d+ms", "");
@@ -984,6 +981,7 @@ public class IntegrationTest {
 			testCases.add(new TestCase(command,M,error.toString(),mpl.toString(),details.toString()));
 		}
 	}
+	//@Test // uncomment this line if you want to regenerate test cases
 	public void createTestCases() throws Exception{
 		for(int i = 0; i < L.size();i++){
 			String command = L.get(i);
@@ -997,27 +995,27 @@ public class IntegrationTest {
 			}
 			testCases.add(test_case);
 		}
-		writeTestCases();
+		writeTestCases(UtilityMethods.ADDRESS_FOR_UNIT_TEST_INTEGRATION_TEST_RESULTS);
 	}
-	private void writeTestCases() throws Exception{
-		new File(directoryAddress).mkdirs();
+	private void writeTestCases(String directory) throws Exception{
+		new File(directory).mkdirs();
 		for(int i = 0 ; i < testCases.size();i++){
 			TestCase t = testCases.get(i);
 			if(t.result != null){
-				t.result.write(directoryAddress+"automaton" +Integer.toString(i)+ ".txt");
+				t.result.write(directory+"automaton" +Integer.toString(i)+ ".txt");
 			}
 			if(t.error != null && t.error.length() > 0){
-				PrintWriter errorWriter = new PrintWriter(directoryAddress+"error"+Integer.toString(i)+".txt", "UTF-8");
+				PrintWriter errorWriter = new PrintWriter(directory+"error"+Integer.toString(i)+".txt", "UTF-8");
 				errorWriter.println(t.error);
 				errorWriter.close();
 			}
 			if(t.mpl != null && t.mpl.length() > 0){
-				PrintWriter mplWriter = new PrintWriter(directoryAddress+"mpl"+Integer.toString(i)+".mpl", "UTF-8");
+				PrintWriter mplWriter = new PrintWriter(directory+"mpl"+Integer.toString(i)+".mpl", "UTF-8");
 				mplWriter.println(t.mpl);
 				mplWriter.close();
 			}
 			if(t.details != null && t.details.length() > 0){
-				PrintWriter detailsWriter = new PrintWriter(directoryAddress+"details"+Integer.toString(i)+".txt", "utf-8");
+				PrintWriter detailsWriter = new PrintWriter(directory+"details"+Integer.toString(i)+".txt", "utf-8");
 				detailsWriter.println(t.details);
 				detailsWriter.close();
 			}
