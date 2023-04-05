@@ -230,7 +230,7 @@ public class Transducer extends Automaton {
             }
 
             for(int q = 0; q < Q; q++) {
-                O.add(state_output.get(q));
+                O.add((int)state_output.get(q));
                 d.add(state_transition.get(q));
                 sigma.add(state_transition_output.get(q));
             }
@@ -508,7 +508,7 @@ public class Transducer extends Automaton {
 
                 // set up the output of this state.
 
-                N.O.add(sigma.get(currState.iterates.get(0).get(q0)).get( encode(Arrays.asList(M.O.getInt(currState.state))) ));
+                N.O.add((int)sigma.get(currState.iterates.get(0).get(q0)).get( encode(Arrays.asList(M.O.getInt(currState.state))) ));
 
                 N.d.add(new Int2ObjectRBTreeMap<>());
 
@@ -560,7 +560,7 @@ public class Transducer extends Automaton {
 
                     // set up the transition.
                     IntList newList = new IntArrayList();
-                    newList.add(statesHash.get(newState));
+                    newList.add((int)statesHash.get(newState));
                     N.d.get(N.d.size() - 1).put(di, newList);
                 }
             }

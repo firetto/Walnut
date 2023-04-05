@@ -678,7 +678,7 @@ public class Automaton {
             }
 
             for(int q = 0; q < Q; q++) {
-                O.add(state_output.get(q));
+                O.add((int)state_output.get(q));
                 d.add(state_transition.get(q));
             }
         } catch (IOException e) {
@@ -1001,7 +1001,7 @@ public class Automaton {
                 Map<Integer, Integer> currState = newStatesQueue.remove();
 
                 // set up the output of this state to be g(q0), where g = currState.
-                newO.add(currState.get(q0));
+                newO.add((int)currState.get(q0));
 
                 newD.add(new Int2ObjectRBTreeMap<>());
 
@@ -1025,7 +1025,7 @@ public class Automaton {
 
                     // set up the transition.
                     IntList newList = new IntArrayList();
-                    newList.add(newStatesHash.get(toState));
+                    newList.add((int)newStatesHash.get(toState));
                     newD.get(newD.size() - 1).put(l, newList);
                 }
             }
@@ -1409,7 +1409,7 @@ public class Automaton {
                     }
 
                     IntList newList = new IntArrayList();
-                    newList.add(newStatesHash.get(toState));
+                    newList.add((int)newStatesHash.get(toState));
                     newD.get(newD.size() - 1).put(di, newList);
 
                 }
@@ -1661,7 +1661,7 @@ public class Automaton {
                                     statesList.add(dest3);
                                     statesHash.put(dest3, statesList.size()-1);
                                 }
-                                dest.add(statesHash.get(dest3));
+                                dest.add((int)statesHash.get(dest3));
                             }
                         }
                     }

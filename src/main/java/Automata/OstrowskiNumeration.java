@@ -526,7 +526,7 @@ public class OstrowskiNumeration {
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
-                            .add(index_of_node.get(node));
+                            .add((int)index_of_node.get(node));
                     } else {
                         index_of_node.put(node, this.total_nodes);
                         node_of_index.put(this.total_nodes, node);
@@ -552,7 +552,7 @@ public class OstrowskiNumeration {
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
-                            .add(index_of_node.get(node));
+                            .add((int)index_of_node.get(node));
                     } else {
                         index_of_node.put(node, this.total_nodes);
                         node_of_index.put(this.total_nodes, node);
@@ -589,7 +589,7 @@ public class OstrowskiNumeration {
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(inp)
-                            .add(index_of_node.get(node));
+                            .add((int)index_of_node.get(node));
                     } else {
                         index_of_node.put(node, this.total_nodes);
                         node_of_index.put(this.total_nodes, node);
@@ -615,7 +615,7 @@ public class OstrowskiNumeration {
                         this.state_transitions
                             .get(cur_node_idx)
                             .get(a)
-                            .add(index_of_node.get(node));
+                            .add((int)index_of_node.get(node));
                     } else {
                         index_of_node.put(node, this.total_nodes);
                         node_of_index.put(this.total_nodes, node);

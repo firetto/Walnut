@@ -121,7 +121,7 @@ public class Morphism {
             Int2ObjectRBTreeMap<IntList> xmap = new Int2ObjectRBTreeMap<>();
             for (int i=0; i<mapping.get(x).size(); i++) {
                 IntList newList = new IntArrayList();
-                newList.add(mapping.get(x).get(i));
+                newList.add((int)mapping.get(x).get(i));
                 xmap.put(i, newList);
             }
             promotion.d.add(xmap);
