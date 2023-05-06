@@ -1945,7 +1945,7 @@ public class Automaton {
         while (subautomata.size() > 0) {
             Automaton next = subautomata.remove();
             long timeBefore = System.currentTimeMillis();
-            if(print){
+            if (print) {
                 String msg = prefix + "computing =>:" + first.Q + " states - " + next.Q + " states";
                 log.append(msg + UtilityMethods.newLine());
                 System.out.println(msg);
@@ -1962,6 +1962,7 @@ public class Automaton {
             product.combineIndex = first.combineIndex + 1;
             product.combineOutputs = first.combineOutputs;
             first = product;
+            
 
             long timeAfter = System.currentTimeMillis();
             if(print){
@@ -1970,6 +1971,12 @@ public class Automaton {
                 System.out.println(msg);
             }
         }
+
+        // totalize the resulting automaton
+        first.totalize(print,prefix+" ",log);
+        
+        System.out.println(first.d);
+
         return first;
     }
 
