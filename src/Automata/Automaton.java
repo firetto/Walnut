@@ -1974,8 +1974,6 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print,prefix+" ",log);
-        
-        System.out.println(first.d);
 
         return first;
     }
