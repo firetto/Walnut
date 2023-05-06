@@ -31,6 +31,7 @@ public class Function extends Token {
 	Automaton A;
 	String name;
 	public Function(int position,String name,Automaton A,int number_of_arguments) throws Exception{
+		System.out.println("DEBUG: " + A.NS);
 		this.name = name;
 		setArity(number_of_arguments);
 		setPositionInPredicate(position);
@@ -56,6 +57,9 @@ public class Function extends Token {
 		Automaton M = new Automaton(true);
 		List<String> identifiers = new ArrayList<String>();
 		List<String> quantify = new ArrayList<String>();
+
+		System.out.println("DEBUG: " + getArity() + " " + A.NS);
+
 		for(int i = 0 ; i < getArity();i++){
 			args.add(temp.pop());
 			Expression currentArg = args.get(i);
