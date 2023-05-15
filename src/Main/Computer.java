@@ -39,7 +39,6 @@ public class Computer {
 	boolean printSteps;
 	boolean printDetails;
 	public Computer(String predicate, boolean printSteps, boolean printDetails) throws Exception {
-		System.out.println("DEBUG: Computer constructor");
 		this.log = new StringBuffer();
 		this.log_details = new StringBuffer();
 		mpl = "";
@@ -47,7 +46,6 @@ public class Computer {
 		predicate_object = new Predicate(predicate);
 		this.printSteps = printSteps;
 		this.printDetails = printDetails;
-		System.out.println("DEBUG: Computer compute called now:");
 		compute();
 	}
 
@@ -107,11 +105,8 @@ public class Computer {
 		long timeBeginning = System.currentTimeMillis();
 		String step,preStep;
 
-		System.out.println(postOrder);
-
 		for(Token t:postOrder) {
 			try{
-				System.out.println("DEBUG TOKEN: " + t + ", " + expression_Stack + ", " + prefix);
 
 				long timeBefore = System.currentTimeMillis();
 				String operands = "";

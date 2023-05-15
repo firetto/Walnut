@@ -440,6 +440,7 @@ public class Automaton {
      */
     public Automaton(String regularExpression, List <Integer> alphabet) throws Exception {
         this();
+
         if(alphabet == null || alphabet.size()== 0)throw new Exception("empty alphabet is not accepted");
         long timeBefore = System.currentTimeMillis();
         alphabet = new ArrayList<Integer>(alphabet);
