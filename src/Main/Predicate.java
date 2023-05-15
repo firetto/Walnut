@@ -340,6 +340,7 @@ public class Predicate {
 	private int put_function(String default_number_system)throws Exception{
 		Matcher matcher = MATCHER_FOR_FUNCTION;
 		Automaton A = new Automaton(UtilityMethods.get_address_for_automata_library()+matcher.group(1)+".txt");
+		
 		Stack<Character> parenthesis_Stack = new Stack<Character>();
 		parenthesis_Stack.push('(');
 		int i = matcher.end();
@@ -384,7 +385,7 @@ public class Predicate {
 				throw new Exception("argument " + (arguments.indexOf(p)+1) + " of the function " + matcher.group(1) + " cannot be empty: char at " + matcher.start(1));
 			postOrder.addAll(tmp);
 		}
-		Function f = new Function(real_starting_position + matcher.start(1), matcher.group(1), A, arguments.size());
+		Function f = new Function(default_number_system, real_starting_position + matcher.start(1), matcher.group(1), A, arguments.size());
 		f.put(postOrder);
 		return i+1;
 	}

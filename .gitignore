@@ -1,5 +1,6 @@
 *.class
 classes/
+.project
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -17,7 +18,12 @@ Result/
 Automata Library/
 Test Results/
 Custom Bases/
-Word Automata Library/test**.txt
+Word Automata Library/
+Morphism Library/
+Transducer Library/
+
+*.swp
+*.swo
 
 # Directory for experiments
 scratch/

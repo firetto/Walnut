@@ -104,8 +104,10 @@ public class Computer {
 		String prefix = "";
 		long timeBeginning = System.currentTimeMillis();
 		String step,preStep;
+
 		for(Token t:postOrder) {
 			try{
+
 				long timeBefore = System.currentTimeMillis();
 				String operands = "";
 				t.act(expression_Stack, printDetails, prefix, log_details);
