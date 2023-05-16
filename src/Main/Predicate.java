@@ -55,6 +55,7 @@ public class Predicate {
 	Matcher MATCHER_FOR_ARITHMETIC_OPERATORS;
 	Matcher MATCHER_FOR_NUMBER_SYSTEM;
 	Matcher MATCHER_FOR_WORD;
+	Matcher MATCHER_FOR_WORD_WITH_DELIMITER;
 	Matcher MATCHER_FOR_FUNCTION;
 	Matcher MATCHER_FOR_MACRO;
 	Matcher MATCHER_FOR_VARIABLE;
@@ -69,12 +70,15 @@ public class Predicate {
 		return number_system_Hash;
 	}
 
-	static String REGEXP_FOR_LOGICAL_OPERATORS = "\\G\\s*(`|\\^|\\&|\\~|\\||=>|<=>|E|A|I|\\u02DC|\\u0303)";
+	static String REGEXP_FOR_LOGICAL_OPERATORS = "\\G\\s*(?<!\\.)(`|\\^|\\&|\\~|\\||=>|<=>|E|A|I|\\u02DC|\\u0303)";
 	static String REGEXP_FOR_LIST_OF_QUANTIFIED_VARIABLES = "\\G\\s*((\\s*([a-zA-Z&&[^AEI]]\\w*)\\s*)(\\s*,\\s*([a-zA-Z&&[^AEI]]\\w*)\\s*)*)";
 	static String REGEXP_FOR_RELATIONAL_OPERATORS = "\\G\\s*(>=|<=|<|>|=|!=)";
 	static String REGEXP_FOR_ARITHMETIC_OPERATORS = "\\G\\s*(_|/|\\*|\\+|\\-)";
 	static String REGEXP_FOR_NUMBER_SYSTEM = "\\G\\s*\\?(((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))";
 	static String REGEXP_FOR_WORD = "\\G\\s*([a-zA-Z&&[^AEI]]\\w*)\\s*\\[";
+
+	// allow automata names that start with A, E, I, for stuff like .AUTOMATON[..] or .EVEN[..], etc.
+	static String REGEXP_FOR_WORD_WITH_DELIMITER = "\\G\\s*\\.([a-zA-Z]\\w*)\\s*\\["; 
 	static String REGEXP_FOR_FUNCTION = "\\G\\s*\\$([a-zA-Z&&[^AEI]]\\w*)\\s*\\(";
 	static String REGEXP_FOR_MACRO = "\\G(\\s*)\\#([a-zA-Z&&[^AEI]]\\w*)\\s*\\(";
 	static String REGEXP_FOR_VARIABLE = "\\G\\s*([a-zA-Z&&[^AEI]]\\w*)";
@@ -89,6 +93,7 @@ public class Predicate {
 	static Pattern PATTERN_FOR_ARITHMETIC_OPERATORS = Pattern.compile(REGEXP_FOR_ARITHMETIC_OPERATORS);
 	static Pattern PATTERN_FOR_NUMBER_SYSTEM = Pattern.compile(REGEXP_FOR_NUMBER_SYSTEM);
 	static Pattern PATTERN_FOR_WORD = Pattern.compile(REGEXP_FOR_WORD);
+	static Pattern PATTERN_FOR_WORD_WITH_DELIMITER = Pattern.compile(REGEXP_FOR_WORD_WITH_DELIMITER);
 	static Pattern PATTERN_FOR_FUNCTION = Pattern.compile(REGEXP_FOR_FUNCTION);
 	static Pattern PATTERN_FOR_MACRO = Pattern.compile(REGEXP_FOR_MACRO);
 	static Pattern PATTERN_FOR_VARIABLE = Pattern.compile(REGEXP_FOR_VARIABLE);
@@ -111,6 +116,7 @@ public class Predicate {
 		MATCHER_FOR_ARITHMETIC_OPERATORS = PATTERN_FOR_ARITHMETIC_OPERATORS.matcher(predicate);
 		MATCHER_FOR_NUMBER_SYSTEM = PATTERN_FOR_NUMBER_SYSTEM.matcher(predicate);
 		MATCHER_FOR_WORD = PATTERN_FOR_WORD.matcher(predicate);
+		MATCHER_FOR_WORD_WITH_DELIMITER = PATTERN_FOR_WORD_WITH_DELIMITER.matcher(predicate);
 		MATCHER_FOR_FUNCTION = PATTERN_FOR_FUNCTION.matcher(predicate);
 		MATCHER_FOR_MACRO = PATTERN_FOR_MACRO.matcher(predicate);
 		MATCHER_FOR_VARIABLE = PATTERN_FOR_VARIABLE.matcher(predicate);
@@ -183,7 +189,12 @@ public class Predicate {
 				if(!lastTokenWasOperator)throw new Exception(
 					"An operator is missing: char at " + (real_starting_position+index));
 				lastTokenWasOperator = false;
-				index = put_word(current_number_system);
+				index = put_word(current_number_system, false);
+			} else if(MATCHER_FOR_WORD_WITH_DELIMITER.find(index)) {
+				if(!lastTokenWasOperator)throw new Exception(
+					"An operator is missing: char at " + (real_starting_position+index));
+				lastTokenWasOperator = false;
+				index = put_word(current_number_system, true);
 			} else if(MATCHER_FOR_FUNCTION.find(index)) {
 				if(!lastTokenWasOperator)throw new Exception(
 					"An operator is missing: char at " + (real_starting_position+index));
@@ -286,8 +297,12 @@ public class Predicate {
 		if(MATCHER_FOR_NUMBER_SYSTEM.group(9) != null)return "msd_"+MATCHER_FOR_NUMBER_SYSTEM.group(9);
 		return "msd_2";
 	}
-	private int put_word(String default_number_system)throws Exception{
+	private int put_word(String default_number_system, boolean with_delimiter)throws Exception{
 		Matcher matcher = MATCHER_FOR_WORD;
+		if (with_delimiter) {
+			matcher = MATCHER_FOR_WORD_WITH_DELIMITER;
+		}
+		
 		String r_leftBracket = "\\G\\s*\\[";
 		Pattern p_leftBracket = Pattern.compile(r_leftBracket);
 		Matcher m_leftBracket = p_leftBracket.matcher(predicate);
