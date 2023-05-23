@@ -1011,9 +1011,19 @@ public class NumberSystem {
 			P.sortLabel();
 		} else { // n > 1
 			String a = "a",b = "b",c = "c",d = "d";
-			//b = floor(n/2)*a
-			Automaton M = getMultiplication(n/2);
-			M.bind(a,b);
+
+			// doubler
+			Automaton D = getMultiplication(2); 
+
+			if (n % 2 == 0) { // suppose n = 2k
+				//b = k*a
+				Automaton M = getMultiplication(n/2);
+				M.bind(a, b);
+
+				
+			}
+
+
 			//c = ceil(n/2)*a
 			Automaton N = getMultiplication(n/2 + (n%2 == 0 ? 0:1));
 			N.bind(a,c);
