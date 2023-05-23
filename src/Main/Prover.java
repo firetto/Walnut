@@ -1169,7 +1169,7 @@ public class Prover {
 
 			M.fixLeadingZerosProblem(printSteps || printDetails, prefix, log);
 
-			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXLEADZERO_NEW_NAME)+".gv", s, true);
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXLEADZERO_NEW_NAME)+".gv", s, false);
 			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXLEADZERO_NEW_NAME)+".txt");
 			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXLEADZERO_NEW_NAME)+".txt");
 			return new TestCase(s,M,"","","");
@@ -1195,7 +1195,7 @@ public class Prover {
 
 			M.fixTrailingZerosProblem(printSteps || printDetails, prefix, log);
 
-			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".gv", s, true);
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".gv", s, false);
 			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".txt");
 			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".txt");
 			return new TestCase(s,M,"","","");
