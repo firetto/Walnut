@@ -14,14 +14,14 @@ The new capabilities are as follows:
 
 One can now "fix" leading and trailing zeroes for Automata (not Word Automata) using the "fixleadzero" and "fixtrailzero" commands. The syntax is as follows: for an automaton "foo" saved in "Automata Library/", one writes
 
-fixleadzero bar foo;
+	fixleadzero bar foo;
 
 The resulting automaton bar accepts an input 0* x' if and only if foo accepts an input x, where x' is x with its leading zeroes removed.
 
 
 Similarly, for trailing zeroes, one writes
 
-fixtrailzero bar foo;
+	fixtrailzero bar foo;
 
 The resulting automaton bar accepts an input x' 0* if and only if foo accepts an input x, where x' is x with its trailing zeroes removed.
 
