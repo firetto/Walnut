@@ -26,6 +26,9 @@ fixtrailzero bar foo;
 The resulting automaton bar accepts an input x' 0* if and only if foo accepts an input x, where x' is x with its trailing zeroes removed.
 
 
+For both cases, the resulting automaton "bar" will be saved in the "Automata Library/" directory.
+
+
 
 # Delimiters for Word Automata
 
