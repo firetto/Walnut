@@ -5,6 +5,7 @@ This new version of Walnut has new capabilities and changes added by Anatoly Zav
 The new capabilities are as follows:
 
 - Delimiters for Word Automata
+- Reversing automata
 - Bug fixes
 
 
@@ -18,12 +19,21 @@ If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (withou
 
 
 
+# Reversing automata
 
+One can now use the "reverse" command to reverse ordinary automata saved in the "Automata Library/" directory.
 
+To reverse Automata, one prepends the "$" symbol (without the quotation marks) to the old Automaton's name. The result will be saved in the "Automata Library/" directory.
 
+For example, to reverse an Automaton named "foo" saved in "Automata Library/", one writes
+
+	reverse bar $foo;
+
+The resulting automaton bar will be saved in "Automata Library/".
 
 
 
 # Bug fixes:
 
-- 
+- Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
+- Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
