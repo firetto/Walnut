@@ -45,7 +45,7 @@ import Automata.Transducer;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -166,6 +166,14 @@ public class Prover {
 				GROUP_CONVERT_NEW_DOLLAR_SIGN = 1, GROUP_CONVERT_OLD_DOLLAR_SIGN = 6,
 				GROUP_CONVERT_NUMBER_SYSTEM = 3, GROUP_CONVERT_MSD_OR_LSD = 4,
 				GROUP_CONVERT_BASE = 5;
+
+	static String REGEXP_FOR_fixleadzero_COMMAND = "^\\s*fixleadzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_fixleadzero_COMMAND = Pattern.compile(REGEXP_FOR_fixleadzero_COMMAND);
+	static int GROUP_FIXLEADZERO_NEW_NAME = 1, GROUP_FIXLEADZERO_DOLLAR_SIGN = 2, GROUP_FIXLEADZERO_OLD_NAME = 3, GROUP_FIXLEADZERO_END = 4;
+
+	static String REGEXP_FOR_fixtrailzero_COMMAND = "^\\s*fixtrailzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_fixtrailzero_COMMAND = Pattern.compile(REGEXP_FOR_fixtrailzero_COMMAND);
+	static int GROUP_FIXTRAILZERO_NEW_NAME = 1, GROUP_FIXTRAILZERO_DOLLAR_SIGN = 2, GROUP_FIXTRAILZERO_OLD_NAME = 3, GROUP_FIXTRAILZERO_END = 4;
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -360,6 +368,10 @@ public class Prover {
 			minimizeCommand(s);
 		} else if (commandName.equals("convert")) {
 			convertCommand(s);
+		} else if (commandName.equals("fixleadzero")) {
+			fixLeadZeroCommand(s);
+		} else if (commandName.equals("fixtrailzero")) {
+			fixTrailZeroCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -410,6 +422,10 @@ public class Prover {
 			return minimizeCommand(s);
 		} else if (commandName.equals("convert")) {
 			return convertCommand(s);
+		} else if (commandName.equals("fixleadzero")) {
+			fixLeadZeroCommand(s);
+		} else if (commandName.equals("fixtrailzero")) {
+			fixTrailZeroCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1060,7 +1076,7 @@ public class Prover {
 			return new TestCase(s,M,"","","");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error reversing word automaton.");
+			throw new Exception("Error reversing automaton.");
 		}
 	}
 
@@ -1134,6 +1150,58 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error converting automaton.");
+		}
+	}
+
+	public static TestCase fixLeadZeroCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_fixleadzero_COMMAND.matcher(s);
+			if(!m.find()) {
+				throw new Exception("Invalid use of fixleadzero command.");
+			}
+
+			boolean printSteps = m.group(GROUP_FIXLEADZERO_END).equals(":");
+			boolean printDetails = m.group(GROUP_FIXLEADZERO_END).equals("::");
+			String prefix = new String();
+			StringBuffer log = new StringBuffer();
+
+			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXLEADZERO_OLD_NAME) + ".txt");
+
+			M.fixLeadingZerosProblem(printSteps || printDetails, prefix, log);
+
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXLEADZERO_NEW_NAME)+".gv", s, true);
+			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXLEADZERO_NEW_NAME)+".txt");
+			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXLEADZERO_NEW_NAME)+".txt");
+			return new TestCase(s,M,"","","");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error fixing leading zeroes for automaton.");
+		}
+	}
+
+	public static TestCase fixTrailZeroCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_fixtrailzero_COMMAND.matcher(s);
+			if(!m.find()) {
+				throw new Exception("Invalid use of fixtrailzero command.");
+			}
+
+			boolean printSteps = m.group(GROUP_FIXTRAILZERO_END).equals(":");
+			boolean printDetails = m.group(GROUP_FIXTRAILZERO_END).equals("::");
+			String prefix = new String();
+			StringBuffer log = new StringBuffer();
+
+			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXTRAILZERO_OLD_NAME) + ".txt");
+
+			M.fixTrailingZerosProblem(printSteps || printDetails, prefix, log);
+
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".gv", s, true);
+			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".txt");
+			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXTRAILZERO_NEW_NAME)+".txt");
+			return new TestCase(s,M,"","","");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error fixing trailing zeroes for automaton.");
 		}
 	}
 

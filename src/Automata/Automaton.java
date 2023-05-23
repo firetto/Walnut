@@ -3528,7 +3528,7 @@ public class Automaton {
         }
     }
 
-    private void fixLeadingZerosProblem(boolean print, String prefix,StringBuffer log)throws Exception{
+    public void fixLeadingZerosProblem(boolean print, String prefix,StringBuffer log)throws Exception{
         if(TRUE_FALSE_AUTOMATON)return;
         long timeBefore = System.currentTimeMillis();
         if(print){
@@ -3558,7 +3558,7 @@ public class Automaton {
         }
     }
 
-    private void fixTrailingZerosProblem(boolean print, String prefix,StringBuffer log) throws Exception{
+    public void fixTrailingZerosProblem(boolean print, String prefix,StringBuffer log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "fixing trailing zeros:" + Q + " states";
