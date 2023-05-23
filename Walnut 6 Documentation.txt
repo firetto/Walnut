@@ -1,0 +1,29 @@
+                      WALNUT 6 Additional Documentation
+
+This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca).
+
+The new capabilities are as follows:
+
+- Delimiters for Word Automata
+- Bug fixes
+
+
+# Delimiters for Word Automata
+
+In previous versions of Walnut, word automata names could not begin with A, E, or I. This restriction has now been lifted using a new delimiter for word automata: putting "." (without quotation marks) before the name of a word automaton now signals that the following string of characters is the name of the word automaton. 
+
+If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
+
+    def test ".AUTOMATON[n] = @1";
+
+
+
+
+
+
+
+
+
+# Bug fixes:
+
+- 

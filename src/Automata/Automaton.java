@@ -1032,6 +1032,9 @@ public class Automaton {
             // flip the number system from msd to lsd and vice versa.
             if (reverseMsd) {
                 for (int i = 0; i < NS.size(); i++) {
+                    if (NS.get(i) == null) {
+                        continue;
+                    }
                     int indexOfUnderscore = NS.get(i).getName().indexOf("_");
                     String msd_or_lsd = NS.get(i).getName().substring(0, indexOfUnderscore);
                     String suffix = NS.get(i).getName().substring(indexOfUnderscore);

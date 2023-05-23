@@ -152,9 +152,9 @@ public class Prover {
 	static int GROUP_TRANSDUCE_NEW_NAME = 1, GROUP_TRANSDUCE_TRANSDUCER = 2,
 			GROUP_TRANSDUCE_DOLLAR_SIGN = 3, GROUP_TRANSDUCE_OLD_NAME = 4, GROUP_TRANSDUCE_END = 5;
 
-	static String REGEXP_FOR_reverse_COMMAND = "^\\s*reverse\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_reverse_COMMAND = "^\\s*reverse\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_reverse_COMMAND = Pattern.compile(REGEXP_FOR_reverse_COMMAND);
-	static int GROUP_REVERSE_NEW_NAME = 1, GROUP_REVERSE_OLD_NAME = 2, GROUP_REVERSE_END = 3;
+	static int GROUP_REVERSE_NEW_NAME = 1, GROUP_REVERSE_DOLLAR_SIGN = 2, GROUP_REVERSE_OLD_NAME = 3, GROUP_REVERSE_END = 4;
 
 	static String REGEXP_FOR_minimize_COMMAND = "^\\s*minimize\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_minimize_COMMAND = Pattern.compile(REGEXP_FOR_minimize_COMMAND);
@@ -565,11 +565,13 @@ public class Prover {
 		Automaton M = new Automaton();
 		M.A = alphabets;
 		String baseexp = m.group(R_REGEXP);
+
 		Matcher m2 = PATTERN_FOR_AN_ALPHABET_VECTOR.matcher(baseexp);
 		// if we haven't had to replace any input vectors with unicode, we use the legacy method of constructing the automaton
 		while (m2.find()) {
 			List<Integer> L = new ArrayList<Integer>();
 			String alphabetVector = m2.group();
+
 			// needed to replace this string with the unicode mapping
 			String alphabetVectorCopy = alphabetVector;
 			if (alphabetVector.charAt(0) == '[') {
@@ -1044,13 +1046,17 @@ public class Prover {
 			String prefix = new String();
 			StringBuffer log = new StringBuffer();
 
-			Automaton M = new Automaton(UtilityMethods.get_address_for_words_library() +
-					m.group(GROUP_REVERSE_OLD_NAME) + ".txt");
+			String library = UtilityMethods.get_address_for_words_library();
+			if (m.group(GROUP_REVERSE_DOLLAR_SIGN).equals("$")) {
+				library = UtilityMethods.get_address_for_automata_library();
+			}
+
+			Automaton M = new Automaton(library + m.group(GROUP_REVERSE_OLD_NAME) + ".txt");
 
 			M.reverseWithOutput(true, printSteps || printDetails, prefix, log);
 			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_REVERSE_NEW_NAME)+".gv", s, true);
 			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_REVERSE_NEW_NAME)+".txt");
-			M.write(UtilityMethods.get_address_for_words_library()+m.group(GROUP_REVERSE_NEW_NAME)+".txt");
+			M.write(library + m.group(GROUP_REVERSE_NEW_NAME)+".txt");
 			return new TestCase(s,M,"","","");
 		} catch (Exception e) {
 			e.printStackTrace();
