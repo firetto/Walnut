@@ -632,6 +632,9 @@ public class Prover {
 		// We should always do this with replacement, since we may have regexes such as "...", which accepts any three characters
 		// in a row, on an alphabet containing bracketed characters. We don't make any replacements here, but they are implicitly made
 		// when we intersect with our alphabet(s).
+
+		baseexp = baseexp.replaceAll("\\s","");
+
 		Automaton R = new Automaton(baseexp,M.A,M.alphabetSize);
 		R.A = M.A;
 		R.alphabetSize = M.alphabetSize;
