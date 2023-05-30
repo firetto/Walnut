@@ -1009,29 +1009,44 @@ public class NumberSystem {
 			P = P.and(M, false, null, null);
 			P.quantify(c,false,null,null);
 			P.sortLabel();
-		} else { // n > 1
+		} else if (n==2) {
+			String a = "a",d = "d";
+			P = arithmetic(a, a, d, "+");
+			P.sortLabel();
+		} else { // n > 2
 			String a = "a",b = "b",c = "c",d = "d";
 
 			// doubler
 			Automaton D = getMultiplication(2); 
 
-			if (n % 2 == 0) { // suppose n = 2k
-				//b = k*a
-				Automaton M = getMultiplication(n/2);
-				M.bind(a, b);
+			//b = k*a
+			Automaton M = getMultiplication(n/2);
+			M.bind(a, b);
 
+			if (n % 2 == 0) { // suppose n = 2k
+				D.bind(b, d);
+				P = M.and(D, false, null, null);
+				P.quantify(b, false, null, null);
+			}
+			else { // n = 2k+1
+				D.bind(b, c);
+				P = arithmetic(c, a, d, "+");
+				P = P.and(M, false, null, null);
+				P = P.and(D, false, null, null);
+				P.quantify(b, c, is_msd, false, null, null);
 				
 			}
 
+			// //c = ceil(n/2)*a
+			// Automaton N = getMultiplication(n/2 + (n%2 == 0 ? 0:1));
+			// N.bind(a,c);
 
-			//c = ceil(n/2)*a
-			Automaton N = getMultiplication(n/2 + (n%2 == 0 ? 0:1));
-			N.bind(a,c);
-			// Eb,Ec, b + c = d & b = floor(n/2)*a & c = ciel(n/2)*a
-			P = arithmetic(b, c, d, "+");
-			P = P.and(M,false,null,null);
-			P = P.and(N,false,null,null);
-			P.quantify(b,c,is_msd,false,null,null);
+			// // Eb,Ec, b + c = d & b = floor(n/2)*a & c = ciel(n/2)*a
+			// P = arithmetic(b, c, d, "+");
+			// P = P.and(M,false,null,null);
+			// P = P.and(N,false,null,null);
+			// P.quantify(b,c,is_msd,false,null,null);
+
 			P.sortLabel();
 		}
 		multiplicationsDynamicTable.put(n, P);
