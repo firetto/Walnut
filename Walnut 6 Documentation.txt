@@ -7,7 +7,7 @@ The new capabilities are as follows:
 - Fixing leading and trailing zeroes
 - Delimiters for Word Automata
 - Reversing automata
-- Bug fixes
+- Bug fixes and performance improvements
 
 
 # Fixing leading and trailing zeroes
@@ -58,3 +58,8 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 - Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
 - Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
+
+
+
+# Performance improvements:
+- Multiplication has been drastically sped up
