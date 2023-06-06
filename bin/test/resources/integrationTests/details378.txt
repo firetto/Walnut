@@ -1,0 +1,234 @@
+computing j>=1
+computed j>=1
+j>=1:3 states - 1ms
+ Computing 2*j
+ computed 2*j
+ Computing i+(2*j)
+  computing &:16 states - 10 states
+  Computing cross product:16 states - 10 states
+    Progress: Added 100 states - 4 states left in queue - 104 reachable states - 0ms
+  computed cross product:104 states - 0ms
+   Minimizing: 104 states.
+    Determinizing: 104 states
+      Progress: Added 100 states - 4 states left in queue - 104 reachable states - 0ms
+    Determinized: 104 states - 0ms
+   Minimized:83 states - 0ms.
+  computed &:83 states - 0ms
+  quantifying:83 states
+   Minimizing: 83 states.
+    Determinizing: 83 states
+    Determinized: 61 states - 0ms
+   Minimized:40 states - 0ms.
+  quantified:40 states - 0ms
+  fixing leading zeros:40 states
+   Determinizing: 40 states
+   Determinized: 40 states - 1ms
+   Minimizing: 40 states.
+    Determinizing: 40 states
+    Determinized: 40 states - 0ms
+   Minimized:40 states - 0ms.
+  fixed leading zeros:40 states - 1ms
+ computed i+(2*j)
+ computing (i+(2*j))<=n
+  computing &:6 states - 40 states
+  Computing cross product:6 states - 40 states
+    Progress: Added 100 states - 14 states left in queue - 114 reachable states - 0ms
+  computed cross product:129 states - 0ms
+   Minimizing: 129 states.
+    Determinizing: 129 states
+      Progress: Added 100 states - 14 states left in queue - 114 reachable states - 0ms
+    Determinized: 129 states - 1ms
+   Minimized:123 states - 1ms.
+  computed &:123 states - 1ms
+  quantifying:123 states
+   Minimizing: 123 states.
+    Determinizing: 123 states
+      Progress: Added 100 states - 15 states left in queue - 115 reachable states - 1ms
+    Determinized: 120 states - 1ms
+   Minimized:51 states - 1ms.
+  quantified:51 states - 1ms
+  fixing leading zeros:51 states
+   Determinizing: 51 states
+   Determinized: 51 states - 0ms
+   Minimizing: 51 states.
+    Determinizing: 51 states
+    Determinized: 51 states - 0ms
+   Minimized:51 states - 0ms.
+  fixed leading zeros:51 states - 0ms
+ computed (i+(2*j))<=n
+ (i+(2*j))<=n:51 states - 3ms
+  computing j>=1&(i+(2*j))<=n
+   computing &:3 states - 51 states
+   Computing cross product:3 states - 51 states
+   computed cross product:71 states - 0ms
+    Minimizing: 71 states.
+     Determinizing: 71 states
+     Determinized: 71 states - 0ms
+    Minimized:67 states - 0ms.
+   computed &:67 states - 0ms
+  computed j>=1&(i+(2*j))<=n
+  (j>=1&(i+(2*j))<=n):67 states - 0ms
+   computing k<j
+   computed k<j
+   k<j:6 states - 0ms
+    Computing i+k
+    computed i+k
+    computing F[...]
+    computed F[(i+k)]
+    Computing i+j
+    computed i+j
+    Computing (i+j)+k
+     computing &:16 states - 16 states
+     Computing cross product:16 states - 16 states
+       Progress: Added 100 states - 32 states left in queue - 132 reachable states - 0ms
+     computed cross product:164 states - 1ms
+      Minimizing: 164 states.
+       Determinizing: 164 states
+         Progress: Added 100 states - 32 states left in queue - 132 reachable states - 0ms
+       Determinized: 164 states - 0ms
+      Minimized:139 states - 1ms.
+     computed &:139 states - 2ms
+     quantifying:139 states
+      Minimizing: 139 states.
+       Determinizing: 139 states
+         Progress: Added 100 states - 10 states left in queue - 110 reachable states - 0ms
+       Determinized: 115 states - 0ms
+      Minimized:78 states - 1ms.
+     quantified:78 states - 1ms
+     fixing leading zeros:78 states
+      Determinizing: 78 states
+      Determinized: 78 states - 0ms
+      Minimizing: 78 states.
+       Determinizing: 78 states
+       Determinized: 78 states - 0ms
+      Minimized:78 states - 0ms.
+     fixed leading zeros:78 states - 0ms
+    computed (i+j)+k
+    computing F[...]
+    computed F[((i+j)+k)]
+    computing F[(i+k)]=F[((i+j)+k)]
+     comparing (=):2 states - 2 states
+      Computing cross product:2 states - 2 states
+      computed cross product:4 states - 0ms
+      Minimizing: 4 states.
+       Determinizing: 4 states
+       Determinized: 4 states - 0ms
+      Minimized:4 states - 0ms.
+     compared (=):2 states - 0ms
+     computing &:4 states - 16 states
+     Computing cross product:4 states - 16 states
+     computed cross product:34 states - 0ms
+      Minimizing: 34 states.
+       Determinizing: 34 states
+       Determinized: 34 states - 1ms
+      Minimized:32 states - 1ms.
+     computed &:32 states - 1ms
+     computing &:32 states - 78 states
+     Computing cross product:32 states - 78 states
+       Progress: Added 100 states - 81 states left in queue - 181 reachable states - 0ms
+     computed cross product:312 states - 0ms
+      Minimizing: 312 states.
+       Determinizing: 312 states
+         Progress: Added 100 states - 82 states left in queue - 182 reachable states - 1ms
+       Determinized: 312 states - 2ms
+      Minimized:141 states - 2ms.
+     computed &:141 states - 2ms
+     quantifying:141 states
+      Minimizing: 141 states.
+       Determinizing: 141 states
+         Progress: Added 100 states - 9 states left in queue - 109 reachable states - 1ms
+       Determinized: 117 states - 1ms
+      Minimized:112 states - 1ms.
+     quantified:112 states - 1ms
+     fixing leading zeros:112 states
+      Determinizing: 112 states
+        Progress: Added 100 states - 11 states left in queue - 111 reachable states - 0ms
+      Determinized: 112 states - 0ms
+      Minimizing: 112 states.
+       Determinizing: 112 states
+         Progress: Added 100 states - 11 states left in queue - 111 reachable states - 1ms
+       Determinized: 112 states - 1ms
+      Minimized:112 states - 1ms.
+     fixed leading zeros:112 states - 1ms
+     quantifying:112 states
+      Minimizing: 112 states.
+       Determinizing: 112 states
+         Progress: Added 100 states - 18 states left in queue - 118 reachable states - 0ms
+       Determinized: 134 states - 0ms
+      Minimized:119 states - 1ms.
+     quantified:119 states - 1ms
+     fixing leading zeros:119 states
+      Determinizing: 119 states
+        Progress: Added 100 states - 27 states left in queue - 127 reachable states - 0ms
+      Determinized: 145 states - 0ms
+      Minimizing: 145 states.
+       Determinizing: 145 states
+         Progress: Added 100 states - 27 states left in queue - 127 reachable states - 0ms
+       Determinized: 145 states - 1ms
+      Minimized:61 states - 1ms.
+     fixed leading zeros:61 states - 1ms
+    computed F[(i+k)]=F[((i+j)+k)]
+    F[(i+k)]=F[((i+j)+k)]:61 states - 7ms
+     computing k<j=>F[(i+k)]=F[((i+j)+k)]
+      computing =>:6 states - 61 states
+       totalizing:6 states
+       totalized:7 states - 0ms
+       totalizing:61 states
+       totalized:62 states - 0ms
+       Computing cross product:7 states - 62 states
+         Progress: Added 100 states - 34 states left in queue - 134 reachable states - 0ms
+       computed cross product:156 states - 0ms
+       Minimizing: 156 states.
+        Determinizing: 156 states
+          Progress: Added 100 states - 34 states left in queue - 134 reachable states - 1ms
+        Determinized: 156 states - 1ms
+       Minimized:92 states - 1ms.
+      computed =>:93 states - 3ms
+     computed k<j=>F[(i+k)]=F[((i+j)+k)]
+     (k<j=>F[(i+k)]=F[((i+j)+k)]):93 states - 3ms
+      computing quantifier A
+       computing ~:93 states
+        totalizing:93 states
+        totalized:94 states - 0ms
+        Minimizing: 94 states.
+         Determinizing: 94 states
+         Determinized: 94 states - 1ms
+        Minimized:94 states - 1ms.
+       computed ~:85 states - 3ms
+       quantifying:85 states
+        Minimizing: 85 states.
+         Determinizing: 85 states
+           Progress: Added 100 states - 71 states left in queue - 171 reachable states - 0ms
+         Determinized: 236 states - 1ms
+        Minimized:12 states - 1ms.
+       quantified:12 states - 1ms
+       fixing leading zeros:12 states
+        Determinizing: 12 states
+        Determinized: 12 states - 0ms
+        Minimizing: 12 states.
+         Determinizing: 12 states
+         Determinized: 12 states - 0ms
+        Minimized:12 states - 0ms.
+       fixed leading zeros:12 states - 0ms
+       computing ~:12 states
+        totalizing:12 states
+        totalized:13 states - 0ms
+        Minimizing: 13 states.
+         Determinizing: 13 states
+         Determinized: 13 states - 0ms
+        Minimized:13 states - 0ms.
+       computed ~:6 states - 0ms
+      computed quantifier (A k (k<j=>F[(i+k)]=F[((i+j)+k)]))
+      (A k (k<j=>F[(i+k)]=F[((i+j)+k)])):6 states - 4ms
+       computing (j>=1&(i+(2*j))<=n)&(A k (k<j=>F[(i+k)]=F[((i+j)+k)]))
+        computing &:67 states - 6 states
+        Computing cross product:67 states - 6 states
+        computed cross product:61 states - 0ms
+         Minimizing: 61 states.
+          Determinizing: 61 states
+          Determinized: 61 states - 1ms
+         Minimized:27 states - 1ms.
+        computed &:27 states - 1ms
+       computed (j>=1&(i+(2*j))<=n)&(A k (k<j=>F[(i+k)]=F[((i+j)+k)]))
+       ((j>=1&(i+(2*j))<=n)&(A k (k<j=>F[(i+k)]=F[((i+j)+k)]))):27 states - 1ms
+Total computation time: 23ms.

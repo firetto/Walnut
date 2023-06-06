@@ -325,7 +325,7 @@ public class Automaton {
         /* Make transition partition */
         C.init( num_transitions );
         if( num_transitions != 0 ){
-            Arrays.sort(C.E, new Comparator<>() {
+            Arrays.sort(C.E, new Comparator<Integer>() {
                 @Override
                 public int compare(Integer a, Integer b)
                 {
