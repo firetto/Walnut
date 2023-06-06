@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Build with tests
 ./gradlew clean build test jacocoTestReport customFatJar
 
 # If you want a fast build without tests, you can run:

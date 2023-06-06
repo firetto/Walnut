@@ -635,6 +635,7 @@ public class Prover {
 		// in a row, on an alphabet containing bracketed characters. We don't make any replacements here, but they are implicitly made
 		// when we intersect with our alphabet(s).
 
+		// remove all whitespace from regular expression.
 		baseexp = baseexp.replaceAll("\\s","");
 
 		Automaton R = new Automaton(baseexp,M.A,M.alphabetSize);
@@ -1168,7 +1169,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_FIXLEADZERO_END).equals(":");
 			boolean printDetails = m.group(GROUP_FIXLEADZERO_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXLEADZERO_OLD_NAME) + ".txt");
 
@@ -1194,7 +1195,7 @@ public class Prover {
 			boolean printSteps = m.group(GROUP_FIXTRAILZERO_END).equals(":");
 			boolean printDetails = m.group(GROUP_FIXTRAILZERO_END).equals("::");
 			String prefix = new String();
-			StringBuffer log = new StringBuffer();
+			StringBuilder log = new StringBuilder();
 
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_FIXTRAILZERO_OLD_NAME) + ".txt");
 

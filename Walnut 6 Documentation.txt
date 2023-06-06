@@ -54,7 +54,7 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 
 
-# Bug fixe
+# Bug fixes
 
 - Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
 - Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
@@ -63,4 +63,5 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 
 # Performance improvements
+- Significant memory and time improvements for Walnut commands
 - Multiplication has been drastically sped up

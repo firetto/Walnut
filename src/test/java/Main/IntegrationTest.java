@@ -864,7 +864,7 @@ public class IntegrationTest {
 		try{
 			TestCase actual = Prover.dispatchForIntegrationTest(command);
 			Assertions.assertTrue(conformMPL(expected.mpl.trim(),actual.mpl.trim()), "MPL does not conform");
-			Assertions.assertTrue(conformDetails(expected.details.trim(),actual.details.trim()), "Details do not conform");
+			Assertions.assertTrue(conformDetails(expected.details.trim(),actual.details.trim()), "Details do not conform. \n ----- EXPECTED DETAILS: \n\n" + expected.details.trim() + "\n ----- ACTUAL DETAILS: \n\n" + actual.details.trim());
 			Assertions.assertTrue(actual.result == null || expected.result != null);
 			Assertions.assertTrue(actual.result != null || expected.result == null);
 			// We don't use assertEquals here, since equals has been overridden in the Automaton class

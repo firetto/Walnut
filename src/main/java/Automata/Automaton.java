@@ -895,6 +895,9 @@ public class Automaton {
         // flip the number system from msd to lsd and vice versa.
         if (reverseMsd) {
             for (int i = 0; i < NS.size(); i++) {
+                if (NS.get(i) == null) {
+                    continue;
+                }
                 int indexOfUnderscore = NS.get(i).getName().indexOf("_");
                 String msd_or_lsd = NS.get(i).getName().substring(0, indexOfUnderscore);
                 String suffix = NS.get(i).getName().substring(indexOfUnderscore);
@@ -1019,6 +1022,9 @@ public class Automaton {
             // flip the number system from msd to lsd and vice versa.
             if (reverseMsd) {
                 for (int i = 0; i < NS.size(); i++) {
+                    if (NS.get(i) == null) {
+                        continue;
+                    }
                     int indexOfUnderscore = NS.get(i).getName().indexOf("_");
                     String msd_or_lsd = NS.get(i).getName().substring(0, indexOfUnderscore);
                     String suffix = NS.get(i).getName().substring(indexOfUnderscore);
@@ -1317,7 +1323,7 @@ public class Automaton {
 
                 @Override
                 public int hashCode() {
-                    int result = (int) (this.state ^ (this.state >>> 32));
+                    int result = this.state ^ (this.state >>> 32);
                     result = 31 * result + this.string.hashCode();
                     return result;
                 }
@@ -1940,7 +1946,7 @@ public class Automaton {
         while (subautomata.size() > 0) {
             Automaton next = subautomata.remove();
             long timeBefore = System.currentTimeMillis();
-            if(print){
+            if (print) {
                 String msg = prefix + "computing =>:" + first.Q + " states - " + next.Q + " states";
                 log.append(msg + UtilityMethods.newLine());
                 System.out.println(msg);
@@ -1965,6 +1971,10 @@ public class Automaton {
                 System.out.println(msg);
             }
         }
+
+        // totalize the resulting automaton
+        first.totalize(print, prefix+" ", log);
+
         return first;
     }
 
@@ -3554,7 +3564,7 @@ public class Automaton {
         return newO;
     }
 
-    private void fixLeadingZerosProblem(boolean print, String prefix,StringBuilder log)throws Exception{
+    public void fixLeadingZerosProblem(boolean print, String prefix,StringBuilder log)throws Exception{
         if(TRUE_FALSE_AUTOMATON)return;
         long timeBefore = System.currentTimeMillis();
         if(print){
@@ -3584,7 +3594,7 @@ public class Automaton {
         }
     }
 
-    private void fixTrailingZerosProblem(boolean print, String prefix,StringBuilder log) throws Exception{
+    public void fixTrailingZerosProblem(boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "fixing trailing zeros:" + Q + " states";

@@ -25,16 +25,21 @@ import java.util.Stack;
 import Main.Expression;
 import Main.UtilityMethods;
 import Automata.Automaton;
+import Automata.NumberSystem;
 
 
 public class Function extends Token {
 	Automaton A;
 	String name;
-	public Function(int position,String name,Automaton A,int number_of_arguments) throws Exception{
+	NumberSystem ns;
+
+
+	public Function(String number_system, int position,String name,Automaton A,int number_of_arguments) throws Exception{
 		this.name = name;
 		setArity(number_of_arguments);
 		setPositionInPredicate(position);
 		this.A = A;
+		this.ns = new NumberSystem(number_system);
 		if(A.getArity() != getArity())throw new Exception("function " + name + " requires " + A.getArity() +" arguments: char at " + getPositionInPredicate());
 	}
 	public String toString(){
@@ -76,7 +81,7 @@ public class Function extends Token {
 				}
 				else{
 					String new_identifier = currentArg.identifier+getUniqueString();
-					Automaton eq = A.NS.get(i).equality.clone();
+					Automaton eq = this.ns.equality.clone();
 					eq.bind(currentArg.identifier,new_identifier);
 					M = M.and(eq,print,prefix+" ",log);
 					quantify.add(new_identifier);

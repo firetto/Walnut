@@ -483,7 +483,7 @@ public class Transducer extends Automaton {
                 public int hashCode() {
 
                     // DO NOT use the string to hash. Only use the state and the iterates.
-                    int result = (int) (this.state ^ (this.state >>> 32));
+                    int result = this.state ^ (this.state >>> 32);
                     result = 31 * result + this.iterates.hashCode();
                     return result;
                 }
