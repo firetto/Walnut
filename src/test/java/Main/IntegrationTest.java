@@ -757,6 +757,12 @@ public class IntegrationTest {
 		L.add("reg test562 {0,1} msd_fib \"()|[0,0]|[1,0]|(([0,0]|[1,0])([0,0]|[1,0]))|(([0,0]|[1,0])*(([0,0]([0,0]|[1,0])([0,0]|[1,0]))|([1,0]([0,0]|[1,0])([0,1]|[1,1]))))\":");
 		L.add("reg test563 {0,1} msd_fib \"()|[0,0]|[1,0]|(([0,0]|[1,0])    ([0,0]|[1,0]))|(([0,0]|[1,0])*(([0,0]([0,0]|[1,0] )  ([0,0]|[1,0]))|([1,0]([0,0]|[1,0])(  [0,1]|[1,1]))))\":");
 		L.add("eval test564 \"$test562(x, y) <=> $test563(x, y)\";");
+
+		// test combine totalization
+		L.add("reg test565 {-1,0,1} \"(1[-1])*0*|(1[-1])*10*\":");
+		L.add("def test566 \"?lsd_2 Ex $test565(x) & FOLD[x][n]=@1\":");
+		L.add("combine test567 test566:");
+		L.add("eval test568 \"?lsd_2 PFA[3]=@0\":");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));
