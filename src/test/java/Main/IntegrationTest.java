@@ -752,6 +752,11 @@ public class IntegrationTest {
 		// test word automata with optional . delimiter
 		L.add("eval test560 \"An T[n]=.T[n]\";");
 		L.add("eval test561 \"An T[n] = .T[n]\";");
+
+		// test whitespace in regular expression
+		L.add("reg test562 {0,1} msd_fib \"()|[0,0]|[1,0]|(([0,0]|[1,0])([0,0]|[1,0]))|(([0,0]|[1,0])*(([0,0]([0,0]|[1,0])([0,0]|[1,0]))|([1,0]([0,0]|[1,0])([0,1]|[1,1]))))\":");
+		L.add("reg test563 {0,1} msd_fib \"()|[0,0]|[1,0]|(([0,0]|[1,0])    ([0,0]|[1,0]))|(([0,0]|[1,0])*(([0,0]([0,0]|[1,0] )  ([0,0]|[1,0]))|([1,0]([0,0]|[1,0])(  [0,1]|[1,1]))))\":");
+		L.add("eval test564 \"$test562(x, y) <=> $test563(x, y)\";");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));
