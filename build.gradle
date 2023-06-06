@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'jacoco' // code coverage
+//    id "com.github.spotbugs" version "5.0.13" apply false
+}
+
+repositories {
+    mavenCentral()
+}
+
+/*
+
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    toolVersion = '4.7.3'
+}
+
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+*/
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main.Prover'
+    }
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:all"
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+dependencies {
+    implementation 'it.unimi.dsi:fastutil:8.5.12'
+    implementation 'dk.brics:automaton:1.12-4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    //   compileOnly "com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}"
+    //  spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'Main.Prover'
+    }
+    baseName = 'Walnut-all'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

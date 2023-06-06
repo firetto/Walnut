@@ -2,6 +2,20 @@
 classes/
 .project
 
+# Gradle build
+build/
+.gradle
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+# Mac-specific files
+.DS_Store
+
+# IntelliJ
+.idea/
+Walnut.iml
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -9,6 +23,9 @@ classes/
 *.jar
 *.war
 *.ear
+
+# Avoid ignoring Gradle wrapper jar file
+!gradle-wrapper.jar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

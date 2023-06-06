@@ -1,0 +1,1 @@
+incidence matrices for the variable n23 cannot be calculated, because n23 is not a free variable.
