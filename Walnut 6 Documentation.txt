@@ -1,6 +1,6 @@
                       WALNUT 6 Additional Documentation
 
-This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca).
+This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca). This version also features major performance improvements by John Nicol.
 
 The new capabilities are as follows:
 
@@ -63,5 +63,5 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 
 # Performance improvements
-- Significant memory and time improvements for Walnut commands
+- Significant memory and time improvements, thanks to John Nicol for their contributions!
 - Multiplication has been drastically sped up
