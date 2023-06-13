@@ -1922,7 +1922,17 @@ public class Automaton {
         return X.equals(Y);
     }
 
-    public Automaton union(List<String> automataNames, boolean print, String prefix, StringBuilder log) throws Exception {
+    /**
+     * Either perform the union or intersection of a list of automata.
+     * @param automataNames - list of automata names, saved in Automata Library
+     * @param op - either "union" or "intersect"
+     * @param print
+     * @param prefix
+     * @param log
+     * @return The union/intersection of all automata in automataNames and this automaton
+     * @throws Exception
+     */
+    public Automaton unionOrIntersect(List<String> automataNames, String op, boolean print, String prefix, StringBuilder log) throws Exception {
         Automaton first = this.clone();
 
         for (int i = 0; i < automataNames.size(); i++) {
@@ -1955,7 +1965,16 @@ public class Automaton {
             first.randomLabel();
             N.label = first.label;
 
-            first = first.or(N, print, prefix, log);
+            if (op.equals("union")) {
+                first = first.or(N, print, prefix, log);
+            }
+            else if (op.equals("intersect")) {
+                first = first.and(N, print, prefix, log);
+            }
+            else {
+                throw new Exception("Internal union/intersect error");
+            }
+
 
             long timeAfter = System.currentTimeMillis();
             if(print){

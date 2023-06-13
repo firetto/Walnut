@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -184,6 +184,12 @@ public class Prover {
 	static int GROUP_UNION_NAME = 1, GROUP_UNION_AUTOMATA = 2, GROUP_UNION_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_union_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_union_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_union_COMMAND);
+
+	static String REGEXP_FOR_intersect_COMMAND = "^\\s*intersect\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_intersect_COMMAND = Pattern.compile(REGEXP_FOR_intersect_COMMAND);
+	static int GROUP_INTERSECT_NAME = 1, GROUP_INTERSECT_AUTOMATA = 2, GROUP_INTERSECT_END = 5;
+	static String REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND = "([a-zA-Z]\\w*)";
+	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_intersect_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND);
 
 
 	/**
@@ -387,6 +393,8 @@ public class Prover {
 			alphabetCommand(s);
 		} else if (commandName.equals("union")) {
 			unionCommand(s);
+		} else if (commandName.equals("intersect")) {
+			intersectCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -445,7 +453,9 @@ public class Prover {
 			alphabetCommand(s);
 		} else if (commandName.equals("union")) {
 			unionCommand(s);
-		}else {
+		} else if (commandName.equals("intersect")) {
+			intersectCommand(s);
+		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
 		return null;
@@ -1266,7 +1276,7 @@ public class Prover {
 
 			automataNames.remove(0);
 
-			C = C.union(automataNames, printDetails || printSteps, prefix, log);
+			C = C.unionOrIntersect(automataNames, "union", printDetails || printSteps, prefix, log);
 
 			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_UNION_NAME)+".gv", s, true);
 			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_UNION_NAME)+".txt");
@@ -1277,6 +1287,49 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error using the union command.");
+		}
+	}
+
+	public static TestCase intersectCommand(String s) throws Exception {
+		try {
+
+			Matcher m = PATTERN_FOR_intersect_COMMAND.matcher(s);
+			if(!m.find()) {
+				throw new Exception("Invalid use of intersect command.");
+			}
+
+			boolean printSteps = m.group(GROUP_INTERSECT_END).equals(":");
+			boolean printDetails = m.group(GROUP_INTERSECT_END).equals("::");
+
+			String prefix = new String();
+			StringBuilder log = new StringBuilder();
+
+
+			List<String> automataNames = new ArrayList<>();
+
+			Matcher m1 = PATTERN_FOR_AN_AUTOMATON_IN_intersect_COMMAND.matcher(m.group(GROUP_INTERSECT_AUTOMATA));
+			while(m1.find()) {
+				automataNames.add(m1.group(1));
+			}
+
+			if (automataNames.size() == 0) {
+				throw new Exception("Intersect requires at least one automaton as input.");
+			}
+			Automaton C = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(0)+".txt");
+
+			automataNames.remove(0);
+
+			C = C.unionOrIntersect(automataNames, "intersect", printDetails || printSteps, prefix, log);
+
+			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_INTERSECT_NAME)+".gv", s, true);
+			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_INTERSECT_NAME)+".txt");
+			C.write(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_INTERSECT_NAME)+".txt");
+
+			return new TestCase(s,C,"","","");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the intersect command.");
 		}
 	}
 
