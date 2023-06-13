@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -176,6 +176,8 @@ public class Prover {
 	static String REGEXP_FOR_fixtrailzero_COMMAND = "^\\s*fixtrailzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_fixtrailzero_COMMAND = Pattern.compile(REGEXP_FOR_fixtrailzero_COMMAND);
 	static int GROUP_FIXTRAILZERO_NEW_NAME = 1, GROUP_FIXTRAILZERO_DOLLAR_SIGN = 2, GROUP_FIXTRAILZERO_OLD_NAME = 3, GROUP_FIXTRAILZERO_END = 4;
+
+	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*alphabet $";
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -374,6 +376,8 @@ public class Prover {
 			fixLeadZeroCommand(s);
 		} else if (commandName.equals("fixtrailzero")) {
 			fixTrailZeroCommand(s);
+		} else if (commandName.equals("alphabet")) {
+			alphabetCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -428,6 +432,8 @@ public class Prover {
 			fixLeadZeroCommand(s);
 		} else if (commandName.equals("fixtrailzero")) {
 			fixTrailZeroCommand(s);
+		} else if (commandName.equals("alphabet")) {
+			alphabetCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1208,6 +1214,15 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error fixing trailing zeroes for automaton.");
+		}
+	}
+
+	public static TestCase alphabetCommand(String s) throws Exception {
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the alphabet command for automaton.");
 		}
 	}
 
