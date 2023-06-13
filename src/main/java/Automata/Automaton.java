@@ -1974,6 +1974,8 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print, prefix+" ", log);
+        //first.minimize(null, print, prefix+" ", log);
+        //applyAllRepresentations();
 
         return first;
     }
@@ -2392,6 +2394,7 @@ public class Automaton {
             if(NS.get(i) != null){
                 Automaton N = NS.get(i).getAllRepresentations();
                 if(N != null && NS.get(i).should_we_use_allRepresentations()) {
+                    // System.out.println("DEBUG: NS NAME: " + NS.get(i).name);
                     N.bind(label.get(i));
                     K = K.and(N,false,null,null);
                 }
