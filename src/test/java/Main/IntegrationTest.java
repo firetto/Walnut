@@ -728,12 +728,12 @@ public class IntegrationTest {
 		L.add("convert test549 lsd_9 HC;");
 
 		// test transduce incorrect output error
-		L.add("transduce test550 RUNSUMmod2 TH;");
-		L.add("transduce test551 RUNSUMmod2 TR;");
+		L.add("transduce test550 RUNSUM2 TH;");
+		L.add("transduce test551 RUNSUM2 TR;");
 
 		// test transduce multiple inputs error.
-		L.add("transduce test552 RUNSUMmod3 PF;");
-		L.add("transduce test553 RUNSUMmod2 HS;");
+		L.add("transduce test552 RUNSUM3 PF;");
+		L.add("transduce test553 RUNSUM2 HS;");
 
 		// test not k automatic convert error.
 		L.add("convert test554 msd_2 FTM;");
@@ -763,6 +763,9 @@ public class IntegrationTest {
 		L.add("def test566 \"?lsd_2 Ex $test565(x) & FOLD[x][n]=@1\";");
 		L.add("combine test567 test566;");
 		L.add("eval test568 \"?lsd_2 test567[3]=@0\";");
+
+		// test union command
+		L.add("");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

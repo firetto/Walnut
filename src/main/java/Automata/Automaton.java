@@ -1922,6 +1922,51 @@ public class Automaton {
         return X.equals(Y);
     }
 
+    public Automaton union(List<String> automataNames, boolean print, String prefix, StringBuilder log) throws Exception {
+        Automaton first = this.clone();
+
+        for (int i = 0; i < automataNames.size(); i++) {
+            long timeBefore = System.currentTimeMillis();
+            Automaton N = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(i)+".txt");
+
+            // ensure that N has the same number system as first.
+            boolean differingNS = false;
+            if (N.NS.size() != first.NS.size()) {
+                differingNS = true;
+            }
+            else {
+                for (int j = 0; j < N.NS.size(); j++) {
+                    if (
+                        N.NS.get(j) == null ||
+                        first.NS.get(j) == null ||
+                        !N.NS.get(j).getName().equals(first.NS.get(j).getName())
+                    ) {
+                        differingNS = true;
+                        break;
+                    }
+                }
+            }
+            if (differingNS) {
+                throw new Exception("Automata to be unioned must have the same number system(s).");
+            }
+
+            // crossProduct requires labelling so we make an arbitrary labelling and use it for both: this is valid since
+            // input alphabets and arities are assumed to be identical for the combine method
+            first.randomLabel();
+            N.label = first.label;
+
+            first = first.or(N, print, prefix, log);
+
+            long timeAfter = System.currentTimeMillis();
+            if(print){
+                String msg = prefix + "computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
+                log.append(msg + UtilityMethods.newLine());
+                System.out.println(msg);
+            }
+        }
+        return first;
+    }
+
     public Automaton combine(List<String> automataNames, IntList outputs, boolean print, String prefix, StringBuilder log) throws Exception {
         Queue<Automaton> subautomata =  new LinkedList<>();
 		for (String name : automataNames) {
