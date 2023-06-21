@@ -765,7 +765,13 @@ public class IntegrationTest {
 		L.add("eval test568 \"?lsd_2 test567[3]=@0\";");
 
 		// test union command
-		L.add("");
+		L.add("reg test569 {0,1} \"(10)*0\";");
+		L.add("reg test570 {0,1} \"(01)*0\";");
+		L.add("union test571 test569 test570;");
+		L.add("eval test572 \"$test571(x) <=> ($test569(x) | $test570(x))\";");
+
+		L.add("intersect test573 test569 test570;");
+		L.add("eval test574 \"$test573(x) <=> ($test569(x) & $test570(x))\";");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

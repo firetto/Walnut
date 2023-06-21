@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -190,6 +190,10 @@ public class Prover {
 	static int GROUP_INTERSECT_NAME = 1, GROUP_INTERSECT_AUTOMATA = 2, GROUP_INTERSECT_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_intersect_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND);
+
+	static String REGEXP_FOR_star_COMMAND = "^\\s*star\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_star_COMMAND = Pattern.compile(REGEXP_FOR_star_COMMAND);
+	static int GROUP_STAR_NEW_NAME = 1, GROUP_STAR_OLD_NAME = 2, GROUP_STAR_END = 3;
 
 
 	/**
@@ -395,6 +399,8 @@ public class Prover {
 			unionCommand(s);
 		} else if (commandName.equals("intersect")) {
 			intersectCommand(s);
+		} else if (commandName.equals("star")) {
+			starCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -446,15 +452,17 @@ public class Prover {
 		} else if (commandName.equals("convert")) {
 			return convertCommand(s);
 		} else if (commandName.equals("fixleadzero")) {
-			fixLeadZeroCommand(s);
+			return fixLeadZeroCommand(s);
 		} else if (commandName.equals("fixtrailzero")) {
-			fixTrailZeroCommand(s);
+			return fixTrailZeroCommand(s);
 		} else if (commandName.equals("alphabet")) {
-			alphabetCommand(s);
+			return alphabetCommand(s);
 		} else if (commandName.equals("union")) {
-			unionCommand(s);
+			return unionCommand(s);
 		} else if (commandName.equals("intersect")) {
-			intersectCommand(s);
+			return intersectCommand(s);
+		} else if (commandName.equals("star")) {
+//			return starCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1249,7 +1257,6 @@ public class Prover {
 
 	public static TestCase unionCommand(String s) throws Exception {
 		try {
-
 			Matcher m = PATTERN_FOR_union_COMMAND.matcher(s);
 			if(!m.find()) {
 				throw new Exception("Invalid use of union command.");
@@ -1333,6 +1340,16 @@ public class Prover {
 		}
 	}
 
+	public static void starCommand(String s) throws Exception {
+		// try {
+
+		// 	return null;
+
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// 	throw new Exception("Error using the star command.");
+		// }
+	}
 
 	public static void clearScreen() {
 	    System.out.print("\033[H\033[2J");

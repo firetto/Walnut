@@ -16,6 +16,9 @@ build/
 .idea/
 Walnut.iml
 
+# vscode
+.vscode/
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

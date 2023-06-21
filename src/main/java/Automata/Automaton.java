@@ -1947,9 +1947,10 @@ public class Automaton {
             else {
                 for (int j = 0; j < N.NS.size(); j++) {
                     if (
-                        N.NS.get(j) == null ||
-                        first.NS.get(j) == null ||
-                        !N.NS.get(j).getName().equals(first.NS.get(j).getName())
+                        (N.NS.get(j) == null && first.NS.get(j) != null) ||
+                        (N.NS.get(j) != null && first.NS.get(j) == null) ||
+                        (N.NS.get(j) != null && first.NS.get(j) != null && 
+                        !N.NS.get(j).getName().equals(first.NS.get(j).getName()))
                     ) {
                         differingNS = true;
                         break;
@@ -2090,6 +2091,12 @@ public class Automaton {
         Automaton N = minimizeWithOutput(print, prefix, log);
         copy(N);
     }
+
+    // public Automaton star(boolean print, String prefix, StringBuilder log) throws Exception {
+
+    // }
+
+
 //
 //    public void determinizeWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {
 //        List<Integer> outputs = new ArrayList<>(O);
