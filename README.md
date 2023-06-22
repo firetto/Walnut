@@ -7,7 +7,7 @@ Please read the `Manual.pdf` file, included in the repository, to learn what Wal
 
 To run Walnut tests, run "build.sh" with the "-t" flag.
 
-# WALNUT 6 Additional Documentation
+# Walnut 6 Additional Documentation
 
 This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca). This version also features major performance improvements by John Nicol.
 
