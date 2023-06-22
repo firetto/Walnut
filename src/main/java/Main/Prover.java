@@ -462,7 +462,7 @@ public class Prover {
 		} else if (commandName.equals("intersect")) {
 			return intersectCommand(s);
 		} else if (commandName.equals("star")) {
-//			return starCommand(s);
+			return starCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1340,15 +1340,32 @@ public class Prover {
 		}
 	}
 
-	public static void starCommand(String s) throws Exception {
-		// try {
+	public static TestCase starCommand(String s) throws Exception {
+		 try {
 
-		// 	return null;
+			 Matcher m = PATTERN_FOR_star_COMMAND.matcher(s);
+			 if(!m.find()) {
+				 throw new Exception("Invalid use of star command.");
+			 }
 
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// 	throw new Exception("Error using the star command.");
-		// }
+			 boolean printSteps = m.group(GROUP_STAR_END).equals(":");
+			 boolean printDetails = m.group(GROUP_STAR_END).equals("::");
+			 String prefix = new String();
+			 StringBuilder log = new StringBuilder();
+
+			 Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_STAR_OLD_NAME) + ".txt");
+
+			 Automaton C = M.star(printSteps || printDetails, prefix, log);
+
+			 C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_STAR_NEW_NAME)+".gv", s, false);
+			 C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_STAR_NEW_NAME)+".txt");
+			 C.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_STAR_NEW_NAME)+".txt");
+			 return new TestCase(s,C,"","","");
+
+		 } catch (Exception e) {
+		 	e.printStackTrace();
+		 	throw new Exception("Error using the star command.");
+		 }
 	}
 
 	public static void clearScreen() {

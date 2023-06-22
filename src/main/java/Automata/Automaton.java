@@ -2092,9 +2092,58 @@ public class Automaton {
         copy(N);
     }
 
-    // public Automaton star(boolean print, String prefix, StringBuilder log) throws Exception {
+     public Automaton star(boolean print, String prefix, StringBuilder log) throws Exception {
+         long timeBefore = System.currentTimeMillis();
+         if (print) {
+             String msg = prefix + "star: " + Q + " state automaton";
+             log.append(msg + UtilityMethods.newLine());
+             System.out.println(msg);
+         }
 
-    // }
+         // this will be the returned automaton.
+         Automaton N = clone();
+
+         // We clone the current automaton and add a new state which will be our new initial state.
+         // We will then canonize the resulting automaton after.
+         int newState = N.Q;
+         N.O.add(1); // The newly added state is a final state.
+         N.d.add(new Int2ObjectRBTreeMap<>());
+         for (int q = 0; q < N.Q; q++) {
+             if (N.O.getInt(q) == 0) { // if it is NOT a final state
+                 continue;
+             }
+             // otherwise, it is a final state, and we add our transitions.
+             for (int x : d.get(q0).keySet()) {
+                 if (N.d.get(q).containsKey(x)) {
+                     N.d.get(q).get(x).addAll(N.d.get(q).get(x).size(), d.get(q0).get(x));
+                 }
+                 else {
+                     N.d.get(q).put(x, new IntArrayList(d.get(q0).get(x)));
+                 }
+             }
+         }
+         for (int x : d.get(q0).keySet()) {
+             N.d.get(newState).put(x, new IntArrayList(d.get(q0).get(x)));
+         }
+
+         N.Q++;
+         N.q0 = newState;
+
+         N.canonized = false;
+         N.canonize();
+
+         N.minimize(null, print, prefix, log);
+         N.applyAllRepresentations();
+
+         long timeAfter = System.currentTimeMillis();
+         if(print){
+             String msg = prefix + "star complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
+             log.append(msg + UtilityMethods.newLine());
+             System.out.println(msg);
+         }
+
+         return N;
+     }
 
 
 //
