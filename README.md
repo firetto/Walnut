@@ -3,133 +3,152 @@ Walnut is an automated theorem prover for automatic words.
 
 To run Walnut, first run "build.sh" to build Walnut, then run the "walnut.sh" file.
 
-
 Please read the `Manual.pdf` file, included in the repository, to learn what Walnut is and how one would work with it. 
 
-# Walnut 5 Documentation
+To run Walnut tests, run "build.sh" with the "-t" flag.
 
-This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov, with direction from Jeffrey Shallit.
+# WALNUT 6 Additional Documentation
+
+This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca). This version also features major performance improvements by John Nicol.
 
 The new capabilities are as follows:
 
-1.	Transducing k-automatic sequences
-2. Converting number systems
-3. Reversing word automata
-4. Minimizing word automata
-5. Changes to the reversal (`` ` ``) operation
-6. Improvements to logging
-7. Bug fixes
+- Automata operations
+- Fixing leading and trailing zeroes
+- Delimiters for Word Automata
+- Reversing automata
+- Bug fixes and performance improvements
 
-## 1. Transducing k-automatic sequences
 
-One may now transduce automata (that have at most one edge per input per two states) with the following syntax:
+# Automata operations
 
-```
-transduce <new> <TRANSDUCER> <old>
-```
+One can now perform basic automata operations. The operations, along with their commands, are:
 
-For example, to transduce a word automaton `T` saved in `Word Automata Library/T.txt` using a transducer named `RUNSUM2` saved in `Transducer Library/RUNSUM2.txt`, one writes the following:
+ - Union of automata, using the `union` command
+ - Intersection of automata, using the `intersect` command
+ - Kleene star of automata, using the `star` command
+ - Concatenation of automata, using the `concat` command
+ 
+ 
+## Union of automata
 
-```
-transduce new_T RUNSUM2 T;
-```
-
-The above command saves a new word automaton `new_T` in the directory `Word Automata Library/`.
-
-To transduce automata saved in `Automata Library/`, one may add a prefix of `$` to the automaton name. For example, if trying to transduce the automaton `xda` saved in `Automata Library/xda.txt` using a transducer named `RUNSUM2` saved in `Transducer Library/RUNSUM2.txt`, one writes the following:
-
-```transduce another_T RUNSUM2 $xda;```
-
-The above command will save a new word automaton `another_T` in the directory Word Automata Library/.
-
-To define a transducer, create a `.txt` file in the `Transducer Library/` folder in the Walnut directory with the desired name of the transducer. Transducers are defined similarly to automata, with the exception of an output at the end of each transition. The accepted format for writing transitions is as follows:
-
-````<input> -> <new state> / <output>````
-
-Below is an example transducer definition with three states, computing the XOR of adjacent bits in a sequence over `{0, 1}` (with the first output always being 0):
+The syntax for the `union` command is as follows:
 
 ```
-# XOR.txt
-
-{0, 1}
-
-0
-0 -> 1 / 0
-1 -> 2 / 0
-
-1
-0 -> 1 / 0
-1 -> 2 / 1
-
-2
-0 -> 1 / 1
-1 -> 2 / 0
+union <new> <old1> [old2] [old3] ... [oldN]
 ```
 
-## 2. Converting number systems
+The `union` command requires at least one input automaton. All automata must have the same input alphabet.
 
-One may now convert the number system of an Automaton or a Word Automaton with one input from a base of k^i to /k^j, where k, i and j are positive integers with k >= 2. Note that this allows for conversions from msd to lsd, lsd to msd and vice versa, and lsd to lsd. The following syntax is used:
+For example, to take the union `res` of automata named `a1` and `a2` both saved in `Automata Library/`, one uses the following command:
+```
+union res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the union of the inputs accepted by `a1` and `a2`.
+
+
+## Intersection of automata
+
+The syntax for the `intersect` command is as follows:
 
 ```
-convert <new> <numberSystem> <old>
+union <new> <old1> [old2] [old3] ... [oldN]
 ```
 
-For example, to transduce a Word Automaton `T` saved in `Word Automata Library/T.txt` to `msd_8` (assuming `T` is in `msd_2`), one runs:
+The `intersect` command requires at least one input automaton. All automata must have the same input alphabet.
 
-```convert T_new msd_8 T;```
+For example, to take the intersection `res` of automata named `a1` and `a2` both saved in `Automata Library/`, one uses the following command:
+```
+intersect res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the intersection of the inputs accepted by `a1` and `a2`.
 
-The above command will save a new word automaton `T_new` in the directory `Word Automata Library/`.
 
-To convert the number system of an Automaton saved in `Automata Library/`, one may add a prefix of `$` to the old automaton's name. For example, if trying to convert the Automaton `quag` saved in `Automata Library/quag.txt` from `msd_2` to `lsd_16` and save it as a Word Automaton, one runs:
+## Kleene star of automata
 
-```convert quag_new lsd_16 $quag;```
+The syntax for the `star` command is as follows:
+```
+star <new> <old>
+```
+For example, to take the Kleene star `res` of the automaton `aut` saved in `Automata Library/`, one uses the following command:
+```
+star res aut;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the Kleene star of the inputs accepted by `aut`.
 
-The above command will save a new word automaton `quag_new` in the directory `Word Automata Library/`.
+NOTE: The resulting automaton `res` will be defined on the exact set of inputs that `aut` is defined on. For example, if `aut` is an `msd_fib` automaton and accepts on an input of `1`, `res` will be undefined on an input of `11` instead of accepting.
 
-If the resulting base of the new automaton is 2 (that is, the new number system is either msd_2 or lsd_2), then one may save the resulting automaton as an Automaton in the Automata Library/ directory, by adding a prefix of `$` to the new automaton's name. For example, if `elephant` is a Word Automaton over the number system `lsd_32`, one can run:
 
-```convert $elephant_new msd_2 elephant;```
+## Concatenation of automata
 
-The above command will save a new automaton `elephant_new` in the directory `Automata Library/`.
+The syntax for the `concat` command is as follows:
+```
+concat <new> <old1> <old2> [old3] ... [oldN]
+```
+The `concat` command requires at least two input automata. All automata must have the same input alphabet.
 
-## 3. Reversing word automata
+For example, to take the concatenation `res` of automata named `a1`, `a2`, `a3` and `a4`, all saved in `Automata Library/`, one uses the following command:
+```
+concat res a1 a2 a3 a4;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the concatenation of the inputs accepted by `a1`, `a2`, `a3`, and `a4`.
 
-One may now reverse a Word Automaton, with the following syntax:
+NOTE: The resulting automaton `res` will be defined on the exact set of inputs that the old automata are defined on. For example, if `a1` and `a2` are `msd_fib` automata and accepts on an input of `1`, and `res` is the concatenation of `a1` and `a2`, then `res` will be undefined on an input of `11` instead of accepting.
 
-```reverse <new> <old>```
 
-**NOTE**: Reversing an automaton will flip the number system from msd to lsd, and vice versa.
 
-For example, if reversing a word automaton `DEJ` saved in `Word Automata Library/DEJ.txt` with a number system of `msd_19`, one runs:
+# Fixing leading and trailing zeroes
 
-```reverse DEJ_new DEJ;```
+One can now "fix" leading and trailing zeroes for Automata (not Word Automata) using the "fixleadzero" and "fixtrailzero" commands. The syntax is as follows: for an automaton "foo" saved in "Automata Library/", one writes
 
-`DEJ_new` will be a Word Automaton that is the reverse of `DEJ`, with a number system of `lsd_19`, and will be saved in `Word Automata Library/`.
+	fixleadzero bar foo;
 
-**NOTE**: To reverse Automata (those saved in `Automata Library/`), use the already existing `` ` `` operation.
+The resulting automaton bar accepts an input 0* x' if and only if foo accepts an input x, where x' is x with its leading zeroes removed.
 
-## 4. Minimizing word automata
 
-One may now minimize a Word Automaton, with the following syntax:
+Similarly, for trailing zeroes, one writes
 
-```minimize <new> <old>```
+	fixtrailzero bar foo;
 
-For example, if minimizing a word automaton `NOTMIN` saved in `Word Automata Library/NOTMIN.txt`, one runs:
+The resulting automaton bar accepts an input x' 0* if and only if foo accepts an input x, where x' is x with its trailing zeroes removed.
 
-```minimize MIN NOTMIN;```
 
-`MIN` will be a minimal Word Automaton equivalent to `NOTMIN`, and will be saved in `Word Automata Library/`.
+For both cases, the resulting automaton "bar" will be saved in the "Automata Library/" directory.
 
-## 5. Changes to the reversal `` ` `` operation
 
-Reversing an automaton using the `` ` `` operation will now change its number system(s) from msd to lsd, and vice versa.
 
-## 6. Improvements to logging
+# Delimiters for Word Automata
 
-Commands that involve determinizing or taking the cross product of automata that are ran with the `:` or `::` suffices (without the quotation marks) will now include further logging that update the user on how many states have been added so far, how many states remain in the queue, and how many states have been reached in total so far.
+In previous versions of Walnut, word automata names could not begin with A, E, or I. This restriction has now been lifted using a new delimiter for word automata: putting "." (without quotation marks) before the name of a word automaton now signals that the following string of characters is the name of the word automaton. 
 
-## 7. Bug fixes
+If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
 
-- Fixed bug that prevented subset construction of automata with large amounts of states in certain cases.
-- Fixed bug that did not allow to combine automata with negative integer outputs.
-- Fixed bug that produced incorrect automata when defining regular expressions with negative integers.
+    def test ".AUTOMATON[n] = @1";
+
+
+
+# Reversing automata
+
+One can now use the "reverse" command to reverse ordinary automata saved in the "Automata Library/" directory.
+
+To reverse Automata, one prepends the "$" symbol (without the quotation marks) to the old Automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, to reverse an Automaton named "foo" saved in "Automata Library/", one writes
+
+	reverse bar $foo;
+
+The resulting automaton bar will be saved in "Automata Library/".
+
+
+
+# Bug fixes
+
+- Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
+- Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
+- Fixed a bug where whitespace and new lines in regular expressions could result in differing automata
+
+
+
+# Performance improvements
+- Significant memory and time improvements; thanks to John Nicol for their contributions!
+- Multiplication has been drastically sped up
