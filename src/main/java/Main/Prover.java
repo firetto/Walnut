@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -195,6 +195,11 @@ public class Prover {
 	static Pattern PATTERN_FOR_star_COMMAND = Pattern.compile(REGEXP_FOR_star_COMMAND);
 	static int GROUP_STAR_NEW_NAME = 1, GROUP_STAR_OLD_NAME = 2, GROUP_STAR_END = 3;
 
+	static String REGEXP_FOR_concat_COMMAND = "^\\s*concat\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_concat_COMMAND = Pattern.compile(REGEXP_FOR_concat_COMMAND);
+	static int GROUP_CONCAT_NAME = 1, GROUP_CONCAT_AUTOMATA = 2, GROUP_CONCAT_END = 5;
+	static String REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND = "([a-zA-Z]\\w*)";
+	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_concat_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND);
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -401,6 +406,8 @@ public class Prover {
 			intersectCommand(s);
 		} else if (commandName.equals("star")) {
 			starCommand(s);
+		} else if (commandName.equals("concat")) {
+			concatCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -463,6 +470,8 @@ public class Prover {
 			return intersectCommand(s);
 		} else if (commandName.equals("star")) {
 			return starCommand(s);
+		} else if (commandName.equals("concat")) {
+			return concatCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1367,6 +1376,49 @@ public class Prover {
 		 	throw new Exception("Error using the star command.");
 		 }
 	}
+
+	public static TestCase concatCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_concat_COMMAND.matcher(s);
+			if(!m.find()) {
+				throw new Exception("Invalid use of concat command.");
+			}
+
+			boolean printSteps = m.group(GROUP_CONCAT_END).equals(":");
+			boolean printDetails = m.group(GROUP_CONCAT_END).equals("::");
+
+			String prefix = new String();
+			StringBuilder log = new StringBuilder();
+
+
+			List<String> automataNames = new ArrayList<>();
+
+			Matcher m1 = PATTERN_FOR_AN_AUTOMATON_IN_concat_COMMAND.matcher(m.group(GROUP_CONCAT_AUTOMATA));
+			while(m1.find()) {
+				automataNames.add(m1.group(1));
+			}
+
+			if (automataNames.size() < 2) {
+				throw new Exception("Concatenation requires at least two automata as input.");
+			}
+			Automaton C = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(0)+".txt");
+
+			automataNames.remove(0);
+
+			C = C.concat(automataNames, printDetails || printSteps, prefix, log);
+
+			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_CONCAT_NAME)+".gv", s, true);
+			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_CONCAT_NAME)+".txt");
+			C.write(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_CONCAT_NAME)+".txt");
+
+			return new TestCase(s,C,"","","");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the concat command.");
+		}
+	}
+
 
 	public static void clearScreen() {
 	    System.out.print("\033[H\033[2J");

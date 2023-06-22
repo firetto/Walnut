@@ -1950,7 +1950,8 @@ public class Automaton {
                         (N.NS.get(j) == null && first.NS.get(j) != null) ||
                         (N.NS.get(j) != null && first.NS.get(j) == null) ||
                         (N.NS.get(j) != null && first.NS.get(j) != null && 
-                        !N.NS.get(j).getName().equals(first.NS.get(j).getName()))
+                        !N.NS.get(j).getName().equals(first.NS.get(j).getName())) ||
+                        !A.equals(other.A)
                     ) {
                         differingNS = true;
                         break;
@@ -2144,6 +2145,110 @@ public class Automaton {
 
          return N;
      }
+
+     // concatenate
+    public Automaton concat(List<String> automataNames, boolean print, String prefix, StringBuilder log) throws Exception {
+        Automaton first = this.clone();
+
+        for (int i = 0; i < automataNames.size(); i++) {
+            long timeBefore = System.currentTimeMillis();
+            Automaton N = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(i)+".txt");
+
+
+            first = first.concat(N, print, prefix, log);
+
+
+            long timeAfter = System.currentTimeMillis();
+            if(print){
+                String msg = prefix + "concatenated =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
+                log.append(msg + UtilityMethods.newLine());
+                System.out.println(msg);
+            }
+        }
+        return first;
+    }
+
+    public Automaton concat(Automaton other, boolean print, String prefix, StringBuilder log) throws Exception {
+
+        long timeBefore = System.currentTimeMillis();
+        if (print) {
+            String msg = prefix + "concat: " + Q + " state automaton with " + other.Q + " state automaton";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        // ensure that N has the same number system as first.
+        boolean differingNS = false;
+        if (other.NS.size() != NS.size()) {
+            differingNS = true;
+        }
+        else {
+            for (int j = 0; j < other.NS.size(); j++) {
+                if (
+                        (other.NS.get(j) == null && NS.get(j) != null) ||
+                                (other.NS.get(j) != null && NS.get(j) == null) ||
+                                (other.NS.get(j) != null && NS.get(j) != null &&
+                                        !other.NS.get(j).getName().equals(NS.get(j).getName())) ||
+                                !A.equals(other.A)
+                ) {
+                    differingNS = true;
+                    break;
+                }
+            }
+        }
+        if (differingNS) {
+            throw new Exception("Automata to be concatenated must have the same number system(s).");
+        }
+
+        Automaton N = clone();
+
+        int otherQ0 = Q;
+
+        // to access the other's states, just do q. To access the other's states in N, do otherQ0 + q.
+        for (int q = 0; q < other.Q; q++) {
+            N.O.add(other.O.getInt(q)); // add the output
+            N.d.add(new Int2ObjectRBTreeMap<>());
+            for (int x : other.d.get(q).keySet()) {
+                IntArrayList newTransitionMap = new IntArrayList();
+                for (int i = 0; i < other.d.get(q).get(x).size(); i++) {
+                    newTransitionMap.add(other.d.get(q).get(x).getInt(i) + otherQ0);
+                }
+                N.d.get(otherQ0 + q).put(x, newTransitionMap);
+            }
+        }
+
+        // now iterate through all of self's states. If they are final, add a transition to wherever the other's
+        // initial state goes.
+        for (int q = 0; q < Q; q++) {
+            if (N.O.getInt(q) == 0) { // if it is NOT a final state
+                continue;
+            }
+
+            // otherwise, it is a final state, and we add our transitions.
+            for (int x : N.d.get(otherQ0).keySet()) {
+                if (N.d.get(q).containsKey(x)) {
+                    N.d.get(q).get(x).addAll(N.d.get(q).get(x).size(), N.d.get(otherQ0).get(x));
+                }
+                else {
+                    N.d.get(q).put(x, new IntArrayList(N.d.get(otherQ0).get(x)));
+                }
+            }
+        }
+
+        N.Q = Q + other.Q;
+
+        N.minimize(null, print, prefix, log);
+        N.applyAllRepresentations();
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "concat complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        return N;
+    }
 
 
 //
