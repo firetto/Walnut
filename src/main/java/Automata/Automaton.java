@@ -1951,7 +1951,7 @@ public class Automaton {
                         (N.NS.get(j) != null && first.NS.get(j) == null) ||
                         (N.NS.get(j) != null && first.NS.get(j) != null && 
                         !N.NS.get(j).getName().equals(first.NS.get(j).getName())) ||
-                        !A.equals(other.A)
+                        !N.A.equals(first.A)
                     ) {
                         differingNS = true;
                         break;
