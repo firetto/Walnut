@@ -2250,6 +2250,60 @@ public class Automaton {
         return N;
     }
 
+    /**
+     * If this automaton's language is L_1 and the language of "other" is L_2, this automaton accepts the language
+     * L_1 / L_2 = { x : exists y in L_2 such that xy in L_1 }
+     * @param other
+     * @param print
+     * @param prefix
+     * @param log
+     * @return
+     * @throws Exception
+     */
+    public Automaton rightQuotient(Automaton other, boolean print, String prefix, StringBuilder log) throws Exception {
+
+        long timeBefore = System.currentTimeMillis();
+        if (print) {
+            String msg = prefix + "right quotient: " + Q + " state automaton with " + other.Q + " state automaton";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        // check whether the alphabet of other is a subset of the alphabet of self. If not, throw an error.
+        if (!A.containsAll(other.A)) {
+            throw new Exception("Second automaton's alphabet must be a subset of the first automaton's alphabet for right quotient.");
+        }
+
+        // The returned automaton will have the same states and transition function as this automaton, but
+        // the final states will be different.
+        Automaton M = clone();
+
+        for (int i = 0; i < Q; i++) {
+            // this will be a temporary automaton that will be the same as as self except it will start from the automaton
+            Automaton T = clone();
+
+            if (i != 0) {
+                T.q0 = i;
+                T.canonized = false;
+                T.canonize();
+            }
+
+            // need to have the same label for cross product (including "and")
+            T.randomLabel();
+            other.label = T.label;
+
+            Automaton I = T.and(other, print, prefix, log);
+
+            if (I.isEmpty()) {
+                M.O.set(i, 0);
+            }
+            else {
+                M.O.set(i, 1);
+            }
+        }
+
+        return M;
+    }
 
 //
 //    public void determinizeWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {

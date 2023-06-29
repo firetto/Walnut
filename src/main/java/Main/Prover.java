@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|quotient)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -200,6 +200,10 @@ public class Prover {
 	static int GROUP_CONCAT_NAME = 1, GROUP_CONCAT_AUTOMATA = 2, GROUP_CONCAT_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_concat_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND);
+
+	static String REGEXP_FOR_quotient_COMMAND = "^\\s*quotient\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_quotient_COMMAND = Pattern.compile(REGEXP_FOR_quotient_COMMAND);
+	static int GROUP_quotient_NEW_NAME = 1, GROUP_quotient_OLD_NAME1 = 2, GROUP_quotient_OLD_NAME2 = 3, GROUP_quotient_END = 4;
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -408,6 +412,8 @@ public class Prover {
 			starCommand(s);
 		} else if (commandName.equals("concat")) {
 			concatCommand(s);
+		} else if (commandName.equals("quotient")) {
+			quotientCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -472,6 +478,8 @@ public class Prover {
 			return starCommand(s);
 		} else if (commandName.equals("concat")) {
 			return concatCommand(s);
+		} else if (commandName.equals("quotient")) {
+			return quotientCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1416,6 +1424,37 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error using the concat command.");
+		}
+	}
+
+
+	public static TestCase quotientCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_quotient_COMMAND.matcher(s);
+
+			if(!m.find()) {
+				throw new Exception("Invalid use of quotient command.");
+			}
+
+			boolean printSteps = m.group(GROUP_quotient_END).equals(":");
+			boolean printDetails = m.group(GROUP_quotient_END).equals("::");
+
+			String prefix = new String();
+			StringBuilder log = new StringBuilder();
+
+			Automaton M1 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_quotient_OLD_NAME1) + ".txt");
+			Automaton M2 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_quotient_OLD_NAME2) + ".txt");
+
+			Automaton C = M1.rightQuotient(M2, printSteps || printDetails, prefix, log);
+
+			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_quotient_NEW_NAME)+".gv", s, false);
+			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_quotient_NEW_NAME)+".txt");
+			C.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_quotient_NEW_NAME)+".txt");
+			return new TestCase(s,C,"","","");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the quotient command");
 		}
 	}
 
