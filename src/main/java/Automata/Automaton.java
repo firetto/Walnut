@@ -2302,6 +2302,8 @@ public class Automaton {
             }
         }
 
+        M.minimize(null, print, prefix, log);
+
         return M;
     }
 
