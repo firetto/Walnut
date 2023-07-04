@@ -793,6 +793,15 @@ public class IntegrationTest {
 		L.add("rightquo test590 test588 test589;");
 		L.add("reg test591 {0,1,2} \"((012)*2*)|((012)*01)\";");
 		L.add("eval test592 \"$test590(x) <=> $test591(x)\";");
+
+		// leftquo L2\L1 should be the same as (L1^R / L2^R)^R
+		L.add("reverse test593 $test588;");
+		L.add("reverse test594 $test589;");
+		L.add("rightquo test595 test593 test594;");
+		L.add("reverse test596 $test595;");
+		L.add("reg test597 {2,0,1} \"2\";");
+		L.add("leftquo test598 test588 test597;");
+		L.add("eval test599 \"$test596(x) <=> $test598(x)\";");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

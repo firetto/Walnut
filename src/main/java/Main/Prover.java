@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -204,6 +204,10 @@ public class Prover {
 	static String REGEXP_FOR_rightquo_COMMAND = "^\\s*rightquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_rightquo_COMMAND = Pattern.compile(REGEXP_FOR_rightquo_COMMAND);
 	static int GROUP_rightquo_NEW_NAME = 1, GROUP_rightquo_OLD_NAME1 = 2, GROUP_rightquo_OLD_NAME2 = 3, GROUP_rightquo_END = 4;
+
+	static String REGEXP_FOR_leftquo_COMMAND = "^\\s*leftquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_leftquo_COMMAND = Pattern.compile(REGEXP_FOR_leftquo_COMMAND);
+	static int GROUP_leftquo_NEW_NAME = 1, GROUP_leftquo_OLD_NAME1 = 2, GROUP_leftquo_OLD_NAME2 = 3, GROUP_leftquo_END = 4;
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -414,6 +418,8 @@ public class Prover {
 			concatCommand(s);
 		} else if (commandName.equals("rightquo")) {
 			rightquoCommand(s);
+		} else if (commandName.equals("leftquo")) {
+			leftquoCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -480,6 +486,8 @@ public class Prover {
 			return concatCommand(s);
 		} else if (commandName.equals("rightquo")) {
 			return rightquoCommand(s);
+		} else if (commandName.equals("leftquo")) {
+			return leftquoCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1120,14 +1128,23 @@ public class Prover {
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
+			boolean isDFAO = true;
+
 			String library = UtilityMethods.get_address_for_words_library();
 			if (m.group(GROUP_REVERSE_DOLLAR_SIGN).equals("$")) {
 				library = UtilityMethods.get_address_for_automata_library();
+				isDFAO = false;
 			}
 
 			Automaton M = new Automaton(library + m.group(GROUP_REVERSE_OLD_NAME) + ".txt");
 
-			M.reverseWithOutput(true, printSteps || printDetails, prefix, log);
+			if (isDFAO) {
+				M.reverseWithOutput(true, printSteps || printDetails, prefix, log);
+			}
+			else {
+				M.reverse(printSteps || printDetails, prefix, log, true);
+			}
+
 			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_REVERSE_NEW_NAME)+".gv", s, true);
 			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_REVERSE_NEW_NAME)+".txt");
 			M.write(library + m.group(GROUP_REVERSE_NEW_NAME)+".txt");
@@ -1445,7 +1462,7 @@ public class Prover {
 			Automaton M1 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_rightquo_OLD_NAME1) + ".txt");
 			Automaton M2 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_rightquo_OLD_NAME2) + ".txt");
 
-			Automaton C = M1.rightQuotient(M2, printSteps || printDetails, prefix, log);
+			Automaton C = M1.rightQuotient(M2, false, printSteps || printDetails, prefix, log);
 
 			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_rightquo_NEW_NAME)+".gv", s, false);
 			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_rightquo_NEW_NAME)+".txt");
@@ -1455,6 +1472,36 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error using the rightquo command");
+		}
+	}
+
+	public static TestCase leftquoCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_leftquo_COMMAND.matcher(s);
+
+			if(!m.find()) {
+				throw new Exception("Invalid use of leftquo command.");
+			}
+
+			boolean printSteps = m.group(GROUP_leftquo_END).equals(":");
+			boolean printDetails = m.group(GROUP_leftquo_END).equals("::");
+
+			String prefix = new String();
+			StringBuilder log = new StringBuilder();
+
+			Automaton M1 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_leftquo_OLD_NAME1) + ".txt");
+			Automaton M2 = new Automaton(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_leftquo_OLD_NAME2) + ".txt");
+
+			Automaton C = M1.leftQuotient(M2, printSteps || printDetails, prefix, log);
+
+			C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_leftquo_NEW_NAME)+".gv", s, false);
+			C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_leftquo_NEW_NAME)+".txt");
+			C.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_leftquo_NEW_NAME)+".txt");
+			return new TestCase(s,C,"","","");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the leftquo command");
 		}
 	}
 

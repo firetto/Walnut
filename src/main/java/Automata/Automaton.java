@@ -2260,7 +2260,7 @@ public class Automaton {
      * @return
      * @throws Exception
      */
-    public Automaton rightQuotient(Automaton other, boolean print, String prefix, StringBuilder log) throws Exception {
+    public Automaton rightQuotient(Automaton other, boolean skipSubsetCheck, boolean print, String prefix, StringBuilder log) throws Exception {
 
         long timeBefore = System.currentTimeMillis();
         if (print) {
@@ -2269,23 +2269,25 @@ public class Automaton {
             System.out.println(msg);
         }
 
-        // check whether the alphabet of other is a subset of the alphabet of self. If not, throw an error.
-        boolean isSubset = true;
+        if (!skipSubsetCheck) {
+            // check whether the alphabet of other is a subset of the alphabet of self. If not, throw an error.
+            boolean isSubset = true;
 
-        if (A.size() == other.A.size()) {
-            for (int i = 0; i < A.size(); i++) {
-                if (!A.get(i).containsAll(other.A.get(i))) {
-                    isSubset = false;
-                    break;
+            if (A.size() == other.A.size()) {
+                for (int i = 0; i < A.size(); i++) {
+                    if (!A.get(i).containsAll(other.A.get(i))) {
+                        isSubset = false;
+                        break;
+                    }
                 }
             }
-        }
-        else {
-            isSubset = false;
-        }
+            else {
+                isSubset = false;
+            }
 
-        if (!isSubset) {
-            throw new Exception("Second automaton's alphabet must be a subset of the first automaton's alphabet for right quotient.");
+            if (!isSubset) {
+                throw new Exception("Second automaton's alphabet must be a subset of the first automaton's alphabet for right quotient.");
+            }
         }
 
         // The returned automaton will have the same states and transition function as this automaton, but
@@ -2293,16 +2295,6 @@ public class Automaton {
         Automaton M = clone();
 
         Automaton otherClone = other.clone();
-//
-//        System.out.println("DEBUG: " + A.toString() + ", " + other.A.toString());
-//
-//        System.out.println(d.toString());
-//        System.out.println(encoder.toString());
-//        System.out.println(A.toString());
-//        System.out.println("NOW OTHER:");
-//        System.out.println(otherClone.d.toString());
-//        System.out.println(otherClone.encoder.toString());
-//        System.out.println(otherClone.A.toString());
 
         List<Int2ObjectRBTreeMap<IntList>> newOtherD = new ArrayList<>();
 
@@ -2318,14 +2310,6 @@ public class Automaton {
         otherClone.A = A;
         otherClone.alphabetSize = alphabetSize;
         otherClone.NS = NS;
-//
-//        System.out.println("------------ NOW AFTER:");
-//        System.out.println(otherClone.d.toString());
-//        System.out.println(otherClone.encoder.toString());
-//        System.out.println(otherClone.A.toString());
-//
-//        // DEBUG: DELETE THIS!
-//        otherClone.write(UtilityMethods.get_address_for_result()+"otherClone"+".txt");
 
         for (int i = 0; i < Q; i++) {
             // this will be a temporary automaton that will be the same as as self except it will start from the automaton
@@ -2353,10 +2337,63 @@ public class Automaton {
 
         M.minimize(null, print, prefix, log);
         M.applyAllRepresentations();
+        M.canonized = false;
+        M.canonize();
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
+            String msg = prefix + "right quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        return M;
+    }
+
+    public Automaton leftQuotient(Automaton other, boolean print, String prefix, StringBuilder log) throws Exception {
+        long timeBefore = System.currentTimeMillis();
+        if (print) {
+            String msg = prefix + "left quotient: " + Q + " state automaton with " + other.Q + " state automaton";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        // check whether the alphabet of self is a subset of the alphabet of other. If not, throw an error.
+        boolean isSubset = true;
+
+        if (A.size() == other.A.size()) {
+            for (int i = 0; i < A.size(); i++) {
+                if (!other.A.get(i).containsAll(A.get(i))) {
+                    isSubset = false;
+                    break;
+                }
+            }
+        }
+        else {
+            isSubset = false;
+        }
+
+        if (!isSubset) {
+            throw new Exception("First automaton's alphabet must be a subset of the second automaton's alphabet for left quotient.");
+        }
+
+        Automaton M1 = clone();
+        M1.reverse(print, prefix, log, true);
+        M1.canonized = false;
+        M1.canonize();
+
+        Automaton M2 = other.clone();
+        M2.reverse(print, prefix, log, true);
+        M2.canonized = false;
+        M2.canonize();
+
+        Automaton M = M1.rightQuotient(M2, true, print, prefix, log);
+
+        M.reverse(print, prefix, log, true);
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "left quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
