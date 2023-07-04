@@ -177,7 +177,9 @@ public class Prover {
 	static Pattern PATTERN_FOR_fixtrailzero_COMMAND = Pattern.compile(REGEXP_FOR_fixtrailzero_COMMAND);
 	static int GROUP_FIXTRAILZERO_NEW_NAME = 1, GROUP_FIXTRAILZERO_DOLLAR_SIGN = 2, GROUP_FIXTRAILZERO_OLD_NAME = 3, GROUP_FIXTRAILZERO_END = 4;
 
-//	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*alphabet $";
+	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*(alphabet)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_alphabet_COMMAND = Pattern.compile(REGEXP_FOR_alphabet_COMMAND);
+	static int GROUP_alphabet_NEW_NAME = 2, GROUP_alphabet_LIST_OF_ALPHABETS = 3, GROUP_alphabet_OLD_NAME = 20, GROUP_alphabet_END = 21;
 
 	static String REGEXP_FOR_union_COMMAND = "^\\s*union\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_union_COMMAND = Pattern.compile(REGEXP_FOR_union_COMMAND);
@@ -1282,10 +1284,64 @@ public class Prover {
 
 	public static TestCase alphabetCommand(String s) throws Exception {
 		try {
+			Matcher m = PATTERN_FOR_alphabet_COMMAND.matcher(s);
+			if(!m.find()) {
+				throw new Exception("Invalid use of alphabet command.");
+			}
+
+			if (m.group(GROUP_alphabet_LIST_OF_ALPHABETS) == null) {
+				throw new Exception("List of alphabets for alphabet command must not be empty.");
+			}
+
+			NumberSystem ns = null;
+			List<List<Integer>> alphabets = new ArrayList<>();
+			List<NumberSystem> numSys = new ArrayList<>();
+			List<Integer> alphabet = null;
+
+			Matcher m1 = PATTERN_FOR_AN_ALPHABET.matcher(m.group(R_LIST_OF_ALPHABETS));
+			int counter = 1;
+			while (m1.find()) {
+
+				if((m1.group(R_NUMBER_SYSTEM) != null)){
+					String base = "msd_2";
+					if(m1.group(3) != null)base = m1.group(3);
+					if(m1.group(6) != null)base = m1.group(7)+"_"+m1.group(8);
+					if(m1.group(9) != null)base =  m1.group(9)+"_2";
+					if(m1.group(10) != null)base = "msd_"+m1.group(10);
+					try{
+						if(!Predicate.number_system_Hash.containsKey(base))
+							Predicate.number_system_Hash.put(base, new NumberSystem(base));
+						ns = Predicate.number_system_Hash.get(base);
+						numSys.add(Predicate.number_system_Hash.get(base));
+					}catch(Exception e){
+						throw new Exception("number system " + base + " does not exist: char at " + m.start(R_NUMBER_SYSTEM)+UtilityMethods.newLine()+"\t:"+e.getMessage());
+					}
+					alphabets.add(ns.getAlphabet());
+				}
+
+				else if(m1.group(R_SET) != null){
+					alphabet = what_is_the_alphabet(m1.group(R_SET));
+					alphabets.add(alphabet);
+					numSys.add(null);
+				}
+				else {
+					throw new Exception("Alphabet at position " + counter + " not recognized in alphabet command");
+				}
+				counter += 1;
+			}
+
+			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_alphabet_OLD_NAME)+".txt");
+
+			if (alphabets.size() != M.A.size()) {
+				throw new Error("The number of alphabets must match the number of alphabets in the input automaton for the alphabet command.");
+			}
+
+			// here, call the function to set the number system.
+
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Error using the alphabet command for automaton.");
+			throw new Exception("Error using the alphabet command.");
 		}
 	}
 
