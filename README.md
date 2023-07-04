@@ -28,6 +28,8 @@ One can now perform basic automata operations. The operations, along with their 
  - Intersection of automata, using the `intersect` command
  - Kleene star of automata, using the `star` command
  - Concatenation of automata, using the `concat` command
+ - Left quotient of automata, using the `leftquo` command
+ - Right quotient of automata, using the `rightquo` command
  
  
 ## Union of automata
@@ -95,6 +97,35 @@ The resulting automaton `res` is saved in `Automata Library/`, and accepts the c
 
 NOTE: The resulting automaton `res` will be defined on the exact set of inputs that the old automata are defined on. For example, if `a1` and `a2` are `msd_fib` automata and accepts on an input of `1`, and `res` is the concatenation of `a1` and `a2`, then `res` will be undefined on an input of `11` instead of accepting.
 
+
+## Left quotient of automata
+
+The left quotient of two automata `M1` and `M2` is defined to be the automaton that accepts the left quotient `L2\L1 = {w | exists x in L2 : xw is in L1}`, where `L1` and `L2` are the languages accepted by `M1` and `M2` respectively.
+
+The syntax for the `leftquo` command is as follows:
+```
+leftquo <new> <old1> <old2>
+```
+For example, to take the left quotient `res` of automata named `a1` and `a2` all saved in `Automata Library/`, one uses the following command:
+```
+leftquo res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`.
+
+
+## Right quotient of automata
+
+The right quotient of two automata `M1` and `M2` is defined to be the automaton that accepts the right quotient `L1/L2 = {w | exists x in L2 : wx is in L1}`, where `L1` and `L2` are the languages accepted by `M1` and `M2` respectively.
+
+The syntax for the `rightquo` command is as follows:
+```
+rightquo <new> <old1> <old2>
+```
+For example, to take the right quotient `res` of automata named `a1` and `a2` all saved in `Automata Library/`, one uses the following command:
+```
+rightquo res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`.
 
 
 # Fixing leading and trailing zeroes
