@@ -780,6 +780,19 @@ public class IntegrationTest {
 		L.add("concat test579 test576 test578 test576;");
 		L.add("reg test580 msd_2 \"(0*10)*(000111)*(0*10)*\";");
 		L.add("eval test581 \"$test579(x) <=> $test580(x)\";"); // should be the same!
+
+		// test rightquo, star, and concat commands at the same time
+		L.add("reg test582 {0, 1, 2} \"012\";");
+		L.add("reg test583 {0,1,2} \"2\";");
+		L.add("reg test584 {0,1,2} \"1\";");
+		L.add("star test585 test582;");
+		L.add("star test586 test583;");
+		L.add("star test587 test584;");
+		L.add("concat test588 test585 test586 test587;");
+		L.add("reg test589 {2,0} \"2\";");
+		L.add("rightquo test590 test588 test589;");
+		L.add("reg test591 {0,1,2} \"((012)*2*)|((012)*01)\";");
+		L.add("eval test592 \"$test590(x) <=> $test591(x)\";");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

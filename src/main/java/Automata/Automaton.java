@@ -2270,13 +2270,62 @@ public class Automaton {
         }
 
         // check whether the alphabet of other is a subset of the alphabet of self. If not, throw an error.
-        if (!A.containsAll(other.A)) {
+        boolean isSubset = true;
+
+        if (A.size() == other.A.size()) {
+            for (int i = 0; i < A.size(); i++) {
+                if (!A.get(i).containsAll(other.A.get(i))) {
+                    isSubset = false;
+                    break;
+                }
+            }
+        }
+        else {
+            isSubset = false;
+        }
+
+        if (!isSubset) {
             throw new Exception("Second automaton's alphabet must be a subset of the first automaton's alphabet for right quotient.");
         }
 
         // The returned automaton will have the same states and transition function as this automaton, but
         // the final states will be different.
         Automaton M = clone();
+
+        Automaton otherClone = other.clone();
+//
+//        System.out.println("DEBUG: " + A.toString() + ", " + other.A.toString());
+//
+//        System.out.println(d.toString());
+//        System.out.println(encoder.toString());
+//        System.out.println(A.toString());
+//        System.out.println("NOW OTHER:");
+//        System.out.println(otherClone.d.toString());
+//        System.out.println(otherClone.encoder.toString());
+//        System.out.println(otherClone.A.toString());
+
+        List<Int2ObjectRBTreeMap<IntList>> newOtherD = new ArrayList<>();
+
+        for (int q = 0; q < otherClone.Q; q++) {
+            Int2ObjectRBTreeMap<IntList> newMap = new Int2ObjectRBTreeMap<>();
+            for (int x : otherClone.d.get(q).keySet()) {
+                newMap.put(encode(otherClone.decode(x)), otherClone.d.get(q).get(x));
+            }
+            newOtherD.add(newMap);
+        }
+        otherClone.d = newOtherD;
+        otherClone.encoder = encoder;
+        otherClone.A = A;
+        otherClone.alphabetSize = alphabetSize;
+        otherClone.NS = NS;
+//
+//        System.out.println("------------ NOW AFTER:");
+//        System.out.println(otherClone.d.toString());
+//        System.out.println(otherClone.encoder.toString());
+//        System.out.println(otherClone.A.toString());
+//
+//        // DEBUG: DELETE THIS!
+//        otherClone.write(UtilityMethods.get_address_for_result()+"otherClone"+".txt");
 
         for (int i = 0; i < Q; i++) {
             // this will be a temporary automaton that will be the same as as self except it will start from the automaton
@@ -2290,9 +2339,9 @@ public class Automaton {
 
             // need to have the same label for cross product (including "and")
             T.randomLabel();
-            other.label = T.label;
+            otherClone.label = T.label;
 
-            Automaton I = T.and(other, print, prefix, log);
+            Automaton I = T.and(otherClone, print, prefix, log);
 
             if (I.isEmpty()) {
                 M.O.set(i, 0);
@@ -2303,9 +2352,42 @@ public class Automaton {
         }
 
         M.minimize(null, print, prefix, log);
+        M.applyAllRepresentations();
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
 
         return M;
     }
+
+
+//    public void setNumberSystems(List<NumberSystem> newNSs, boolean print, String prefix, StringBuilder log) {
+//
+//        long timeBefore = System.currentTimeMillis();
+//        if (print) {
+//
+//            ArrayList<String> nsNames = new ArrayList<String>();
+//
+//            for (int i = 0; i < newNS.size(); i++) {
+//                if (newNSs.get(i) == null) {
+//                    nsNames.add("null");
+//                }
+//                else {
+//                    nsNames.add(newNSs.get(i).getString());
+//                }
+//            }
+//
+//            String msg = prefix + "setting alphabet to " + nsNames.toString();
+//            log.append(msg + UtilityMethods.newLine());
+//            System.out.println(msg);
+//        }
+//
+//
+//    }
 
 //
 //    public void determinizeWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {
