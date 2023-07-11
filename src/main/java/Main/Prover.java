@@ -1298,6 +1298,11 @@ public class Prover {
 			List<NumberSystem> numSys = new ArrayList<>();
 			List<Integer> alphabet = null;
 
+			boolean printSteps = m.group(GROUP_alphabet_END).equals(":");
+			boolean printDetails = m.group(GROUP_alphabet_END).equals("::");
+			String prefix = new String();
+			StringBuilder log = new StringBuilder();
+
 			Matcher m1 = PATTERN_FOR_AN_ALPHABET.matcher(m.group(R_LIST_OF_ALPHABETS));
 			int counter = 1;
 			while (m1.find()) {
@@ -1332,13 +1337,14 @@ public class Prover {
 
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_alphabet_OLD_NAME)+".txt");
 
-			if (alphabets.size() != M.A.size()) {
-				throw new Error("The number of alphabets must match the number of alphabets in the input automaton for the alphabet command.");
-			}
-
 			// here, call the function to set the number system.
+			M.setAlphabet(numSys, alphabets, printDetails || printSteps, prefix, log);
 
-			return null;
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_alphabet_NEW_NAME)+".gv", s, false);
+			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_alphabet_NEW_NAME)+".txt");
+			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_alphabet_NEW_NAME)+".txt");
+
+			return new TestCase(s,M,"","","");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error using the alphabet command.");

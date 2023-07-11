@@ -2402,29 +2402,65 @@ public class Automaton {
     }
 
 
-//    public void setNumberSystems(List<NumberSystem> newNSs, boolean print, String prefix, StringBuilder log) {
-//
-//        long timeBefore = System.currentTimeMillis();
-//        if (print) {
-//
-//            ArrayList<String> nsNames = new ArrayList<String>();
-//
-//            for (int i = 0; i < newNS.size(); i++) {
-//                if (newNSs.get(i) == null) {
-//                    nsNames.add("null");
-//                }
-//                else {
-//                    nsNames.add(newNSs.get(i).getString());
-//                }
-//            }
-//
-//            String msg = prefix + "setting alphabet to " + nsNames.toString();
-//            log.append(msg + UtilityMethods.newLine());
-//            System.out.println(msg);
-//        }
-//
-//
-//    }
+    public void setAlphabet(List<NumberSystem> numberSystems, List<List<Integer>> alphabet, boolean print, String prefix, StringBuilder log) throws Exception {
+
+        if (alphabet.size() != A.size()) {
+            throw new Exception("The number of alphabets must match the number of alphabets in the input automaton.");
+        }
+        if (alphabet.size() != numberSystems.size()) {
+            throw new Exception("The number of alphabets must match the number of number systems.");
+        }
+
+        long timeBefore = System.currentTimeMillis();
+        if (print) {
+
+            ArrayList<String> nsNames = new ArrayList<String>();
+
+            for (int i = 0; i < numberSystems.size(); i++) {
+                if (numberSystems.get(i) == null) {
+                    nsNames.add(alphabet.get(i).toString());
+                }
+                else {
+                    nsNames.add(numberSystems.get(i).toString());
+                }
+            }
+
+            String msg = prefix + "setting alphabet to " + nsNames.toString();
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+        Automaton M = clone();
+        M.A = alphabet;
+        M.NS = numberSystems;
+        M.setupEncoder();
+
+        List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
+
+        for (int q = 0; q < M.Q; q++) {
+            Int2ObjectRBTreeMap<IntList> newMap = new Int2ObjectRBTreeMap<>();
+            for (int x : d.get(q).keySet()) {
+                List<Integer> decoded = decode(x);
+                if (decoded.size() <= M.encoder.size()) {
+                    newMap.put(M.encode(decoded), d.get(q).get(x));
+                }
+            }
+            newD.add(newMap);
+        }
+        M.d = newD;
+        M.minimize(null, print, prefix, log);
+        M.applyAllRepresentations();
+        M.canonized = false;
+        M.canonize();
+        copy(M);
+
+        long timeAfter = System.currentTimeMillis();
+        if(print){
+            String msg = prefix + "set alphabet complete:" + (timeAfter-timeBefore)+"ms";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+    }
 
 //
 //    public void determinizeWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {
@@ -3722,11 +3758,7 @@ public class Automaton {
      */
     public int encode(List<Integer> l){
         if(encoder == null){
-            encoder = new ArrayList<>();
-            encoder.add(1);
-            for(int i = 0 ; i < A.size()-1;i++){
-                encoder.add(encoder.get(i)*A.get(i).size());
-            }
+            setupEncoder();
         }
         int encoding = 0;
         for(int i = 0 ; i < l.size(); i++){
@@ -3741,6 +3773,14 @@ public class Automaton {
             encoding += encoder.get(i) * A.get(i).indexOf(l.get(i));
         }
         return encoding;
+    }
+
+    public void setupEncoder() {
+        encoder = new ArrayList<>();
+        encoder.add(1);
+        for(int i = 0 ; i < A.size()-1;i++){
+            encoder.add(encoder.get(i)*A.get(i).size());
+        }
     }
 
     /**A wildcard is denoted by null in L. What do we mean by expanding wildcard?
