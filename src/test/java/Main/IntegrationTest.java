@@ -802,6 +802,20 @@ public class IntegrationTest {
 		L.add("reg test597 {2,0,1} \"2\";");
 		L.add("leftquo test598 test588 test597;");
 		L.add("eval test599 \"$test596(x) <=> $test598(x)\";");
+
+		// test of star and concat on msd_fib
+		L.add("def test600 \"?msd_fib FTM[x] = @1\";");
+		L.add("star test601 test600;");
+		L.add("alphabet test602 msd_fib test601;");
+		L.add("concat test603 test600 test600;");
+		L.add("alphabet test604 msd_fib test603;");
+
+		// test alphabet on HS automaton
+		L.add("def test605 \"HS[x][y][z]=@1\";");
+		L.add("alphabet test606 msd_2 msd_2 msd_2 test605;");
+		L.add("alphabet test607 msd_fib msd_2 msd_2 test605;");
+		L.add("alphabet test608 msd_2 msd_fib msd_2 test605;");
+		L.add("alphabet test609 msd_2 msd_2 msd_fib test605;");
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));
