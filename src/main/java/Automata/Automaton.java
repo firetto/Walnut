@@ -849,7 +849,7 @@ public class Automaton {
      * @return the reverse of this automaton
      * @throws Exception
      */
-    public void reverse(boolean print, String prefix, StringBuilder log, boolean reverseMsd) throws Exception {
+    public void reverse(boolean print, String prefix, StringBuilder log, boolean reverseMsd, boolean skipMinimize) throws Exception {
         if (TRUE_FALSE_AUTOMATON) {
             return;
         }
@@ -890,7 +890,9 @@ public class Automaton {
 
         List<Int2IntMap> newMemD = subsetConstruction(null, setOfFinalStates,print,prefix+" ",log);
 
-        minimize(newMemD, print,prefix+" ",log);
+        if (!skipMinimize) {
+            minimize(newMemD, print,prefix+" ",log);
+        }
 
         // flip the number system from msd to lsd and vice versa.
         if (reverseMsd) {
@@ -918,6 +920,10 @@ public class Automaton {
             log.append(msg + UtilityMethods.newLine());
             System.out.println(msg);
         }
+    }
+
+    public void reverse(boolean print, String prefix, StringBuilder log, boolean reverseMsd) throws Exception {
+        reverse(print, prefix, log, reverseMsd, false);
     }
 
     public void reverse(boolean print, String prefix, StringBuilder log) throws Exception {
@@ -2040,6 +2046,7 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print, prefix+" ", log);
+//        first.applyAllRepresentations();
 
         return first;
     }
@@ -2093,6 +2100,32 @@ public class Automaton {
         copy(N);
     }
 
+    public void normalizeNumberSystems(boolean print, String prefix, StringBuilder log) throws Exception {
+        // set all the number systems to be null.
+        boolean switchNS = false;
+        List<NumberSystem> numberSystems = new ArrayList<>();
+        for (int i = 0; i < NS.size(); i++) {
+            if (NS.get(i) != null && NS.get(i).should_we_use_allRepresentations()) {
+                switchNS = true;
+                int max = Collections.max(A.get(i));
+                numberSystems.add(new NumberSystem((NS.get(i).isMsd() ? "msd_" : "lsd_") + (max+1)));
+            }
+            else {
+                numberSystems.add(NS.get(i));
+            }
+        }
+
+        if (switchNS) {
+            setAlphabet(numberSystems, A, print, prefix, log);
+
+            // do this whether or not you print!
+            String msg = prefix + "WARN: The alphabet of the resulting automaton was changed. Use the alphabet command to change as desired.";
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+        }
+
+    }
+
      public Automaton star(boolean print, String prefix, StringBuilder log) throws Exception {
          long timeBefore = System.currentTimeMillis();
          if (print) {
@@ -2129,6 +2162,8 @@ public class Automaton {
 
          N.Q++;
          N.q0 = newState;
+
+         N.normalizeNumberSystems(print, prefix, log);
 
          N.canonized = false;
          N.canonize();
@@ -2236,6 +2271,8 @@ public class Automaton {
         }
 
         N.Q = Q + other.Q;
+
+        N.normalizeNumberSystems(print, prefix, log);
 
         N.minimize(null, print, prefix, log);
         N.applyAllRepresentations();
@@ -2441,7 +2478,16 @@ public class Automaton {
             Int2ObjectRBTreeMap<IntList> newMap = new Int2ObjectRBTreeMap<>();
             for (int x : d.get(q).keySet()) {
                 List<Integer> decoded = decode(x);
-                if (decoded.size() <= M.encoder.size()) {
+
+                boolean inNewAlphabet = true;
+
+                for (int i = 0; i < decoded.size(); i++) {
+                    if (!alphabet.get(i).contains(decoded.get(i))) {
+                        inNewAlphabet = false;
+                        break;
+                    }
+                }
+                if (inNewAlphabet) {
                     newMap.put(M.encode(decoded), d.get(q).get(x));
                 }
             }

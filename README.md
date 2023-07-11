@@ -78,7 +78,7 @@ star res aut;
 ```
 The resulting automaton `res` is saved in `Automata Library/`, and accepts the Kleene star of the inputs accepted by `aut`.
 
-NOTE: The resulting automaton `res` will be defined on the exact set of inputs that `aut` is defined on. For example, if `aut` is an `msd_fib` automaton and accepts on an input of `1`, `res` will be undefined on an input of `11` instead of accepting.
+NOTE: The alphabet of the resulting automaton `res` will be changed if one of the input alphabets of `aut` is not a set alphabet (i.e. {0, 1}) or of the form `msd_k` or `lsd_k`. Use the `alphabet` command to force an alphabet on the resulting automaton. For example, if `aut` is an `msd_fib` automaton, `res` will be an `msd_2` automaton.
 
 
 ## Concatenation of automata
@@ -95,7 +95,7 @@ concat res a1 a2 a3 a4;
 ```
 The resulting automaton `res` is saved in `Automata Library/`, and accepts the concatenation of the inputs accepted by `a1`, `a2`, `a3`, and `a4`.
 
-NOTE: The resulting automaton `res` will be defined on the exact set of inputs that the old automata are defined on. For example, if `a1` and `a2` are `msd_fib` automata and accepts on an input of `1`, and `res` is the concatenation of `a1` and `a2`, then `res` will be undefined on an input of `11` instead of accepting.
+NOTE: The alphabet of the resulting automaton `res` will be changed if one of the input alphabets of the input automata is not a set alphabet (i.e. {0, 1}) or of the form `msd_k` or `lsd_k`. Use the `alphabet` command to force an alphabet on the resulting automaton. For example, if `a1`, `a2`, `a3`, `a4` above are `msd_fib` automata, `res` will be an `msd_2` automaton.
 
 
 ## Left quotient of automata
