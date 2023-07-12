@@ -30,6 +30,7 @@ One can now perform basic automata operations. The operations, along with their 
  - Concatenation of automata, using the `concat` command
  - Left quotient of automata, using the `leftquo` command
  - Right quotient of automata, using the `rightquo` command
+ - Set the alphabet or number system of automata, using the `alphabet` command
  
  
 ## Union of automata
@@ -127,6 +128,22 @@ rightquo res a1 a2;
 ```
 The resulting automaton `res` is saved in `Automata Library/`.
 
+
+## Setting the number system of automata
+
+The syntax for the `alphabet` command is as follows:
+```
+alphabet <new> <alphabet1> [alphabet2] ... [alphabetN] <old>
+```
+The alphabet of the resulting automaton `<new>` is set to the input alphabets, and all invalid transitions are removed from the new automaton.
+
+The number of alphabets in the command must equal to the number of input alphabets of the `<old>` automaton.
+
+For example, if `aut` (saved in `Automata Library/`) has the alphabets `msd_2 msd_2 msd_fib`, to set its alphabets to `msd_fib msd_fib msd_4`, one writes
+```
+alphabet res msd_2 msd_2 msd_fib aut;
+```
+The resulting automaton `res` is saved in `Automata Library/`.
 
 # Fixing leading and trailing zeroes
 
