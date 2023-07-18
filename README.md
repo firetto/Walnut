@@ -15,7 +15,8 @@ The new capabilities are as follows:
 
 - Automata operations
 - Fixing leading and trailing zeroes
-- Delimiters for Word Automata
+- Delimiters for word automata
+- Drawing automata and word automata
 - Reversing automata
 - Bug fixes and performance improvements
 
@@ -149,14 +150,18 @@ The resulting automaton `res` is saved in `Automata Library/`.
 
 One can now "fix" leading and trailing zeroes for Automata (not Word Automata) using the "fixleadzero" and "fixtrailzero" commands. The syntax is as follows: for an automaton "foo" saved in "Automata Library/", one writes
 
-	fixleadzero bar foo;
+```
+fixleadzero bar foo;
+```
 
 The resulting automaton bar accepts an input 0* x' if and only if foo accepts an input x, where x' is x with its leading zeroes removed.
 
 
 Similarly, for trailing zeroes, one writes
 
-	fixtrailzero bar foo;
+```
+fixtrailzero bar foo;
+```
 
 The resulting automaton bar accepts an input x' 0* if and only if foo accepts an input x, where x' is x with its trailing zeroes removed.
 
@@ -171,7 +176,37 @@ In previous versions of Walnut, word automata names could not begin with A, E, o
 
 If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
 
-    def test ".AUTOMATON[n] = @1";
+```
+def test ".AUTOMATON[n] = @1";
+```
+    
+
+
+# Drawing automata and word automata
+
+The new `draw` command creates a `.gv` file from the `.txt` definition of a Word Automaton saved in `Word Automata Library/`, or of an ordinary automaton saved in `Automata Library/`.
+
+The syntax for the `draw` command for Word Automata is as follows:
+```
+draw <name>
+```
+
+For ordinary automata, prepend the `$` symbol to the automaton name:
+```
+draw $<name>
+```
+
+For example, to draw a Word Automaton named `AUT` saved in `Word Automata Library/`, one writes
+```
+draw AUT;
+```
+This will save the file `AUT.gv` in `Result/`.
+
+To draw an automaton named `aut` saved in `Automata Library/`, one writes
+```
+draw $aut;
+```
+This will save the file `aut.gv` in `Result/`.
 
 
 

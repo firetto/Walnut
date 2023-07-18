@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo|draw)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -210,6 +210,10 @@ public class Prover {
 	static String REGEXP_FOR_leftquo_COMMAND = "^\\s*leftquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_leftquo_COMMAND = Pattern.compile(REGEXP_FOR_leftquo_COMMAND);
 	static int GROUP_leftquo_NEW_NAME = 1, GROUP_leftquo_OLD_NAME1 = 2, GROUP_leftquo_OLD_NAME2 = 3, GROUP_leftquo_END = 4;
+
+	static String REGEXP_FOR_draw_COMMAND = "^\\s*draw\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static Pattern PATTERN_FOR_draw_COMMAND = Pattern.compile(REGEXP_FOR_draw_COMMAND);
+	static int GROUP_draw_DOLLAR_SIGN = 1, GROUP_draw_NAME = 2, GROUP_draw_END = 3;
 
 	/**
 	 * if the command line argument is not empty, we treat args[0] as a filename.
@@ -422,6 +426,8 @@ public class Prover {
 			rightquoCommand(s);
 		} else if (commandName.equals("leftquo")) {
 			leftquoCommand(s);
+		} else if (commandName.equals("draw")) {
+			drawCommand(s);
 		} else {
 			throw new Exception("Invalid command " + commandName + ".");
 		}
@@ -490,6 +496,8 @@ public class Prover {
 			return rightquoCommand(s);
 		} else if (commandName.equals("leftquo")) {
 			return leftquoCommand(s);
+		} else if (commandName.equals("draw")) {
+			return drawCommand(s);
 		} else {
 			throw new Exception("Invalid command: " + commandName);
 		}
@@ -1564,6 +1572,29 @@ public class Prover {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Error using the leftquo command");
+		}
+	}
+
+	public static TestCase drawCommand(String s) throws Exception {
+		try {
+			Matcher m = PATTERN_FOR_draw_COMMAND.matcher(s);
+
+			if (!m.find()) {
+				throw new Exception("Invalid use of draw command.");
+			}
+
+			String library = UtilityMethods.get_address_for_words_library();
+			if (m.group(GROUP_draw_DOLLAR_SIGN).equals("$")) {
+				library = UtilityMethods.get_address_for_automata_library();
+			}
+			Automaton M = new Automaton(library + m.group(GROUP_draw_NAME)+".txt");
+			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_draw_NAME) + ".gv", s, false);
+
+			return new TestCase(s, M, "", "", "");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error using the draw command");
 		}
 	}
 

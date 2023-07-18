@@ -3516,7 +3516,6 @@ public class Automaton {
             String msg = prefix + "Minimized:" + Q + " states - " + (timeAfter-timeBefore) + "ms.";
             System.out.println("----- " + msg);
             log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
         }
     }
 
