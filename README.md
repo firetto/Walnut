@@ -194,7 +194,7 @@ The resulting automaton bar will be saved in "Automata Library/".
 - Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
 - Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
 - Fixed a bug where whitespace and new lines in regular expressions could result in differing automata
-
+- Fixed a bug where using the `combine` command on one automaton would not totalize the resulting Word Automaton and apply the valid representations
 
 
 # Performance improvements

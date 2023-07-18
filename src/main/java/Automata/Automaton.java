@@ -2046,7 +2046,9 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print, prefix+" ", log);
-//        first.applyAllRepresentations();
+        first.canonized = false;
+        first.canonize();
+        first.applyAllRepresentations();
 
         return first;
     }
