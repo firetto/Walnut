@@ -1,0 +1,11 @@
+The "def" command is identical to the "eval" command, except the resulting automaton is also saved in "Automata Library/" for later use. The syntax for the "def" command is as follows:
+
+	def <name> <predicate>
+	
+Results saved in: Result/, Automata Library/.
+	
+For example, to create and save an automaton that accepts an input of "a" if and only if a is the msd_2 representation of 4 (i.e. it belongs to 0*100), one can create the following automaton:
+
+	def four "a=4";
+	
+Please refer to section 7 of "Manual.pdf" saved in "Help Directory/" for a more detailed description of the "eval", "def", and "macro" commands and what one can do with them.

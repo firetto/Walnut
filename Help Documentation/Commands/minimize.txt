@@ -1,0 +1,11 @@
+One may minimize a Word Automaton using the "minimize" command, with the following syntax:
+
+	minimize <new> <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+For example, if minimizing a word automaton "NOTMIN" saved in "Word Automata Library/NOTMIN.txt", one runs:
+
+	minimize MIN NOTMIN
+
+The resulting automaton "MIN" will be a minimal Word Automaton equivalent to "NOTMIN", and will be saved in "Word Automata Library/".

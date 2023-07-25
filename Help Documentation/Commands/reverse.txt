@@ -1,0 +1,21 @@
+One may reverse a Word Automaton or an Automaton using the "reverse" command, with the following syntax:
+
+	reverse <new> <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+NOTE: Reversing an automaton will flip the number system from msd to lsd, and vice versa.
+
+For example, if reversing a word automaton "DEJ" saved in "Word Automata Library/DEJ.txt" with a number system of msd_19, one runs:
+
+	reverse DEJREV DEJ
+
+"DEJREV" will be a Word Automaton that is the reverse of "DEJ", with a number system of lsd_19, and will be saved in Word Automata Library/.
+
+To reverse regular automata (that is, not Word Automata) using the "reverse" command, one prepends the "$" symbol (without the quotation marks) to the old automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, to reverse an Automaton named "foo" saved in "Automata Library/", one writes
+
+	reverse bar $foo
+
+The resulting automaton "bar" will be saved in "Automata Library/".

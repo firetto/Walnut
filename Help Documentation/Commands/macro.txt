@@ -1,0 +1,19 @@
+The "macro" command allows to save "templates" for later use. The syntax for the "macro" command is as follows:
+
+	macro <name> <template>
+	
+Results saved in: Macro Library/.
+
+Consider the following example, where the macro "pal" is created to help calculate palindromes for any word automaton and number system:
+
+	macro pal "?%0 Ak k<n => %1[i+k] = %1[i+n-1-k]";
+	
+This command saves the template "?%0 Ak k<n => %1[i+k] = %1[i+n-1-k]" in a file named "pal.txt" in "Macro Library/". To calculate palindromes for the Thue-Morse word, one writes:
+
+	eval thue_pal "#pal(msd_2, T)";
+	
+This is then equivalent to writing
+
+	eval thue_pal "Ak k<n => T[i+k] = T[i+n-1-k]";
+	
+Please refer to section 7 of "Manual.pdf" saved in "Help Directory/" for a more detailed description of the "eval", "def", and "macro" commands and what one can do with them.

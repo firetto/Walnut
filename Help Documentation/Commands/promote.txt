@@ -1,0 +1,27 @@
+The "promote" command converts a morphism to its equivalent DFAO. The syntax for the "promote" command is:
+
+	promote <name> <morphism>
+	
+Results saved in: Result/, Word Automata Library/
+
+Note that any morphism used must not have negative values in the domain or range, since automata have states numbered from 0.
+
+For example, if the Thue-Morse morphism "thue" is created as follows:
+
+	morphism thue "0->01 1->10"
+
+Then, the "promote" command is used to create a DFAO "T" equivalent to the morphism "thue" as follows:
+
+	promote T thue
+	
+The word automaton T is then defined as follows:
+
+msd_2
+
+0 0
+0 -> 0
+1 -> 1
+
+1 1
+0 -> 1
+1 -> 0

@@ -1,0 +1,7 @@
+The "load" command allows to load commands from a file. For example, to load commands from the file "x.p", one writes:
+
+	load x.p;
+	
+The file can contain any command except for "load x.p;". The user will not get a warning if the file "x.p" contains "load x.p", but Walnut might end up in an infinite loop.
+
+Note that the file can contain "load y.p;" whenever y != x and y.p is a valid file.

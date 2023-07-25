@@ -1,0 +1,9 @@
+The "image" command applies a uniform morphism to a DFAO to produce a new DFAO. The syntax is as follows:
+
+	image <name> <morphism> <DFAO>
+	
+Results saved in: Result/, Word Automata Library/.
+
+Walnut's procedure to apply the uniform morphism is as per Cobham, A. Uniform tag sequences. Math. Systems Theory 6, 164–192 (1972). https://doi.org/10.1007/BF01706087.
+
+If the morphism supplied is not uniform, an error will be produced.

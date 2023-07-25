@@ -1,0 +1,1 @@
+The "cls" command clears the screen. One may equivalently use the "clear" command.

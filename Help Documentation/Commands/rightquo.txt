@@ -4,8 +4,10 @@ The syntax for the "rightquo" command is as follows:
 
 	rightquo <new> <old1> <old2>
 
+Results saved in: Result/, Automata Library/.
+
 The alphabet of <old2> should be a subset of that of <old1>, and the <new> automaton will have the alphabet of <old1>. For example, to take the right quotient "res" of automata named "a1" and "a2" all saved in "Automata Library/", one uses the following command:
 
-	rightquo res a1 a2;
+	rightquo res a1 a2
 
 The resulting automaton "res" is saved in "Automata Library/".
