@@ -1618,7 +1618,7 @@ public class Prover {
 				throw new Exception("Invalid use of the help command.");
 			}
 
-			File f = new File(UtilityMethods.get_address_for_help_documentation());
+			File f = new File(UtilityMethods.get_address_for_help_commands());
 
 			ArrayList<String> pathnames = new ArrayList<String>(Arrays.asList(f.list()));
 
@@ -1638,7 +1638,7 @@ public class Prover {
 					System.out.println("There is no documentation for \"" + commandName + "\". Type \"help;\" to list all commands.");
 				}
 				else {
-					try (BufferedReader br = new BufferedReader(new FileReader(UtilityMethods.get_address_for_help_documentation() + commandName + ".txt"))) {
+					try (BufferedReader br = new BufferedReader(new FileReader(UtilityMethods.get_address_for_help_commands() + commandName + ".txt"))) {
 						String line;
 						while ((line = br.readLine()) != null) {
 							System.out.println(line);

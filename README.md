@@ -56,7 +56,7 @@ The resulting automaton `res` is saved in `Automata Library/`, and accepts the u
 The syntax for the `intersect` command is as follows:
 
 ```
-union <new> <old1> [old2] [old3] ... [oldN]
+intersect <new> <old1> [old2] [old3] ... [oldN]
 ```
 
 The `intersect` command requires at least one input automaton. All automata must have the same input alphabet.
