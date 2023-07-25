@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +49,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  * @author Hamoon
  */
 public class Prover {
-	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo|draw)";
+	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo|draw|help)";
 	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
 	/**
 	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
@@ -1616,21 +1618,33 @@ public class Prover {
 				throw new Exception("Invalid use of the help command.");
 			}
 
-			File f = new File(UtilityMethods.get_address_for_help_directory());
+			File f = new File(UtilityMethods.get_address_for_help_documentation());
 
-			String[] pathnames = f.list();
+			ArrayList<String> pathnames = new ArrayList<String>(Arrays.asList(f.list()));
 
 			String commandName = m.group(GROUP_help_NAME);
-			if (commandName.isEmpty()) {
+			if (commandName == null) {
 				// default help message
 
-				System.out.println("Walnut provides documentation for the following commands. Type \"help <command>;\" to view documentation for a specific command.");
+				System.out.println("Walnut provides documentation for the following commands.\nType \"help <command>;\" to view documentation for a specific command.");
 				for (String pathname : pathnames) {
 					System.out.println(" - " + pathname.substring(0, pathname.length() - 4));
 				}
 			}
 			else {
-				
+				// help with a specific command.
+				int index = pathnames.indexOf(commandName + ".txt");
+				if (index == -1) {
+					System.out.println("There is no documentation for \"" + commandName + "\". Type \"help;\" to list all commands.");
+				}
+				else {
+					try (BufferedReader br = new BufferedReader(new FileReader(UtilityMethods.get_address_for_help_documentation() + commandName + ".txt"))) {
+						String line;
+						while ((line = br.readLine()) != null) {
+							System.out.println(line);
+						}
+					}
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
