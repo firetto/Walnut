@@ -3,9 +3,12 @@ Walnut is an automated theorem prover for automatic words.
 
 To run Walnut, first run "build.sh" to build Walnut, then run the "walnut.sh" file.
 
-Please read the `Manual.pdf` file, included in the repository, to learn what Walnut is and how one would work with it. 
+Please read the `Manual.pdf` file in `Help Documentation/` to learn what Walnut is and how one would work with it. 
+
+Use the `help;` command to view documentation for all available commands.
 
 To run Walnut tests, run "build.sh" with the "-t" flag.
+
 
 # Walnut 6 Additional Documentation
 
@@ -13,12 +16,26 @@ This new version of Walnut has new capabilities and changes added by Anatoly Zav
 
 The new capabilities are as follows:
 
+- Help documentation
 - Automata operations
 - Fixing leading and trailing zeroes
 - Delimiters for word automata
 - Drawing automata and word automata
 - Reversing automata
 - Bug fixes and performance improvements
+
+
+# Help documentation
+
+Walnut now provides built-in documentation for all commands using the `help` command. To view all commands for which documentation exists, one writes:
+```
+help;
+```
+
+To view documentation for a specific command, one writes:
+```
+help <command>;
+```
 
 
 # Automata operations
@@ -37,7 +54,6 @@ One can now perform basic automata operations. The operations, along with their 
 ## Union of automata
 
 The syntax for the `union` command is as follows:
-
 ```
 union <new> <old1> [old2] [old3] ... [oldN]
 ```
@@ -54,7 +70,6 @@ The resulting automaton `res` is saved in `Automata Library/`, and accepts the u
 ## Intersection of automata
 
 The syntax for the `intersect` command is as follows:
-
 ```
 intersect <new> <old1> [old2] [old3] ... [oldN]
 ```
@@ -146,10 +161,10 @@ alphabet res msd_2 msd_2 msd_fib aut;
 ```
 The resulting automaton `res` is saved in `Automata Library/`.
 
+
 # Fixing leading and trailing zeroes
 
 One can now "fix" leading and trailing zeroes for Automata (not Word Automata) using the "fixleadzero" and "fixtrailzero" commands. The syntax is as follows: for an automaton "foo" saved in "Automata Library/", one writes
-
 ```
 fixleadzero bar foo;
 ```
@@ -158,7 +173,6 @@ The resulting automaton bar accepts an input 0* x' if and only if foo accepts an
 
 
 Similarly, for trailing zeroes, one writes
-
 ```
 fixtrailzero bar foo;
 ```
@@ -169,19 +183,16 @@ The resulting automaton bar accepts an input x' 0* if and only if foo accepts an
 For both cases, the resulting automaton "bar" will be saved in the "Automata Library/" directory.
 
 
-
 # Delimiters for Word Automata
 
 In previous versions of Walnut, word automata names could not begin with A, E, or I. This restriction has now been lifted using a new delimiter for word automata: putting "." (without quotation marks) before the name of a word automaton now signals that the following string of characters is the name of the word automaton. 
 
 If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
-
 ```
 def test ".AUTOMATON[n] = @1";
 ```
     
-
-
+	
 # Drawing automata and word automata
 
 The new `draw` command creates a `.gv` file from the `.txt` definition of a Word Automaton saved in `Word Automata Library/`, or of an ordinary automaton saved in `Automata Library/`.
@@ -209,7 +220,6 @@ draw $aut;
 This will save the file `aut.gv` in `Result/`.
 
 
-
 # Reversing automata
 
 One can now use the "reverse" command to reverse ordinary automata saved in the "Automata Library/" directory.
@@ -221,7 +231,6 @@ For example, to reverse an Automaton named "foo" saved in "Automata Library/", o
 	reverse bar $foo;
 
 The resulting automaton bar will be saved in "Automata Library/".
-
 
 
 # Bug fixes
