@@ -559,10 +559,10 @@ public class Prover {
 		}
 
 		boolean printSteps = m.group(ED_ENDING).equals(":");
-		boolean printDetails = m.group(ED_ENDING).equals("::");
+		boolean printDetails = m.group(ED_ENDING).equals("::") || m.group(ED_ENDING).equals(":::");
 		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
 
-		Computer c = new Computer(m.group(ED_PREDICATE), printSteps, printDetails);
+		Computer c = new Computer(m.group(ED_PREDICATE), printSteps, printDetails, saveIntermediateAutomata);
 		c.write(UtilityMethods.get_address_for_result() + m.group(ED_NAME)+".txt");
 		c.drawAutomaton(UtilityMethods.get_address_for_result() + m.group(ED_NAME) + ".gv");
 
@@ -774,7 +774,7 @@ public class Prover {
 		Automaton first = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(0)+".txt");
 		automataNames.remove(0);
 
-		Automaton C = first.combine(automataNames, outputs, printSteps, prefix, log);
+		Automaton C = first.combine(automataNames, outputs, printSteps || printDetails, prefix, log);
 		C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".gv", s, true);
 		C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".txt");
 		C.write(UtilityMethods.get_address_for_words_library()+m.group(GROUP_COMBINE_NAME)+".txt");

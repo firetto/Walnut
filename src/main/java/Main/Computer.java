@@ -38,7 +38,8 @@ public class Computer {
 	String mpl;
 	boolean printSteps;
 	boolean printDetails;
-	public Computer(String predicate, boolean printSteps, boolean printDetails) throws Exception {
+	boolean saveIntermediateAutomata;
+	public Computer(String predicate, boolean printSteps, boolean printDetails, boolean saveIntermediateAutomata) throws Exception {
 		this.log = new StringBuilder();
 		this.log_details = new StringBuilder();
 		mpl = "";
@@ -46,6 +47,7 @@ public class Computer {
 		predicate_object = new Predicate(predicate);
 		this.printSteps = printSteps;
 		this.printDetails = printDetails;
+		this.saveIntermediateAutomata = saveIntermediateAutomata;
 		compute();
 	}
 
