@@ -560,6 +560,7 @@ public class Prover {
 
 		boolean printSteps = m.group(ED_ENDING).equals(":");
 		boolean printDetails = m.group(ED_ENDING).equals("::");
+		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
 
 		Computer c = new Computer(m.group(ED_PREDICATE), printSteps, printDetails);
 		c.write(UtilityMethods.get_address_for_result() + m.group(ED_NAME)+".txt");
@@ -740,6 +741,7 @@ public class Prover {
 
 		boolean printSteps = m.group(GROUP_COMBINE_END).equals(":");
 		boolean printDetails = m.group(GROUP_COMBINE_END).equals("::");
+		boolean saveIntermediateAutomata = m.group(GROUP_COMBINE_END).equals(":::");
 
 		String prefix = new String();
 		StringBuilder log = new StringBuilder();
@@ -785,6 +787,9 @@ public class Prover {
 		if(!m.find()) {
 			throw new Exception("Invalid use of the morphism command.");
 		}
+
+//		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
+
 		String name = m.group(GROUP_MORPHISM_NAME);
 
 		Morphism M = new Morphism(name, m.group(GROUP_MORPHISM_DEFINITION));
@@ -801,6 +806,9 @@ public class Prover {
 		if(!m.find()) {
 			throw new Exception("Invalid use of the promote command.");
 		}
+
+//		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
+
 		Morphism h = new Morphism(UtilityMethods.get_address_for_morphism_library()+m.group(GROUP_PROMOTE_MORPHISM)+".txt");
 		Automaton P = h.toWordAutomaton();
 		P.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_PROMOTE_NAME)+".gv", s, true);
@@ -815,6 +823,9 @@ public class Prover {
 		if(!m.find()) {
 			throw new Exception("Invalid use of the promote command.");
 		}
+
+//		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
+
 		Morphism h = new Morphism(UtilityMethods.get_address_for_morphism_library()+m.group(GROUP_IMAGE_MORPHISM)+".txt");
 		if (!h.isUniform()) {
 			throw new Exception("A morphism applied to a word automaton must be uniform.");
@@ -850,6 +861,9 @@ public class Prover {
 		if(!m.find()) {
 			throw new Exception("Invalid use of the inf command.");
 		}
+
+//		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
+
 		Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_INF_NAME)+".txt");
 		M = removeLeadTrailZeroes(M, m.group(GROUP_INF_NAME));
 		String infReg = M.infinite();
@@ -885,6 +899,7 @@ public class Prover {
 
 		boolean printSteps = m.group(GROUP_SPLIT_END).equals(":");
 		boolean printDetails = m.group(GROUP_SPLIT_END).equals("::");
+		boolean saveIntermediateAutomata = m.group(GROUP_SPLIT_END).equals(":::");
 		String prefix = new String();
 		StringBuilder log = new StringBuilder();
 
@@ -941,6 +956,7 @@ public class Prover {
 
 		boolean printSteps = m.group(GROUP_RSPLIT_END).equals(":");
 		boolean printDetails = m.group(GROUP_RSPLIT_END).equals("::");
+		boolean saveIntermediateAutomata = m.group(GROUP_RSPLIT_END).equals(":::");
 		String prefix = new String();
 		StringBuilder log = new StringBuilder();
 
@@ -983,6 +999,7 @@ public class Prover {
 
 		boolean printSteps = m.group(GROUP_JOIN_END).equals(":");
 		boolean printDetails = m.group(GROUP_JOIN_END).equals("::");
+		boolean saveIntermediateAutomata = m.group(GROUP_JOIN_END).equals(":::");
 		String prefix = new String();
 		StringBuilder log = new StringBuilder();
 
@@ -1116,6 +1133,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_TRANSDUCE_END).equals(":");
 			boolean printDetails = m.group(GROUP_TRANSDUCE_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_TRANSDUCE_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1147,6 +1165,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_REVERSE_END).equals(":");
 			boolean printDetails = m.group(GROUP_REVERSE_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_REVERSE_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1187,6 +1206,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_MINIMIZE_END).equals(":");
 			boolean printDetails = m.group(GROUP_MINIMIZE_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_MINIMIZE_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1222,6 +1242,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_CONVERT_END).equals(":");
 			boolean printDetails = m.group(GROUP_CONVERT_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_CONVERT_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1259,6 +1280,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_FIXLEADZERO_END).equals(":");
 			boolean printDetails = m.group(GROUP_FIXLEADZERO_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_FIXLEADZERO_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1285,6 +1307,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_FIXTRAILZERO_END).equals(":");
 			boolean printDetails = m.group(GROUP_FIXTRAILZERO_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_FIXTRAILZERO_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1320,6 +1343,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_alphabet_END).equals(":");
 			boolean printDetails = m.group(GROUP_alphabet_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_alphabet_END).equals(":::");
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
@@ -1380,6 +1404,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_UNION_END).equals(":");
 			boolean printDetails = m.group(GROUP_UNION_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_UNION_END).equals(":::");
 
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
@@ -1423,6 +1448,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_INTERSECT_END).equals(":");
 			boolean printDetails = m.group(GROUP_INTERSECT_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_INTERSECT_END).equals(":::");
 
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
@@ -1466,6 +1492,7 @@ public class Prover {
 
 			 boolean printSteps = m.group(GROUP_STAR_END).equals(":");
 			 boolean printDetails = m.group(GROUP_STAR_END).equals("::");
+			 boolean saveIntermediateAutomata = m.group(GROUP_STAR_END).equals(":::");
 			 String prefix = new String();
 			 StringBuilder log = new StringBuilder();
 
@@ -1493,6 +1520,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_CONCAT_END).equals(":");
 			boolean printDetails = m.group(GROUP_CONCAT_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_CONCAT_END).equals(":::");
 
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
@@ -1537,6 +1565,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_rightquo_END).equals(":");
 			boolean printDetails = m.group(GROUP_rightquo_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_rightquo_END).equals(":::");
 
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
@@ -1567,6 +1596,7 @@ public class Prover {
 
 			boolean printSteps = m.group(GROUP_leftquo_END).equals(":");
 			boolean printDetails = m.group(GROUP_leftquo_END).equals("::");
+			boolean saveIntermediateAutomata = m.group(GROUP_leftquo_END).equals(":::");
 
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
