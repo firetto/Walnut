@@ -50,23 +50,23 @@ import it.unimi.dsi.fastutil.ints.IntList;
  */
 public class Prover {
 	static String REGEXP_FOR_THE_LIST_OF_COMMANDS = "(eval|def|macro|reg|load|ost|exit|quit|cls|clear|combine|morphism|promote|image|inf|split|rsplit|join|test|transduce|reverse|minimize|convert|fixleadzero|fixtrailzero|alphabet|union|intersect|star|concat|rightquo|leftquo|draw|help)";
-	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_EMPTY_COMMAND = "^\\s*(;|::|:|:::)\\s*$";
 	/**
-	 * the high-level scheme of a command is a name followed by some arguments and ending in either ; : or ::
+	 * the high-level scheme of a command is a name followed by some arguments and ending in either ;, :, ::, or :::
 	 */
-	static String REGEXP_FOR_COMMAND = "^\\s*(\\w+)(\\s+.*)?(;|::|:)\\s*$";
+	static String REGEXP_FOR_COMMAND = "^\\s*(\\w+)(\\s+.*)?(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_COMMAND = Pattern.compile(REGEXP_FOR_COMMAND);
 
-	static String REGEXP_FOR_exit_COMMAND = "^\\s*(exit|quit)\\s*(;|::|:)$";
+	static String REGEXP_FOR_exit_COMMAND = "^\\s*(exit|quit)\\s*(;|::|:|:::)$";
 
-	static String REGEXP_FOR_load_COMMAND = "^\\s*load\\s+(\\w+\\.txt)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_load_COMMAND = "^\\s*load\\s+(\\w+\\.txt)\\s*(;|::|:|:::)\\s*$";
 	/**
 	 * group for filename in REGEXP_FOR_load_COMMAND
 	 */
 	static int L_FILENAME = 1;
 	static Pattern PATTERN_FOR_load_COMMAND = Pattern.compile(REGEXP_FOR_load_COMMAND);
 
-	static String REGEXP_FOR_eval_def_COMMANDS = "^\\s*(eval|def)\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s+\"(.*)\"\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_eval_def_COMMANDS = "^\\s*(eval|def)\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s+\"(.*)\"\\s*(;|::|:|:::)\\s*$";
 	/**
 	 * important groups in REGEXP_FOR_eval_def_COMMANDS
 	 */
@@ -75,11 +75,11 @@ public class Prover {
 	static String REXEXP_FOR_A_FREE_VARIABLE_IN_eval_def_COMMANDS = "[a-zA-Z]\\w*";
 	static Pattern PATTERN_FOR_A_FREE_VARIABLE_IN_eval_def_COMMANDS = Pattern.compile(REXEXP_FOR_A_FREE_VARIABLE_IN_eval_def_COMMANDS);
 
-	static String REGEXP_FOR_macro_COMMAND = "^\\s*macro\\s+([a-zA-Z]\\w*)\\s+\"(.*)\"\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_macro_COMMAND = "^\\s*macro\\s+([a-zA-Z]\\w*)\\s+\"(.*)\"\\s*(;|::|:|:::)\\s*$";
 	static int M_NAME = 1,M_DEFINITION = 2;
 	static Pattern PATTERN_FOR_macro_COMMAND = Pattern.compile(REGEXP_FOR_macro_COMMAND);
 
-	static String REGEXP_FOR_reg_COMMAND = "^\\s*(reg)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)\"(.*)\"\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_reg_COMMAND = "^\\s*(reg)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)\"(.*)\"\\s*(;|::|:|:::)\\s*$";
 
 	/**
 	 * important groups in REGEXP_FOR_reg_COMMAND
@@ -97,48 +97,48 @@ public class Prover {
 
 	static Pattern PATTERN_FOR_A_SINGLE_NOT_SPACED_WORD = Pattern.compile("\\w+");
 
-	static String REGEXP_FOR_ost_COMMAND = "^\\s*ost\\s+([a-zA-Z]\\w*)\\s*\\[\\s*((\\d+\\s*)*)\\]\\s*\\[\\s*((\\d+\\s*)*)\\]\\s*(;|:|::)\\s*$";
+	static String REGEXP_FOR_ost_COMMAND = "^\\s*ost\\s+([a-zA-Z]\\w*)\\s*\\[\\s*((\\d+\\s*)*)\\]\\s*\\[\\s*((\\d+\\s*)*)\\]\\s*(;|:|::|:::)\\s*$";
 	static Pattern PATTERN_FOR_ost_COMMAND = Pattern.compile(REGEXP_FOR_ost_COMMAND);
 	static int GROUP_OST_NAME = 1;
 	static int GROUP_OST_PREPERIOD = 2;
 	static int GROUP_OST_PERIOD = 4;
 	static int GROUP_OST_END = 6;
 
-	static String REGEXP_FOR_combine_COMMAND = "^\\s*combine\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*(=-?\\d+)?))*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_combine_COMMAND = "^\\s*combine\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*(=-?\\d+)?))*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_combine_COMMAND = Pattern.compile(REGEXP_FOR_combine_COMMAND);
 	static int GROUP_COMBINE_NAME = 1, GROUP_COMBINE_AUTOMATA = 2, GROUP_COMBINE_END = 6;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_combine_COMMAND = "([a-zA-Z]\\w*)((=-?\\d+)?)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_combine_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_combine_COMMAND);
 
-	static String REGEXP_FOR_morphism_COMMAND = "^\\s*morphism\\s+([a-zA-Z]\\w*)\\s+\"(\\d+\\s*\\-\\>\\s*(.)*(,\\d+\\s*\\-\\>\\s*(.)*)*)\"\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_morphism_COMMAND = "^\\s*morphism\\s+([a-zA-Z]\\w*)\\s+\"(\\d+\\s*\\-\\>\\s*(.)*(,\\d+\\s*\\-\\>\\s*(.)*)*)\"\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_morphism_COMMAND	= Pattern.compile(REGEXP_FOR_morphism_COMMAND);
 	static int GROUP_MORPHISM_NAME = 1, GROUP_MORPHISM_DEFINITION;
 
-	static String REGEXP_FOR_promote_COMMAND = "^\\s*promote\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_promote_COMMAND = "^\\s*promote\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_promote_COMMAND = Pattern.compile(REGEXP_FOR_promote_COMMAND);
 	static int GROUP_PROMOTE_NAME = 1, GROUP_PROMOTE_MORPHISM = 2;
 
-	static String REGEXP_FOR_image_COMMAND = "^\\s*image\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_image_COMMAND = "^\\s*image\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_image_COMMAND = Pattern.compile(REGEXP_FOR_image_COMMAND);
 	static int GROUP_IMAGE_NEW_NAME = 1, GROUP_IMAGE_MORPHISM = 2, GROUP_IMAGE_OLD_NAME = 3;
 
-	static String REGEXP_FOR_inf_COMMAND = "^\\s*inf\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_inf_COMMAND = "^\\s*inf\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_inf_COMMAND = Pattern.compile(REGEXP_FOR_inf_COMMAND);
 	static int GROUP_INF_NAME = 1;
 
-	static String REGEXP_FOR_split_COMMAND = "^\\s*split\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[+-]?\\s*])+)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_split_COMMAND = "^\\s*split\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[+-]?\\s*])+)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_split_COMMAND = Pattern.compile(REGEXP_FOR_split_COMMAND);
 	static int GROUP_SPLIT_NAME = 1, GROUP_SPLIT_AUTOMATA = 2, GROUP_SPLIT_INPUT = 3, GROUP_SPLIT_END = 5;
 	static String REGEXP_FOR_INPUT_IN_split_COMMAND = "\\[\\s*([+-]?)\\s*]";
 	static Pattern PATTERN_FOR_INPUT_IN_split_COMMAND = Pattern.compile(REGEXP_FOR_INPUT_IN_split_COMMAND);
 
-	static String REGEXP_FOR_rsplit_COMMAND = "^\\s*rsplit\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[+-]?\\s*])+)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_rsplit_COMMAND = "^\\s*rsplit\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[+-]?\\s*])+)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_rsplit_COMMAND = Pattern.compile(REGEXP_FOR_rsplit_COMMAND);
 	static int GROUP_RSPLIT_NAME = 1, GROUP_RSPLIT_AUTOMATA = 4, GROUP_RSPLIT_INPUT = 2, GROUP_RSPLIT_END = 5;
 	static String REGEXP_FOR_INPUT_IN_rsplit_COMMAND = "\\[\\s*([+-]?)\\s*]";
 	static Pattern PATTERN_FOR_INPUT_IN_rsplit_COMMAND = Pattern.compile(REGEXP_FOR_INPUT_IN_rsplit_COMMAND);
 
-	static String REGEXP_FOR_join_COMMAND = "^\\s*join\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[a-zA-Z&&[^AE]]\\w*\\s*])+))*)\\s*(;|::|:)\\s*";
+	static String REGEXP_FOR_join_COMMAND = "^\\s*join\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*)((\\s*\\[\\s*[a-zA-Z&&[^AE]]\\w*\\s*])+))*)\\s*(;|::|:|:::)\\s*";
 	static Pattern PATTERN_FOR_join_COMMAND = Pattern.compile(REGEXP_FOR_join_COMMAND);
 	static int GROUP_JOIN_NAME = 1, GROUP_JOIN_AUTOMATA = 2, GROUP_JOIN_END = 7;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_join_COMMAND = "([a-zA-Z]\\w*)((\\s*\\[\\s*[a-zA-Z&&[^AE]]\\w*\\s*])+)";
@@ -147,77 +147,77 @@ public class Prover {
 	static String REGEXP_FOR_AN_AUTOMATON_INPUT_IN_join_COMMAND = "\\[\\s*([a-zA-Z&&[^AE]]\\w*)\\s*]";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_INPUT_IN_join_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_INPUT_IN_join_COMMAND);
 
-	static String REGEXP_FOR_test_COMMAND = "^\\s*test\\s+([a-zA-Z]\\w*)\\s*(\\d+)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_test_COMMAND = "^\\s*test\\s+([a-zA-Z]\\w*)\\s*(\\d+)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_test_COMMAND = Pattern.compile(REGEXP_FOR_test_COMMAND);
 	static int GROUP_TEST_NAME = 1, GROUP_TEST_NUM = 2;
 
-	static String REGEXP_FOR_transduce_COMMAND = "^\\s*transduce\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_transduce_COMMAND = "^\\s*transduce\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_transduce_COMMAND = Pattern.compile(REGEXP_FOR_transduce_COMMAND);
 	static int GROUP_TRANSDUCE_NEW_NAME = 1, GROUP_TRANSDUCE_TRANSDUCER = 2,
 			GROUP_TRANSDUCE_DOLLAR_SIGN = 3, GROUP_TRANSDUCE_OLD_NAME = 4, GROUP_TRANSDUCE_END = 5;
 
-	static String REGEXP_FOR_reverse_COMMAND = "^\\s*reverse\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_reverse_COMMAND = "^\\s*reverse\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_reverse_COMMAND = Pattern.compile(REGEXP_FOR_reverse_COMMAND);
 	static int GROUP_REVERSE_NEW_NAME = 1, GROUP_REVERSE_DOLLAR_SIGN = 2, GROUP_REVERSE_OLD_NAME = 3, GROUP_REVERSE_END = 4;
 
-	static String REGEXP_FOR_minimize_COMMAND = "^\\s*minimize\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_minimize_COMMAND = "^\\s*minimize\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_minimize_COMMAND = Pattern.compile(REGEXP_FOR_minimize_COMMAND);
 	static int GROUP_MINIMIZE_NEW_NAME = 1, GROUP_MINIMIZE_OLD_NAME = 2, GROUP_MINIMIZE_END = 3;
 
-	static String REGEXP_FOR_convert_COMMAND = "^\\s*convert\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s+((msd|lsd)_(\\d+))\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_convert_COMMAND = "^\\s*convert\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s+((msd|lsd)_(\\d+))\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_convert_COMMAND = Pattern.compile(REGEXP_FOR_convert_COMMAND);
 	static int GROUP_CONVERT_NEW_NAME = 2, GROUP_CONVERT_OLD_NAME = 7, GROUP_CONVERT_END = 8,
 				GROUP_CONVERT_NEW_DOLLAR_SIGN = 1, GROUP_CONVERT_OLD_DOLLAR_SIGN = 6,
 				GROUP_CONVERT_NUMBER_SYSTEM = 3, GROUP_CONVERT_MSD_OR_LSD = 4,
 				GROUP_CONVERT_BASE = 5;
 
-	static String REGEXP_FOR_fixleadzero_COMMAND = "^\\s*fixleadzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_fixleadzero_COMMAND = "^\\s*fixleadzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_fixleadzero_COMMAND = Pattern.compile(REGEXP_FOR_fixleadzero_COMMAND);
 	static int GROUP_FIXLEADZERO_NEW_NAME = 1, GROUP_FIXLEADZERO_DOLLAR_SIGN = 2, GROUP_FIXLEADZERO_OLD_NAME = 3, GROUP_FIXLEADZERO_END = 4;
 
-	static String REGEXP_FOR_fixtrailzero_COMMAND = "^\\s*fixtrailzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_fixtrailzero_COMMAND = "^\\s*fixtrailzero\\s+([a-zA-Z]\\w*)\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_fixtrailzero_COMMAND = Pattern.compile(REGEXP_FOR_fixtrailzero_COMMAND);
 	static int GROUP_FIXTRAILZERO_NEW_NAME = 1, GROUP_FIXTRAILZERO_DOLLAR_SIGN = 2, GROUP_FIXTRAILZERO_OLD_NAME = 3, GROUP_FIXTRAILZERO_END = 4;
 
-	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*(alphabet)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*(alphabet)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_alphabet_COMMAND = Pattern.compile(REGEXP_FOR_alphabet_COMMAND);
 	static int GROUP_alphabet_NEW_NAME = 2, GROUP_alphabet_LIST_OF_ALPHABETS = 3, GROUP_alphabet_OLD_NAME = 20, GROUP_alphabet_END = 21;
 
-	static String REGEXP_FOR_union_COMMAND = "^\\s*union\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_union_COMMAND = "^\\s*union\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_union_COMMAND = Pattern.compile(REGEXP_FOR_union_COMMAND);
 	static int GROUP_UNION_NAME = 1, GROUP_UNION_AUTOMATA = 2, GROUP_UNION_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_union_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_union_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_union_COMMAND);
 
-	static String REGEXP_FOR_intersect_COMMAND = "^\\s*intersect\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_intersect_COMMAND = "^\\s*intersect\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_intersect_COMMAND = Pattern.compile(REGEXP_FOR_intersect_COMMAND);
 	static int GROUP_INTERSECT_NAME = 1, GROUP_INTERSECT_AUTOMATA = 2, GROUP_INTERSECT_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_intersect_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_intersect_COMMAND);
 
-	static String REGEXP_FOR_star_COMMAND = "^\\s*star\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_star_COMMAND = "^\\s*star\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_star_COMMAND = Pattern.compile(REGEXP_FOR_star_COMMAND);
 	static int GROUP_STAR_NEW_NAME = 1, GROUP_STAR_OLD_NAME = 2, GROUP_STAR_END = 3;
 
-	static String REGEXP_FOR_concat_COMMAND = "^\\s*concat\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_concat_COMMAND = "^\\s*concat\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_concat_COMMAND = Pattern.compile(REGEXP_FOR_concat_COMMAND);
 	static int GROUP_CONCAT_NAME = 1, GROUP_CONCAT_AUTOMATA = 2, GROUP_CONCAT_END = 5;
 	static String REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND = "([a-zA-Z]\\w*)";
 	static Pattern PATTERN_FOR_AN_AUTOMATON_IN_concat_COMMAND = Pattern.compile(REGEXP_FOR_AN_AUTOMATON_IN_concat_COMMAND);
 
-	static String REGEXP_FOR_rightquo_COMMAND = "^\\s*rightquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_rightquo_COMMAND = "^\\s*rightquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_rightquo_COMMAND = Pattern.compile(REGEXP_FOR_rightquo_COMMAND);
 	static int GROUP_rightquo_NEW_NAME = 1, GROUP_rightquo_OLD_NAME1 = 2, GROUP_rightquo_OLD_NAME2 = 3, GROUP_rightquo_END = 4;
 
-	static String REGEXP_FOR_leftquo_COMMAND = "^\\s*leftquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_leftquo_COMMAND = "^\\s*leftquo\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s+([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_leftquo_COMMAND = Pattern.compile(REGEXP_FOR_leftquo_COMMAND);
 	static int GROUP_leftquo_NEW_NAME = 1, GROUP_leftquo_OLD_NAME1 = 2, GROUP_leftquo_OLD_NAME2 = 3, GROUP_leftquo_END = 4;
 
-	static String REGEXP_FOR_draw_COMMAND = "^\\s*draw\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_draw_COMMAND = "^\\s*draw\\s+(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_draw_COMMAND = Pattern.compile(REGEXP_FOR_draw_COMMAND);
 	static int GROUP_draw_DOLLAR_SIGN = 1, GROUP_draw_NAME = 2, GROUP_draw_END = 3;
 
-	static String REGEXP_FOR_help_COMMAND = "^\\s*help(\\s*|\\s+(\\w*))\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_help_COMMAND = "^\\s*help(\\s*|\\s+(\\w*))\\s*(;|::|:|:::)\\s*$";
 	static Pattern PATTERN_FOR_help_COMMAND = Pattern.compile(REGEXP_FOR_help_COMMAND);
 	static int GROUP_help_NAME = 2, GROUP_help_END = 3;
 
