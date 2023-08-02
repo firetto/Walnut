@@ -50,6 +50,12 @@ public class UtilityMethods {
 			dir = "../";
 	}
 
+	public static void writeMessage(String msg, String prefix, StringBuilder log) {
+		String message = prefix + msg;
+		System.out.println(message);
+		log.append(message + UtilityMethods.newLine());
+	}
+
 	public static String get_address_for_command_files() {
 		return dir + ADDRESS_FOR_COMMAND_FILES;
 	}

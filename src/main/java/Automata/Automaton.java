@@ -2,6 +2,7 @@
 package Automata;
 import Main.GraphViz;
 import Main.UtilityMethods;
+import Main.MutableCounter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -1988,16 +1989,16 @@ public class Automaton {
         return first;
     }
 
-    public Automaton combine(List<String> automataNames, IntList outputs, boolean print, String prefix, StringBuilder log) throws Exception {
+    public Automaton combine(List<String> automataNames, IntList outputs, boolean print, String prefix, StringBuilder log, boolean saveIntermediateAutomata, String finalAutomatonName, MutableCounter counter) throws Exception {
         Queue<Automaton> subautomata =  new LinkedList<>();
 		for (String name : automataNames) {
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+name+".txt");
 			subautomata.add(M);
 		}
-        return combine(subautomata, outputs, print, prefix, log);
+        return combine(subautomata, outputs, print, prefix, log, saveIntermediateAutomata, finalAutomatonName, counter);
     }
 
-    public Automaton combine(Queue<Automaton> subautomata, IntList outputs, boolean print, String prefix, StringBuilder log) throws Exception {
+    public Automaton combine(Queue<Automaton> subautomata, IntList outputs, boolean print, String prefix, StringBuilder log, boolean saveIntermediateAutomata, String finalAutomatonName, MutableCounter counter) throws Exception {
         Automaton first = this.clone();
 
         // In an automaton without output, every non-zero output value represents an accepting state
@@ -2006,6 +2007,14 @@ public class Automaton {
             if (first.O.getInt(q) != 0) {
                 first.O.set(q, outputs.getInt(0));
             }
+        }
+        int firstCombined = counter.getValue();
+        if (saveIntermediateAutomata) {
+            String msg = prefix + "All nonzero outputs of first automaton have been set to " + outputs.getInt(0) ", saving as intermediate automaton " + firstCombined;
+            log.append(msg + UtilityMethods.newLine());
+            System.out.println(msg);
+            first.writeAsIntermediateAutomaton(finalAutomatonName, firstCombined, prefix, log);
+            counter.increment();
         }
         first.combineIndex = 1;
         first.combineOutputs = outputs;
@@ -2024,6 +2033,15 @@ public class Automaton {
             next.label = first.label;
             // crossProduct requires both automata to be totalized, otherwise it has no idea which cartesian states to transition to
             first.totalize(print,prefix+" ",log);
+
+            int totalizedFirst = counter.getValue();
+            if (saveIntermediateAutomata) {
+                String msg = prefix + "Intermediate automaton " + firstCombined + " was totalized, saving as intermediate automaton " + totalizedFirst;
+                log.append(msg + UtilityMethods.newLine());
+                System.out.println(msg);
+                first.writeAsIntermediateAutomaton(finalAutomatonName, firstCombined, prefix, log);
+                counter.increment();
+            }
             next.totalize(print,prefix+" ",log);
             Automaton product = first.crossProduct(next, "combine", print, prefix+" ", log);
             product.combineIndex = first.combineIndex + 1;
@@ -3274,7 +3292,7 @@ public class Automaton {
     }
 
 
-    public void writeAsIntermediateAutomaton(String finalAutomatonName, int counter, boolean print, String prefix, StringBuilder log) {
+    public void writeAsIntermediateAutomaton(String finalAutomatonName, int counter, String prefix, StringBuilder log) {
         // first, add the directory if it still doesn't exist.
         String dir = UtilityMethods.get_address_for_intermediate_automata() + finalAutomatonName + "/";
         File directory = new File(dir);
@@ -3293,11 +3311,9 @@ public class Automaton {
         }
         write(path);
 
-        if (print) {
-            String msg = prefix + "--# Intermediate Automaton saved to " + UtilityMethods.ADDRESS_FOR_INTERMEDIATE_AUTOMATA + finalAutomatonName + "/" + counter + ".txt";
-            System.out.println("----- " + msg);
-            log.append(msg + UtilityMethods.newLine());
-        }
+        String msg = prefix + "#### Intermediate Automaton saved to " + UtilityMethods.ADDRESS_FOR_INTERMEDIATE_AUTOMATA + finalAutomatonName + "/" + counter + ".txt";
+        System.out.println(msg);
+        log.append(msg + UtilityMethods.newLine());
     }
 
     /**

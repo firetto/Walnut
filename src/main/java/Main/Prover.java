@@ -745,6 +745,8 @@ public class Prover {
 		boolean printSteps = m.group(GROUP_COMBINE_END).equals(":");
 		boolean printDetails = m.group(GROUP_COMBINE_END).equals("::");
 		boolean saveIntermediateAutomata = m.group(GROUP_COMBINE_END).equals(":::");
+		MutableCounter counter = new MutableCounter();
+		String finalAutomatonName = m.group(GROUP_COMBINE_NAME);
 
 		String prefix = new String();
 		StringBuilder log = new StringBuilder();
@@ -769,6 +771,14 @@ public class Prover {
 				outputs.add(Integer.parseInt(u));
 			}
 			automataNames.add(t);
+			if (saveIntermediateAutomata) {
+				String msg = prefix + "Automaton " + t + " saved for future reference as intermediate automaton " + counter.getValue();
+				log.append(msg + UtilityMethods.newLine());
+				System.out.println(msg);
+				Automaton aut = new Automaton(UtilityMethods.get_address_for_automata_library()+t+".txt");
+				aut.writeAsIntermediateAutomaton(finalAutomatonName, counter.getValue(), prefix, log);
+				counter.increment();
+			}
 		}
 
 		if (automataNames.size() == 0) {
@@ -777,7 +787,7 @@ public class Prover {
 		Automaton first = new Automaton(UtilityMethods.get_address_for_automata_library()+automataNames.get(0)+".txt");
 		automataNames.remove(0);
 
-		Automaton C = first.combine(automataNames, outputs, printSteps || printDetails, prefix, log);
+		Automaton C = first.combine(automataNames, outputs, printSteps || printDetails, prefix, log, saveIntermediateAutomata, finalAutomatonName, counter);
 		C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".gv", s, true);
 		C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".txt");
 		C.write(UtilityMethods.get_address_for_words_library()+m.group(GROUP_COMBINE_NAME)+".txt");
