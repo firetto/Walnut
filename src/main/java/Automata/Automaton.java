@@ -3,13 +3,7 @@ package Automata;
 import Main.GraphViz;
 import Main.UtilityMethods;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -3276,6 +3270,33 @@ public class Automaton {
             for(int dest:d.get(q).get(n))
                 out.write(" " + Integer.toString(dest));
             out.write(UtilityMethods.newLine());
+        }
+    }
+
+
+    public void writeAsIntermediateAutomaton(String finalAutomatonName, int counter, boolean print, String prefix, StringBuilder log) {
+        // first, add the directory if it still doesn't exist.
+        String dir = UtilityMethods.get_address_for_intermediate_automata() + finalAutomatonName + "/";
+        File directory = new File(dir);
+        if (!directory.isDirectory()) {
+            throw Exception("The directory that the intermediate automaton is saved to must be a valid directory.");
+        }
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // now save file.
+        String path = dir + counter + ".txt";
+        File f = new File(path);
+        if (f.exists() && !f.isDirectory()) {
+            throw Exception("File " + path + " already exists.");
+        }
+        write(path);
+
+        if (print) {
+            String msg = prefix + "--# Intermediate Automaton saved to " + UtilityMethods.ADDRESS_FOR_INTERMEDIATE_AUTOMATA + finalAutomatonName + "/" + counter + ".txt";
+            System.out.println("----- " + msg);
+            log.append(msg + UtilityMethods.newLine());
         }
     }
 

@@ -40,6 +40,7 @@ public class UtilityMethods {
 	static String ADDRESS_FOR_HELP_COMMANDS = "Help Documentation/Commands/";
 	static String ADDRESS_FOR_INTEGRATION_TEST_RESULTS = "Test Results/Integration Tests/";
 	static String ADDRESS_FOR_UNIT_TEST_INTEGRATION_TEST_RESULTS = "src/test/resources/integrationTests/";
+	static String ADDRESS_FOR_INTERMEDIATE_AUTOMATA = "Intermediate Automata/";
 
 	static String PROMPT = "\n[Walnut]$ ";
 
@@ -96,6 +97,9 @@ public class UtilityMethods {
 		return dir + ADDRESS_FOR_HELP_COMMANDS;
 	}
 
+	public static String get_address_for_intermediate_automata() {
+		return dir + ADDRESS_FOR_INTERMEDIATE_AUTOMATA;
+	}
 
 	public static String newLineString =  System.lineSeparator();
 	public static char min(char a,char b){

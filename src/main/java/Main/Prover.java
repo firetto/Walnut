@@ -560,9 +560,12 @@ public class Prover {
 
 		boolean printSteps = m.group(ED_ENDING).equals(":");
 		boolean printDetails = m.group(ED_ENDING).equals("::") || m.group(ED_ENDING).equals(":::");
-		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
 
-		Computer c = new Computer(m.group(ED_PREDICATE), printSteps, printDetails, saveIntermediateAutomata);
+		boolean saveIntermediateAutomata = m.group(ED_ENDING).equals(":::");
+		String finalAutomatonName = m.group(ED_NAME);
+		int intermediateAutomataCounter = 0;
+
+		Computer c = new Computer(m.group(ED_PREDICATE), printSteps, printDetails, saveIntermediateAutomata, finalAutomatonName, intermediateAutomataCounter);
 		c.write(UtilityMethods.get_address_for_result() + m.group(ED_NAME)+".txt");
 		c.drawAutomaton(UtilityMethods.get_address_for_result() + m.group(ED_NAME) + ".gv");
 
