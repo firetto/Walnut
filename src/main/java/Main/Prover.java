@@ -284,6 +284,7 @@ public class Prover {
 		}
 
 		// Now we parse commands from the console.
+		System.out.println("Welcome to Walnut! Type \"help;\" to see all available commands.");
 		in = new BufferedReader(new InputStreamReader(System.in));
 		readBuffer(in, true);
 	}
