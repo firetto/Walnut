@@ -289,9 +289,7 @@ public class Transducer extends Automaton {
         try {
             long timeBefore = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "transducing: " + M.Q + " state automaton - " + Q + " state transducer";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("transducing: " + M.Q + " state automaton - " + Q + " state transducer", prefix, log);
             }
 
             
@@ -573,9 +571,7 @@ public class Transducer extends Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "transduced: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("transduced: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
 
 
@@ -619,9 +615,7 @@ public class Transducer extends Automaton {
 
         if (!M.NS.get(0).isMsd()) {
             if(print){
-                String msg = prefix + "Automaton number system is lsd, reversing";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Automaton number system is lsd, reversing", prefix, log);
             }
             toLsd = true;
             M.reverseWithOutput(true, print, prefix+" ", log);

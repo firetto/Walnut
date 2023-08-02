@@ -772,9 +772,7 @@ public class Prover {
 			}
 			automataNames.add(t);
 			if (saveIntermediateAutomata) {
-				String msg = prefix + "Automaton " + t + " saved for future reference as intermediate automaton " + counter.getValue();
-				log.append(msg + UtilityMethods.newLine());
-				System.out.println(msg);
+				UtilityMethods.writeMessage("Automaton " + t + " saved for future reference as intermediate automaton " + counter.getValue(), prefix, log);
 				Automaton aut = new Automaton(UtilityMethods.get_address_for_automata_library()+t+".txt");
 				aut.writeAsIntermediateAutomaton(finalAutomatonName, counter.getValue(), prefix, log);
 				counter.increment();
@@ -935,7 +933,7 @@ public class Prover {
 			subautomata.set(i, N);
 		}
 		Automaton N = subautomata.remove(0);
-		N = N.combine(new LinkedList<>(subautomata),outputs,printSteps, prefix,log);
+		N = N.combine(new LinkedList<>(subautomata),outputs,printSteps, prefix,log, false, "", null);
 
 		N.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_SPLIT_NAME)+".gv", s, isDFAO);
 		N.write(UtilityMethods.get_address_for_result()+m.group(GROUP_SPLIT_NAME)+".txt");
@@ -992,7 +990,7 @@ public class Prover {
 			subautomata.set(i, N);
 		}
 		Automaton N = subautomata.remove(0);
-		N = N.combine(new LinkedList<>(subautomata),outputs,printSteps, prefix,log);
+		N = N.combine(new LinkedList<>(subautomata),outputs,printSteps, prefix,log, false, "", null);
 
 		N.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_RSPLIT_NAME)+".gv", s, isDFAO);
 		N.write(UtilityMethods.get_address_for_result()+m.group(GROUP_RSPLIT_NAME)+".txt");

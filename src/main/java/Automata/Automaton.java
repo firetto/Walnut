@@ -774,9 +774,7 @@ public class Automaton {
         }
         long timeBefore = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "quantifying:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("quantifying:" + Q + " states", prefix, log);
         }
 
         /**
@@ -829,9 +827,7 @@ public class Automaton {
         minimize(null, print,prefix +" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "quantified:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("quantified:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -851,9 +847,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "Reversing:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("Reversing:" + Q + " states", prefix, log);
         }
 
         // We change the direction of transitions first.
@@ -911,9 +905,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "reversed:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("reversed:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -936,9 +928,7 @@ public class Automaton {
         try {
             long timeBefore = System.currentTimeMillis();
             if(print) {
-                String msg = prefix + "reversing: " + Q + " states";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("reversing: " + Q + " states", prefix, log);
             }
 
             boolean addedDeadState = addDistinguishedDeadState(print, prefix, log);
@@ -990,7 +980,6 @@ public class Automaton {
                 newD.add(new Int2ObjectRBTreeMap<>());
 
                 // assume that the
-                // System.out.println("alphabet: " + d.get(q0) + ", " + d + ", " + alphabetSize);
                 if (d.get(q0).keySet().size() != alphabetSize) {
                     throw new Exception("Automaton should be deterministic!");
                 }
@@ -1070,9 +1059,7 @@ public class Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "reversed: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("reversed: " + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1195,9 +1182,7 @@ public class Automaton {
 
             long timeBefore = System.currentTimeMillis();
             if (print) {
-                String msg = prefix + "Converting: msd_" + base + " to msd_" + (int)Math.pow(base, exponent) + ", " + Q + " states";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Converting: msd_" + base + " to msd_" + (int)Math.pow(base, exponent) + ", " + Q + " states", prefix, log);
             }
 
             List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
@@ -1263,9 +1248,7 @@ public class Automaton {
 
             if (print) {
                 long timeAfter = System.currentTimeMillis();
-                String msg = prefix + "Converted: msd_" + base + " to msd_" + (int)(Math.pow(base, exponent)) + ", " + Q + " states - " + (timeAfter-timeBefore) + "ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Converted: msd_" + base + " to msd_" + (int)(Math.pow(base, exponent)) + ", " + Q + " states - " + (timeAfter-timeBefore) + "ms", prefix, log);
             }
 
         } catch(Exception e) {
@@ -1291,9 +1274,7 @@ public class Automaton {
 
             long timeBefore = System.currentTimeMillis();
             if (print) {
-                String msg = prefix + "Converting: lsd_" + base + " to lsd_" + (int)Math.pow(root, exponent) + ", " + Q + " states";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Converting: lsd_" + base + " to lsd_" + (int)Math.pow(root, exponent) + ", " + Q + " states", prefix, log);
             }
 
             if (base != Math.pow(root, exponent)) {
@@ -1438,9 +1419,7 @@ public class Automaton {
 
             if(print) {
                 long timeAfter = System.currentTimeMillis();
-                String msg = prefix + prefix + "Converted: lsd_" + base + " to lsd_" + (int)(Math.pow(root, exponent)) + ", " + Q + " states - " + (timeAfter-timeBefore) + "ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Converted: lsd_" + base + " to lsd_" + (int)(Math.pow(root, exponent)) + ", " + Q + " states - " + (timeAfter-timeBefore) + "ms", prefix, log);
             }
 
         } catch (Exception e) {
@@ -1493,9 +1472,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if (print) {
-            String msg = prefix + "Computing cross product:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("Computing cross product:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         /**
@@ -1564,11 +1541,10 @@ public class Automaton {
                 int statesSoFar = currentState + 1;
                 long timeAfter = System.currentTimeMillis();
                 if (statesSoFar == 1e2 || statesSoFar == 1e3 || statesSoFar % 1e4 == 0) {
-                    String msg = prefix + "  Progress: Added " + statesSoFar + " states - "
+                    String msg = "  Progress: Added " + statesSoFar + " states - "
                             + (statesList.size() - statesSoFar) + " states left in queue - "
                             + statesList.size() + " reachable states - " + (timeAfter-timeBefore)+"ms";
-                    log.append(msg + UtilityMethods.newLine());
-                    System.out.println(msg);
+                    UtilityMethods.writeMessage(msg, prefix, log);
                 }
             }
 
@@ -1659,9 +1635,7 @@ public class Automaton {
         N.Q = statesList.size();
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed cross product:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed cross product:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return N;
     }
@@ -1697,9 +1671,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "computing &:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing &:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         Automaton N = crossProduct(M,"&",print,prefix,log);
@@ -1707,9 +1679,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed &:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed &:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return N;
@@ -1729,9 +1699,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computing |:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing |:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         totalize(print,prefix+" ",log);
@@ -1743,9 +1711,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed |:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed |:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return N;
@@ -1777,9 +1743,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computing ^:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing ^:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         totalize(print,prefix+" ",log);
@@ -1790,9 +1754,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed ^:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed ^:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return N;
     }
@@ -1813,9 +1775,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computing =>:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing =>:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         totalize(print,prefix+" ",log);
@@ -1826,9 +1786,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed =>:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed =>:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return N;
@@ -1858,9 +1816,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computing <=>:" + Q + " states - " + M.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing <=>:" + Q + " states - " + M.Q + " states", prefix, log);
         }
 
         totalize(print,prefix+" ",log);
@@ -1871,9 +1827,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed <=>:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed <=>:" + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return N;
@@ -1891,9 +1845,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computing ~:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computing ~:" + Q + " states", prefix, log);
         }
 
         totalize(print,prefix+" ",log);
@@ -1905,9 +1857,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "computed ~:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("computed ~:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -1981,9 +1931,7 @@ public class Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
         }
         return first;
@@ -2010,9 +1958,7 @@ public class Automaton {
         }
         int firstCombined = counter.getValue();
         if (saveIntermediateAutomata) {
-            String msg = prefix + "All nonzero outputs of first automaton have been set to " + outputs.getInt(0) ", saving as intermediate automaton " + firstCombined;
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("All nonzero outputs of first automaton have been set to " + outputs.getInt(0) + ", saving as intermediate automaton " + firstCombined, prefix, log);
             first.writeAsIntermediateAutomaton(finalAutomatonName, firstCombined, prefix, log);
             counter.increment();
         }
@@ -2022,9 +1968,7 @@ public class Automaton {
             Automaton next = subautomata.remove();
             long timeBefore = System.currentTimeMillis();
             if (print) {
-                String msg = prefix + "computing =>:" + first.Q + " states - " + next.Q + " states";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("computing =>:" + first.Q + " states - " + next.Q + " states", prefix, log);
             }
 
             // crossProduct requires labelling so we make an arbitrary labelling and use it for both: this is valid since
@@ -2036,9 +1980,7 @@ public class Automaton {
 
             int totalizedFirst = counter.getValue();
             if (saveIntermediateAutomata) {
-                String msg = prefix + "Intermediate automaton " + firstCombined + " was totalized, saving as intermediate automaton " + totalizedFirst;
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("Intermediate automaton " + firstCombined + " was totalized, saving as intermediate automaton " + totalizedFirst, prefix, log);
                 first.writeAsIntermediateAutomaton(finalAutomatonName, firstCombined, prefix, log);
                 counter.increment();
             }
@@ -2050,9 +1992,7 @@ public class Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
         }
 
@@ -2104,7 +2044,7 @@ public class Automaton {
         }
         Automaton N = subautomata.remove(0);
         List<String> label = new ArrayList<>(N.label); // We keep the old labels, since they are replaced in the combine
-        N = N.combine(new LinkedList<>(subautomata),outputs,print, prefix,log);
+        N = N.combine(new LinkedList<>(subautomata),outputs,print, prefix,log, false, "", null);
         N.label = label;
         return N;
     }
@@ -2133,9 +2073,7 @@ public class Automaton {
             setAlphabet(numberSystems, A, print, prefix, log);
 
             // do this whether or not you print!
-            String msg = prefix + "WARN: The alphabet of the resulting automaton was changed. Use the alphabet command to change as desired.";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("WARN: The alphabet of the resulting automaton was changed. Use the alphabet command to change as desired.", prefix, log);
         }
 
     }
@@ -2143,9 +2081,7 @@ public class Automaton {
      public Automaton star(boolean print, String prefix, StringBuilder log) throws Exception {
          long timeBefore = System.currentTimeMillis();
          if (print) {
-             String msg = prefix + "star: " + Q + " state automaton";
-             log.append(msg + UtilityMethods.newLine());
-             System.out.println(msg);
+             UtilityMethods.writeMessage("star: " + Q + " state automaton", prefix, log);
          }
 
          // this will be the returned automaton.
@@ -2187,9 +2123,7 @@ public class Automaton {
 
          long timeAfter = System.currentTimeMillis();
          if(print){
-             String msg = prefix + "star complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-             log.append(msg + UtilityMethods.newLine());
-             System.out.println(msg);
+             UtilityMethods.writeMessage("star complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
          }
 
          return N;
@@ -2209,9 +2143,7 @@ public class Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "concatenated =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("concatenated =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
         }
         return first;
@@ -2221,9 +2153,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if (print) {
-            String msg = prefix + "concat: " + Q + " state automaton with " + other.Q + " state automaton";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("concatenate: " + Q + " state automaton with " + other.Q + " state automaton", prefix, log);
         }
 
         // ensure that N has the same number system as first.
@@ -2293,9 +2223,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "concat complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("concatenate complete: " + N.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return N;
@@ -2315,9 +2243,7 @@ public class Automaton {
 
         long timeBefore = System.currentTimeMillis();
         if (print) {
-            String msg = prefix + "right quotient: " + Q + " state automaton with " + other.Q + " state automaton";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("right quotient: " + Q + " state automaton with " + other.Q + " state automaton", prefix, log);
         }
 
         if (!skipSubsetCheck) {
@@ -2393,9 +2319,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "right quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("right quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return M;
@@ -2404,9 +2328,7 @@ public class Automaton {
     public Automaton leftQuotient(Automaton other, boolean print, String prefix, StringBuilder log) throws Exception {
         long timeBefore = System.currentTimeMillis();
         if (print) {
-            String msg = prefix + "left quotient: " + Q + " state automaton with " + other.Q + " state automaton";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("left quotient: " + Q + " state automaton with " + other.Q + " state automaton", prefix, log);
         }
 
         // check whether the alphabet of self is a subset of the alphabet of other. If not, throw an error.
@@ -2444,9 +2366,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "left quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("left quotient complete: " + M.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
 
         return M;
@@ -2476,9 +2396,7 @@ public class Automaton {
                 }
             }
 
-            String msg = prefix + "setting alphabet to " + nsNames.toString();
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("setting alphabet to " + nsNames.toString(), prefix, log);
         }
 
         Automaton M = clone();
@@ -2516,9 +2434,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "set alphabet complete:" + (timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("set alphabet complete:" + (timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -2722,9 +2638,7 @@ public class Automaton {
             Automaton next = subautomata.remove();
             long timeBefore = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "computing =>:" + first.Q + " states - " + next.Q + " states";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("computing =>:" + first.Q + " states - " + next.Q + " states", prefix, log);
             }
 
             // crossProduct requires both automata to be totalized, otherwise it has no idea which cartesian states to transition to
@@ -2735,9 +2649,7 @@ public class Automaton {
 
             long timeAfter = System.currentTimeMillis();
             if(print){
-                String msg = prefix + "computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms";
-                log.append(msg + UtilityMethods.newLine());
-                System.out.println(msg);
+                UtilityMethods.writeMessage("computed =>:" + first.Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
             }
         }
         return first;
@@ -2934,9 +2846,7 @@ public class Automaton {
     private void totalize(boolean print, String prefix, StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "totalizing:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("totalizing:" + Q + " states", prefix, log);
         }
         //we first check if the automaton is totalized
         boolean totalized = true;
@@ -2963,9 +2873,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "totalized:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("totalized:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -2978,9 +2886,7 @@ public class Automaton {
     public boolean addDistinguishedDeadState(boolean print, String prefix, StringBuilder log) throws Exception {
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "Adding distinguished dead state: " + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("Adding distinguished dead state: " + Q + " states", prefix, log);
         }
         //we first check if the automaton is totalized
         boolean totalized = true;
@@ -3018,12 +2924,11 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "Already totalized, no distinguished state added: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
+            String msg = "Already totalized, no distinguished state added: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
             if (!totalized) {
-                msg = prefix + "Added distinguished dead state with output of " + (min-1) + ": " + Q + " states - "+(timeAfter-timeBefore)+"ms";
+                msg = "Added distinguished dead state with output of " + (min-1) + ": " + Q + " states - "+(timeAfter-timeBefore)+"ms";
             }
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage(msg, prefix, log);
         }
         return !totalized;
     }
@@ -3041,17 +2946,13 @@ public class Automaton {
     public Automaton applyOperator(Automaton W, String operator,boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applying operator ("+operator+"):" + Q + " states - " + W.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applying operator ("+operator+"):" + Q + " states - " + W.Q + " states", prefix, log);
         }
         Automaton M = crossProduct(W,operator,print,prefix+" ",log);
         M.minimizeWithOutput(print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return M;
     }
@@ -3068,9 +2969,7 @@ public class Automaton {
     public void applyOperator(String operator,int o,boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applying operator ("+operator+"):" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applying operator ("+operator+"):" + Q + " states", prefix, log);
         }
         for(int p = 0 ; p < Q;p++){
             switch(operator){
@@ -3095,9 +2994,7 @@ public class Automaton {
         minimizeSelfWithOutput(print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -3113,9 +3010,7 @@ public class Automaton {
     public void applyOperator(int o,String operator,boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applying operator ("+operator+"):" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applying operator ("+operator+"):" + Q + " states", prefix, log);
         }
         for(int p = 0 ; p < Q;p++){
             switch(operator){
@@ -3140,9 +3035,7 @@ public class Automaton {
         minimizeSelfWithOutput(print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("applied operator ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -3159,17 +3052,13 @@ public class Automaton {
     public Automaton compare(Automaton W, String operator,boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "comparing ("+operator+"):" + Q + " states - " + W.Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("comparing ("+operator+"):" + Q + " states - " + W.Q + " states", prefix, log);
         }
         Automaton M = crossProduct(W,operator,print,prefix+" ",log);
         M.minimize(null, print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "compared ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("compared ("+operator+ "):" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return M;
     }
@@ -3186,9 +3075,7 @@ public class Automaton {
     public void compare(int o, String operator, boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "comparing ("+operator+") against "+ o +":" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("comparing ("+operator+") against "+ o +":" + Q + " states", prefix, log);
         }
         for(int p = 0 ; p < Q;p++){
             switch(operator){
@@ -3215,9 +3102,7 @@ public class Automaton {
         minimize(null, print,prefix+" ",log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "compared ("+operator+ ") against "+o+":" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("compared ("+operator+ ") against "+o+":" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -3292,12 +3177,12 @@ public class Automaton {
     }
 
 
-    public void writeAsIntermediateAutomaton(String finalAutomatonName, int counter, String prefix, StringBuilder log) {
+    public void writeAsIntermediateAutomaton(String finalAutomatonName, int counter, String prefix, StringBuilder log) throws Exception {
         // first, add the directory if it still doesn't exist.
         String dir = UtilityMethods.get_address_for_intermediate_automata() + finalAutomatonName + "/";
         File directory = new File(dir);
         if (!directory.isDirectory()) {
-            throw Exception("The directory that the intermediate automaton is saved to must be a valid directory.");
+            throw new Exception("The directory that the intermediate automaton is saved to must be a valid directory.");
         }
         if (!directory.exists()) {
             directory.mkdirs();
@@ -3307,13 +3192,11 @@ public class Automaton {
         String path = dir + counter + ".txt";
         File f = new File(path);
         if (f.exists() && !f.isDirectory()) {
-            throw Exception("File " + path + " already exists.");
+            throw new Exception("File " + path + " already exists.");
         }
         write(path);
 
-        String msg = prefix + "#### Intermediate Automaton saved to " + UtilityMethods.ADDRESS_FOR_INTERMEDIATE_AUTOMATA + finalAutomatonName + "/" + counter + ".txt";
-        System.out.println(msg);
-        log.append(msg + UtilityMethods.newLine());
+        UtilityMethods.writeMessage("#### Intermediate Automaton saved to " + UtilityMethods.ADDRESS_FOR_INTERMEDIATE_AUTOMATA + finalAutomatonName + "/" + counter + ".txt", prefix, log);
     }
 
     /**
@@ -3540,9 +3423,7 @@ public class Automaton {
     public void minimize(List<Int2IntMap> newMemD, boolean print, String prefix, StringBuilder log) throws Exception {
         long timeBefore = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "Minimizing: " + Q + " states.";
-            System.out.println("----- " + msg);
-            log.append(msg + UtilityMethods.newLine());
+            UtilityMethods.writeMessage("Minimizing: " + Q + " states.", "----- " + prefix, log);
         }
 
         minimize_valmari(newMemD, print, prefix + " ", log);
@@ -3550,9 +3431,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "Minimized:" + Q + " states - " + (timeAfter-timeBefore) + "ms.";
-            System.out.println("----- " + msg);
-            log.append(msg + UtilityMethods.newLine());
+            UtilityMethods.writeMessage("Minimized:" + Q + " states - " + (timeAfter-timeBefore) + "ms.", "----- " + prefix, log);
         }
     }
 
@@ -3971,9 +3850,7 @@ public class Automaton {
             List<Int2IntMap> newMemD, IntSet initial_state,boolean print, String prefix, StringBuilder log) {
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "Determinizing: " + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("Determinizing: " + Q + " states", prefix, log);
         }
 
         int number_of_states = 0,current_state = 0;
@@ -3991,11 +3868,10 @@ public class Automaton {
                 int statesSoFar = current_state + 1;
                 long timeAfter = System.currentTimeMillis();
                 if (statesSoFar == 1e2 || statesSoFar == 1e3 || statesSoFar % 1e4 == 0) {
-                    String msg = prefix + "  Progress: Added " + statesSoFar + " states - "
+                    String msg = "  Progress: Added " + statesSoFar + " states - "
                             + (number_of_states-statesSoFar) + " states left in queue - "
                             + number_of_states + " reachable states - " + (timeAfter- timeBefore)+"ms";
-                    log.append(msg + UtilityMethods.newLine());
-                    System.out.println(msg);
+                    UtilityMethods.writeMessage(msg, prefix, log);
                 }
             }
 
@@ -4031,9 +3907,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("Determinized: " + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return new_d;
     }
@@ -4092,9 +3966,7 @@ public class Automaton {
         if(TRUE_FALSE_AUTOMATON)return;
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "fixing leading zeros:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("fixing leading zeros:" + Q + " states", prefix, log);
         }
         canonized = false;
         List<Integer> ZERO = new ArrayList<>();//all zero input
@@ -4112,18 +3984,14 @@ public class Automaton {
         minimize(newMemD, print, prefix+" ", log);
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "fixed leading zeros:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("fixed leading zeros:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
     public void fixTrailingZerosProblem(boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "fixing trailing zeros:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("fixing trailing zeros:" + Q + " states", prefix, log);
         }
         canonized = false;
         Set<Integer> newFinalStates;// = statesReachableFromFinalStatesByZeros();
@@ -4143,9 +4011,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "fixed trailing zeros:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("fixed trailing zeros:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
     }
 
@@ -4169,9 +4035,7 @@ public class Automaton {
         }
         long timeBefore = System.currentTimeMillis();
         if(print) {
-            String msg = prefix + "removing leading zeroes for:" + Q + " states";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("removing leading zeroes for:" + Q + " states", prefix, log);
         }
 
         List<Integer> listOfInputs = new ArrayList<>();//extract the list of indices of inputs from the list of labels
@@ -4187,9 +4051,7 @@ public class Automaton {
 
         long timeAfter = System.currentTimeMillis();
         if(print){
-            String msg = prefix + "quantified:" + Q + " states - "+(timeAfter-timeBefore)+"ms";
-            log.append(msg + UtilityMethods.newLine());
-            System.out.println(msg);
+            UtilityMethods.writeMessage("quantified:" + Q + " states - "+(timeAfter-timeBefore)+"ms", prefix, log);
         }
         return M;
     }

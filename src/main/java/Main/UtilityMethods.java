@@ -40,7 +40,7 @@ public class UtilityMethods {
 	static String ADDRESS_FOR_HELP_COMMANDS = "Help Documentation/Commands/";
 	static String ADDRESS_FOR_INTEGRATION_TEST_RESULTS = "Test Results/Integration Tests/";
 	static String ADDRESS_FOR_UNIT_TEST_INTEGRATION_TEST_RESULTS = "src/test/resources/integrationTests/";
-	static String ADDRESS_FOR_INTERMEDIATE_AUTOMATA = "Intermediate Automata/";
+	public static String ADDRESS_FOR_INTERMEDIATE_AUTOMATA = "Intermediate Automata/";
 
 	static String PROMPT = "\n[Walnut]$ ";
 
