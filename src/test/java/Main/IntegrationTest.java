@@ -278,7 +278,7 @@ public class IntegrationTest {
 		L.add("reg test154 msd_5 \".[5-9]*[8-9].\";");
 		L.add("reg test155 msd_5 \".[4-9]+.\";");
 
-		L.add("reg test156 \"T[a]=1\";"); //error: invalid use of reg command
+		L.add("reg test156 \"T[a]=1\";"); //error: Invalid use of the reg command
 		L.add("eval test157 \"T[a] = T[2*a]\";");
 		L.add("eval test158 \"T[a] <= @2\";");
 		L.add("eval test159 \"T[a] = T[2*a+1]\";");
