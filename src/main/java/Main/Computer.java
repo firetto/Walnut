@@ -106,6 +106,7 @@ public class Computer {
 		String step,preStep;
 
 		for(Token t:postOrder) {
+			System.out.println(t);
 			try{
 
 				long timeBefore = System.currentTimeMillis();

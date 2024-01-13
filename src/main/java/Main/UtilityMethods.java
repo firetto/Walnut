@@ -18,6 +18,7 @@
 
 package Main;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -124,9 +125,9 @@ public class UtilityMethods {
 	 * @param s
 	 * @return
 	 */
-	public static int parseNegNumber(String s){
+	public static BigInteger parseNegNumber(String s){
 		if(!s.matches("^neg_\\d+$")) {
-			return 0;
+			return BigInteger.valueOf(0);
 		}
 		return parseInt(s.substring(4));
 	}
@@ -249,13 +250,14 @@ public class UtilityMethods {
 	 * @param s
 	 * @return
 	 */
-	public static int parseInt(String s){
+	public static BigInteger parseInt(String s){
+		System.out.println("Parsing int " + s);
 		String[] part = s.split("\\s+");
 		StringBuilder b = new StringBuilder();
 		for(String x:part){
 			b.append(x);
 		}
-		return Integer.parseInt(b.toString());
+		return new BigInteger(b.toString());
 	}
 
 	/**

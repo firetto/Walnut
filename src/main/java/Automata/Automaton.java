@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -3053,7 +3054,7 @@ public class Automaton {
      * @return
      * @throws Exception
      */
-    public void applyOperator(String operator,int o,boolean print, String prefix,StringBuilder log) throws Exception{
+    public void applyOperator(String operator, BigInteger o, boolean print, String prefix, StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "applying operator ("+operator+"):" + Q + " states";
@@ -3098,7 +3099,7 @@ public class Automaton {
      * @return
      * @throws Exception
      */
-    public void applyOperator(int o,String operator,boolean print, String prefix,StringBuilder log) throws Exception{
+    public void applyOperator(BigInteger o,String operator,boolean print, String prefix,StringBuilder log) throws Exception{
         long timeBefore = System.currentTimeMillis();
         if(print){
             String msg = prefix + "applying operator ("+operator+"):" + Q + " states";

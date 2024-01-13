@@ -24,18 +24,18 @@ import Main.Expression;
 
 
 public class NumberLiteral extends Token {
-	int value;
+	BigInteger value;
 	NumberSystem base;
-	public NumberLiteral(int position,int value,NumberSystem base){
+	public NumberLiteral(int position,BigInteger value,NumberSystem base){
 		setPositionInPredicate(position);
 		setArity(0);
 		this.value = value;
 		this.base = base;
 	}
 	public String toString(){
-		return Integer.toString(value);
+		return value.toString();
 	}
 	public void act(Stack<Expression> S,boolean print,String prefix,StringBuilder log) throws Exception{
-		S.push(new Expression(Integer.toString(value), value,base));
+		S.push(new Expression(value.toString(), value,base));
 	}
 }

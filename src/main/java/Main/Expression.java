@@ -18,6 +18,7 @@
 
 package Main;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import Automata.Automaton;
@@ -63,7 +64,7 @@ public class Expression {
 	String expressionInString;
 	public Automaton M;
 	public String identifier;
-	public int constant;
+	public BigInteger constant;
 	public NumberSystem base;
 	public Automaton W;
 	public List<String> list_of_identifiers_to_quantify;
@@ -77,12 +78,12 @@ public class Expression {
 		T = Type.variable;
 	}
 	
-	public Expression(String expressionInString, int value) throws Exception{
+	public Expression(String expressionInString, BigInteger value) throws Exception{
 		this.expressionInString = expressionInString;
 		this.constant = value;
 		T = Type.alphabetLetter;
 	}
-	public Expression(String expressionInString, int value,NumberSystem base) throws Exception{
+	public Expression(String expressionInString, BigInteger value,NumberSystem base) throws Exception{
 		this.expressionInString = expressionInString;
 		this.constant = value;
 		this.base = base;

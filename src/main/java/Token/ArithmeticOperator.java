@@ -51,10 +51,10 @@ public class ArithmeticOperator extends Operator{
 
 		if(op.equals("_")) {
 			if(b.is(Type.numberLiteral)) {
-				S.push(new Expression(Integer.toString(-b.constant), -b.constant, number_system));
+				S.push(new Expression(b.constant.negate().toString(), b.constant.negate(), number_system));
 				return;
 			} else if(b.is(Type.alphabetLetter)) {
-				S.push(new Expression("@"+(-b.constant), -b.constant));
+				S.push(new Expression("@"+(b.constant.negate()), b.constant.negate()));
 				return;
 			} else if(b.is(Type.word)) {
 				b.W.applyOperator(0,"_", print, prefix, log);
