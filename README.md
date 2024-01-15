@@ -1,13 +1,13 @@
 # Walnut
 Walnut is an automated theorem prover for automatic words.
 
-To run Walnut, first run "build.sh" to build Walnut, then run the "walnut.sh" file.
+To run Walnut, first run `build.sh` to build Walnut, then run the `walnut.sh` file.
 
 Please read the `Manual.pdf` file in `Help Documentation/` to learn what Walnut is and how one would work with it. 
 
 Use the `help;` command to view documentation for all available commands.
 
-To run Walnut tests, run "build.sh" with the "-t" flag.
+To run Walnut tests, run `build.sh` with the `-t` flag.
 
 
 # Walnut 6 Additional Documentation
