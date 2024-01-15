@@ -774,6 +774,9 @@ public class Prover {
 		automataNames.remove(0);
 
 		Automaton C = first.combine(automataNames, outputs, printSteps, prefix, log);
+
+		C.canonizeAndApplyAllRepresentations();
+
 		C.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".gv", s, true);
 		C.write(UtilityMethods.get_address_for_result()+m.group(GROUP_COMBINE_NAME)+".txt");
 		C.write(UtilityMethods.get_address_for_words_library()+m.group(GROUP_COMBINE_NAME)+".txt");

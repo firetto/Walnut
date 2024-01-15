@@ -816,6 +816,30 @@ public class IntegrationTest {
 		L.add("alphabet test607 msd_fib msd_2 msd_2 test605;");
 		L.add("alphabet test608 msd_2 msd_fib msd_2 test605;");
 		L.add("alphabet test609 msd_2 msd_2 msd_fib test605;");
+
+		// test the combine command with reverse. Verify that reverse is the same as ` for DFAO with outputs in {0, 1}
+
+		// make unfolding instructions 1, 1, -1, 1, -1, 1, -1, ...
+		L.add("reg test610 {-1, 0, 1} \"1(1[-1])*0*\";"); // reg apfcode {-1,0,1} "1(1[-1])*0*":
+
+		// return i in {0,1} if paperfolding sequence equals (-1)^i at position n
+		L.add("def test611 \"?lsd_2 Ex $test610(x) & FOLD[x][n]=@-1\";"); // def apf "?lsd_2 Ex $apfcode(x) & FOLD[x][n]=@-1":
+
+		// use combine on test611, which is in lsd_2. does not throw any errors.
+		L.add("combine test612 test611;"); // combine PF1REV apf:
+
+		// turn an lsd-first automaton into an msd-first
+		L.add("def test613 \"?msd_2 `$test611(n)\";"); // def apfm "?msd_2 `$apf(n)":
+
+		// turn test613 into a DFAO
+		L.add("combine test614 test613;"); // combine PF1 apfm:
+
+		// reverse test612. test615 and test614 should be the same now!
+		L.add("reverse test615 test612;"); // reverse PF1NEW PF1REV:
+
+		// check equality
+		L.add("eval test616 \"An test614[n]=test615[n]\";"); // eval check "An PF1NEW[n]=PF1[n]";
+
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

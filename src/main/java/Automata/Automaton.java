@@ -2046,11 +2046,16 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print, prefix+" ", log);
-        first.canonized = false;
-        first.canonize();
-        first.applyAllRepresentations();
+//        first.canonizeAndApplyAllRepresentations();
 
         return first;
+    }
+
+    // For use in the "combine" command.
+    public void canonizeAndApplyAllRepresentations() throws Exception {
+        this.canonized = false;
+        this.canonize();
+        this.applyAllRepresentations();
     }
 
     /**
