@@ -145,7 +145,7 @@ rightquo res a1 a2;
 The resulting automaton `res` is saved in `Automata Library/`.
 
 
-### `alphabet` command: set the number system of Word Automata and Automata
+# `alphabet` command: set the number system of Word Automata and Automata
 
 One may change the alphabet of a Word Automaton using the "alphabet" command as follows:
 
