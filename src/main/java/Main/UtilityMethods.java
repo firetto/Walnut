@@ -18,6 +18,7 @@
 
 package Main;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -124,7 +125,7 @@ public class UtilityMethods {
 	 * @param s
 	 * @return
 	 */
-	public static int parseNegNumber(String s){
+	public static int parseNegNumber(String s) throws Exception {
 		if(!s.matches("^neg_\\d+$")) {
 			return 0;
 		}
@@ -249,11 +250,17 @@ public class UtilityMethods {
 	 * @param s
 	 * @return
 	 */
-	public static int parseInt(String s){
+	public static int parseInt(String s) throws Exception {
 		String[] part = s.split("\\s+");
 		StringBuilder b = new StringBuilder();
 		for(String x:part){
 			b.append(x);
+		}
+		BigInteger val = new BigInteger(b.toString());
+		BigInteger min = BigInteger.valueOf(Integer.MIN_VALUE);
+		BigInteger max = BigInteger.valueOf(Integer.MAX_VALUE);
+		if (val.compareTo(min) < 0 || val.compareTo(max) > 0) {
+			throw new Exception("Trying to parse the number " + b.toString() + ", which is outside of the integer limit [" + Integer.MIN_VALUE + ", " + Integer.MAX_VALUE + "].");
 		}
 		return Integer.parseInt(b.toString());
 	}

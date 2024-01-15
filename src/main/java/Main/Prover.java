@@ -1668,7 +1668,7 @@ public class Prover {
 		}
 	}
 
-	private static List<Integer> what_is_the_alphabet(String s){
+	private static List<Integer> what_is_the_alphabet(String s) throws Exception {
 		List<Integer> L = new ArrayList<>();
 		s = s.substring(1, s.length()-1); //truncation { and } from beginning and end
 		Matcher m = PATTERN_FOR_A_SINGLE_ELEMENT_OF_A_SET.matcher(s);

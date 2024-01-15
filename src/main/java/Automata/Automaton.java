@@ -2441,7 +2441,7 @@ public class Automaton {
     }
 
 
-    public void setAlphabet(List<NumberSystem> numberSystems, List<List<Integer>> alphabet, boolean print, String prefix, StringBuilder log) throws Exception {
+    public void     setAlphabet(List<NumberSystem> numberSystems, List<List<Integer>> alphabet, boolean print, String prefix, StringBuilder log) throws Exception {
 
         if (alphabet.size() != A.size()) {
             throw new Exception("The number of alphabets must match the number of alphabets in the input automaton.");

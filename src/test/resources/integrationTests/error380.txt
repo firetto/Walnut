@@ -1,1 +1,1 @@
-Invalid use of eval/def command.
+Invalid use of the eval/def command.

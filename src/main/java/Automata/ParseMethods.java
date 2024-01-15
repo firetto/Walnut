@@ -138,7 +138,7 @@ public class ParseMethods {
 		}
 		return true;
 	}
-	public static boolean parseStateDeclaration(String s, int[] pair) {
+	public static boolean parseStateDeclaration(String s, int[] pair) throws Exception {
 		Matcher m = PATTERN_FOR_STATE_DECLARATION.matcher(s);
 		if(m.find()){
 			pair[0] = UtilityMethods.parseInt(m.group(STATE_DECLARATION_STATE_NAME));
@@ -149,7 +149,7 @@ public class ParseMethods {
 		return false;
 	}
 	
-	public static boolean parseTransducerStateDeclaration(String s, int[] singleton) {
+	public static boolean parseTransducerStateDeclaration(String s, int[] singleton) throws Exception {
 		Matcher m = PATTERN_FOR_TRANSDUCER_STATE_DECLARATION.matcher(s);
 		if (m.find()) {
 			singleton[0] = UtilityMethods.parseInt(m.group(TRANSDUCER_STATE_DECLARATION_STATE_NAME));
@@ -162,7 +162,7 @@ public class ParseMethods {
 	public static boolean parseTransition(
 		String s,
 		List<Integer> input,
-		List<Integer> dest) {
+		List<Integer> dest) throws Exception {
 		Matcher m = PATTERN_FOR_TRANSITION.matcher(s);
 		if(m.find()){
 			parseList(m.group(TRANSITION_INPUT), input);
@@ -177,7 +177,7 @@ public class ParseMethods {
 			List<Integer> input,
 			List<Integer> dest,
 			List<Integer> output
-	) {
+	) throws Exception {
 		Matcher m = PATTERN_FOR_TRANSDUCER_TRANSITION.matcher(s);
 		if (m.find()) {
 			parseList(m.group(TRANSDUCER_TRANSITION_INPUT), input);
@@ -188,7 +188,7 @@ public class ParseMethods {
 		return false;
 	}
 
-	public static void parseList(String s, List<Integer> list) {
+	public static void parseList(String s, List<Integer> list) throws Exception {
 		int index = 0;
 		Matcher m = PATTERN_ELEMENT.matcher(s);
 		while (m.find(index)) {
