@@ -806,16 +806,16 @@ public class IntegrationTest {
 		// test of star and concat on msd_fib
 		L.add("def test600 \"?msd_fib FTM[x] = @1\";");
 		L.add("star test601 test600;");
-		L.add("alphabet test602 msd_fib test601;");
+		L.add("alphabet test602 msd_fib $test601;");
 		L.add("concat test603 test600 test600;");
-		L.add("alphabet test604 msd_fib test603;");
+		L.add("alphabet test604 msd_fib $test603;");
 
 		// test alphabet on HS automaton
 		L.add("def test605 \"HS[x][y][z]=@1\";");
-		L.add("alphabet test606 msd_2 msd_2 msd_2 test605;");
-		L.add("alphabet test607 msd_fib msd_2 msd_2 test605;");
-		L.add("alphabet test608 msd_2 msd_fib msd_2 test605;");
-		L.add("alphabet test609 msd_2 msd_2 msd_fib test605;");
+		L.add("alphabet test606 msd_2 msd_2 msd_2 $test605;");
+		L.add("alphabet test607 msd_fib msd_2 msd_2 $test605;");
+		L.add("alphabet test608 msd_2 msd_fib msd_2 $test605;");
+		L.add("alphabet test609 msd_2 msd_2 msd_fib $test605;");
 
 		// test the combine command with reverse. Verify that reverse is the same as ` for DFAO with outputs in {0, 1}
 

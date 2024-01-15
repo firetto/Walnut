@@ -179,9 +179,9 @@ public class Prover {
 	static Pattern PATTERN_FOR_fixtrailzero_COMMAND = Pattern.compile(REGEXP_FOR_fixtrailzero_COMMAND);
 	static int GROUP_FIXTRAILZERO_NEW_NAME = 1, GROUP_FIXTRAILZERO_DOLLAR_SIGN = 2, GROUP_FIXTRAILZERO_OLD_NAME = 3, GROUP_FIXTRAILZERO_END = 4;
 
-	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*(alphabet)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
+	static String REGEXP_FOR_alphabet_COMMAND = "^\\s*(alphabet)\\s+([a-zA-Z]\\w*)\\s+((((((msd|lsd)_(\\d+|\\w+))|((msd|lsd)(\\d+|\\w+))|(msd|lsd)|(\\d+|\\w+))|(\\{(\\s*(\\+|\\-)?\\s*\\d+)(\\s*,\\s*(\\+|\\-)?\\s*\\d+)*\\s*\\}))\\s+)+)(\\$|\\s*)([a-zA-Z]\\w*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_alphabet_COMMAND = Pattern.compile(REGEXP_FOR_alphabet_COMMAND);
-	static int GROUP_alphabet_NEW_NAME = 2, GROUP_alphabet_LIST_OF_ALPHABETS = 3, GROUP_alphabet_OLD_NAME = 20, GROUP_alphabet_END = 21;
+	static int GROUP_alphabet_NEW_NAME = 2, GROUP_alphabet_LIST_OF_ALPHABETS = 3, GROUP_alphabet_DOLLAR_SIGN = 20, GROUP_alphabet_OLD_NAME = 21, GROUP_alphabet_END = 22;
 
 	static String REGEXP_FOR_union_COMMAND = "^\\s*union\\s+([a-zA-Z]\\w*)((\\s+([a-zA-Z]\\w*))*)\\s*(;|::|:)\\s*$";
 	static Pattern PATTERN_FOR_union_COMMAND = Pattern.compile(REGEXP_FOR_union_COMMAND);
@@ -1209,7 +1209,6 @@ public class Prover {
 		}
 	}
 
-
 	public static TestCase convertCommand(String s) throws Exception {
 		try {
 			Matcher m = PATTERN_FOR_convert_COMMAND.matcher(s);
@@ -1327,6 +1326,14 @@ public class Prover {
 			String prefix = new String();
 			StringBuilder log = new StringBuilder();
 
+			boolean isDFAO = true;
+
+			String library = UtilityMethods.get_address_for_words_library();
+			if (m.group(GROUP_alphabet_DOLLAR_SIGN).equals("$")) {
+				library = UtilityMethods.get_address_for_automata_library();
+				isDFAO = false;
+			}
+
 			Matcher m1 = PATTERN_FOR_AN_ALPHABET.matcher(m.group(R_LIST_OF_ALPHABETS));
 			int counter = 1;
 			while (m1.find()) {
@@ -1359,14 +1366,14 @@ public class Prover {
 				counter += 1;
 			}
 
-			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+m.group(GROUP_alphabet_OLD_NAME)+".txt");
+			Automaton M = new Automaton(library+m.group(GROUP_alphabet_OLD_NAME)+".txt");
 
 			// here, call the function to set the number system.
-			M.setAlphabet(numSys, alphabets, printDetails || printSteps, prefix, log);
+			M.setAlphabet(isDFAO, numSys, alphabets, printDetails || printSteps, prefix, log);
 
 			M.draw(UtilityMethods.get_address_for_result()+m.group(GROUP_alphabet_NEW_NAME)+".gv", s, false);
 			M.write(UtilityMethods.get_address_for_result()+m.group(GROUP_alphabet_NEW_NAME)+".txt");
-			M.write(UtilityMethods.get_address_for_automata_library() + m.group(GROUP_alphabet_NEW_NAME)+".txt");
+			M.write(library + m.group(GROUP_alphabet_NEW_NAME)+".txt");
 
 			return new TestCase(s,M,"","","");
 		} catch (Exception e) {

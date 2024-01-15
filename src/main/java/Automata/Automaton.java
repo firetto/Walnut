@@ -2123,7 +2123,7 @@ public class Automaton {
         }
 
         if (switchNS) {
-            setAlphabet(numberSystems, A, print, prefix, log);
+            setAlphabet(false, numberSystems, A, print, prefix, log);
 
             // do this whether or not you print!
             String msg = prefix + "WARN: The alphabet of the resulting automaton was changed. Use the alphabet command to change as desired.";
@@ -2446,7 +2446,7 @@ public class Automaton {
     }
 
 
-    public void     setAlphabet(List<NumberSystem> numberSystems, List<List<Integer>> alphabet, boolean print, String prefix, StringBuilder log) throws Exception {
+    public void setAlphabet(boolean isDFAO, List<NumberSystem> numberSystems, List<List<Integer>> alphabet, boolean print, String prefix, StringBuilder log) throws Exception {
 
         if (alphabet.size() != A.size()) {
             throw new Exception("The number of alphabets must match the number of alphabets in the input automaton.");
@@ -2501,10 +2501,15 @@ public class Automaton {
             newD.add(newMap);
         }
         M.d = newD;
-        M.minimize(null, print, prefix, log);
-        M.applyAllRepresentations();
-        M.canonized = false;
-        M.canonize();
+        if (isDFAO) {
+            M.minimizeSelfWithOutput(print, prefix, log);
+        }
+        else {
+            M.minimize(null, print, prefix, log);
+        }
+
+        M.canonizeAndApplyAllRepresentations();
+
         copy(M);
 
         long timeAfter = System.currentTimeMillis();
