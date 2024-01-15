@@ -1,13 +1,13 @@
 # Walnut
 Walnut is an automated theorem prover for automatic words.
 
-To run Walnut, first run "build.sh" to build Walnut, then run the "walnut.sh" file.
+To run Walnut, first run `build.sh` to build Walnut, then run the `walnut.sh` file.
 
 Please read the `Manual.pdf` file in `Help Documentation/` to learn what Walnut is and how one would work with it. 
 
 Use the `help;` command to view documentation for all available commands.
 
-To run Walnut tests, run "build.sh" with the "-t" flag.
+To run Walnut tests, run `build.sh` with the `-t` flag.
 
 
 # Walnut 6 Additional Documentation
@@ -18,6 +18,7 @@ The new capabilities are as follows:
 
 - Help documentation
 - Automata operations
+- `alphabet` command
 - Fixing leading and trailing zeroes
 - Delimiters for word automata
 - Drawing automata and word automata
@@ -48,7 +49,6 @@ One can now perform basic automata operations. The operations, along with their 
  - Concatenation of automata, using the `concat` command
  - Left quotient of automata, using the `leftquo` command
  - Right quotient of automata, using the `rightquo` command
- - Set the alphabet or number system of automata, using the `alphabet` command
  
  
 ## Union of automata
@@ -145,21 +145,29 @@ rightquo res a1 a2;
 The resulting automaton `res` is saved in `Automata Library/`.
 
 
-## Setting the number system of automata
+### `alphabet` command: set the number system of Word Automata and Automata
 
-The syntax for the `alphabet` command is as follows:
-```
-alphabet <new> <alphabet1> [alphabet2] ... [alphabetN] <old>
-```
-The alphabet of the resulting automaton `<new>` is set to the input alphabets, and all invalid transitions are removed from the new automaton.
+One may change the alphabet of a Word Automaton using the "alphabet" command as follows:
 
-The number of alphabets in the command must equal to the number of input alphabets of the `<old>` automaton.
+	alphabet <new> <alphabet1> [alphabet2] ... [alphabetN] <old>
 
-For example, if `aut` (saved in `Automata Library/`) has the alphabets `msd_2 msd_2 msd_fib`, to set its alphabets to `msd_fib msd_fib msd_4`, one writes
-```
-alphabet res msd_2 msd_2 msd_fib aut;
-```
-The resulting automaton `res` is saved in `Automata Library/`.
+Results saved in: Result/, Word Automata Library/.
+
+The alphabet of the resulting automaton <new> is set to the input alphabets, and all invalid transitions are removed from the new automaton.
+
+The number of alphabets in the command must equal to the number of input alphabets of the <old> automaton.
+
+For example, if "AUT" (saved in "Word Automata Library/") has the alphabets "msd_2 msd_2 msd_fib", to set its alphabets to "msd_fib msd_fib msd_4", one writes
+
+	alphabet RES msd_fib msd_fib msd_4 AUT
+
+To apply the "alphabet" command to regular automata (that is, not Word Automata), one prepends the "$" symbol (without the quotation marks) to the old automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, if "foo" (saved in "Automata Library/") has alphabet "msd_fib", to set its alphabet to "msd_2" one writes
+
+	alphabet bar msd_2 $foo
+
+The resulting automaton "bar" will be saved in "Automata Library/".
 
 
 # Fixing leading and trailing zeroes
@@ -242,5 +250,5 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 
 # Performance improvements
-- Significant memory and time improvements; thanks to John Nicol for their contributions!
+- Significant memory and time improvements; thanks to John Nicol for his contributions!
 - Multiplication has been drastically sped up
