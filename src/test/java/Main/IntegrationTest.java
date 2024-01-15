@@ -840,6 +840,12 @@ public class IntegrationTest {
 		// check equality
 		L.add("eval test616 \"An test614[n]=test615[n]\";"); // eval check "An PF1NEW[n]=PF1[n]";
 
+		// test alphabet on word automata
+		// first, test it on output in {0, 1}
+		L.add("alphabet test617 msd_4 T;");
+		L.add("alphabet test618 msd_2 test610;");
+		L.add("alphabet test619 msd_fib test610;");
+
 	}
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));

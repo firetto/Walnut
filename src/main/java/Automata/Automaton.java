@@ -2474,9 +2474,14 @@ public class Automaton {
             System.out.println(msg);
         }
 
+
         Automaton M = clone();
         M.A = alphabet;
         M.NS = numberSystems;
+        M.alphabetSize = 1;
+        for(List<Integer> x : M.A) {
+            M.alphabetSize *= x.size();
+        }
         M.setupEncoder();
 
         List<Int2ObjectRBTreeMap<IntList>> newD = new ArrayList<>();
@@ -2501,6 +2506,11 @@ public class Automaton {
             newD.add(newMap);
         }
         M.d = newD;
+
+//        if (isDFAO) {
+//            M.totalize(print, prefix, log);
+//        }
+
         if (isDFAO) {
             M.minimizeSelfWithOutput(print, prefix, log);
         }
