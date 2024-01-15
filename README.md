@@ -250,5 +250,5 @@ The resulting automaton bar will be saved in "Automata Library/".
 
 
 # Performance improvements
-- Significant memory and time improvements; thanks to John Nicol for their contributions!
+- Significant memory and time improvements; thanks to John Nicol for his contributions!
 - Multiplication has been drastically sped up
