@@ -9,6 +9,7 @@ Use the `help;` command to view documentation for all available commands.
 
 To run Walnut tests, run `build.sh` with the `-t` flag.
 
+**Looking for older Walnut?** The previous version of Walnut (Walnut 5) is available [here](https://github.com/firetto/Walnut/tree/walnut5). 
 
 # Walnut 6 Additional Documentation
 
