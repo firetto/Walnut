@@ -1,0 +1,13 @@
+The right quotient of two automata M1 and M2 is defined to be the automaton that accepts the right quotient L1/L2 = {w | exists x in L2 : wx is in L1}, where L1 and L2 are the languages accepted by M1 and M2 respectively.
+
+The syntax for the "rightquo" command is as follows:
+
+	rightquo <new> <old1> <old2>
+
+Results saved in: Result/, Automata Library/.
+
+The alphabet of <old2> should be a subset of that of <old1>, and the <new> automaton will have the alphabet of <old1>. For example, to take the right quotient "res" of automata named "a1" and "a2" all saved in "Automata Library/", one uses the following command:
+
+	rightquo res a1 a2
+
+The resulting automaton "res" is saved in "Automata Library/".

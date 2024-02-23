@@ -1,0 +1,19 @@
+The "draw" command creates a ".gv" file from the ".txt" definition of a Word Automaton saved in "Word Automata Library/", or of an ordinary automaton saved in "Automata Library/".
+
+The syntax for the "draw" command for Word Automata is as follows:
+
+	draw <name>
+
+Results saved in: Result/.
+
+For ordinary automata, prepend the "$" symbol to the automaton name:
+
+	draw $<name>
+
+For example, to draw a Word Automaton named "AUT" saved in "Word Automata Library/", one writes
+
+	draw AUT
+
+To draw an automaton named "aut" saved in "Automata Library/", one writes
+
+	draw $aut

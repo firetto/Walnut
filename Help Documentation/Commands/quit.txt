@@ -1,0 +1,1 @@
+The "quit" command exits Walnut. This is equivalent to the "exit" command.

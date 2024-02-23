@@ -1,0 +1,11 @@
+The "morphism" command produces a Morphism object from its functional definition. The syntax for the "morphism" command is as follows:
+
+	morphism <name> "letter -> string, ... , letter -> string"
+	
+Results saved in: Result, Morphism Library
+
+Walnut will define a morphism that can be used in other operations. For example, the command
+
+	morphism thue "0->01 1->10" 
+
+defines the Thue-Morse morphism which maps 0 to 01 and 1 to 10.

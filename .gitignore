@@ -1,5 +1,23 @@
 *.class
 classes/
+.project
+
+# Gradle build
+build/
+.gradle
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+# Mac-specific files
+.DS_Store
+
+# IntelliJ
+.idea/
+Walnut.iml
+
+# vscode
+.vscode/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -9,6 +27,9 @@ classes/
 *.war
 *.ear
 
+# Avoid ignoring Gradle wrapper jar file
+!gradle-wrapper.jar
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
@@ -17,7 +38,12 @@ Result/
 Automata Library/
 Test Results/
 Custom Bases/
-Word Automata Library/test**.txt
+Word Automata Library/
+Morphism Library/
+Transducer Library/
+
+*.swp
+*.swo
 
 # Directory for experiments
 scratch/

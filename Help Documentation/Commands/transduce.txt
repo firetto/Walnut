@@ -1,0 +1,40 @@
+One may transduce automata and word automata (that have at most one edge per input per two states) using the "transduce" command. The "transduce" command takes the following syntax:
+
+	transduce <new> <TRANSDUCER> <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+For example, to transduce a word automaton "T" saved in "Word Automata Library/T.txt" using a transducer named "RUNSUM2" saved in "Transducer Library/RUNSUM2.txt", one writes the following:
+
+	transduce NEWT RUNSUM2 T
+
+The above command saves a new word automaton "NEWT" in the directory "Word Automata Library/".
+
+To transduce automata saved in "Automata Library/", one adds a prefix of "$" to the automaton name. For example, if trying to transduce the automaton "aut" saved in "Automata Library/aut.txt" using a transducer named "RUNSUM2" saved in "Transducer Library/RUNSUM2.txt", one writes the following:
+
+	transduce RES RUNSUM2 $aut
+
+The above command will save a new word automaton "RES" in the directory "Word Automata Library/".
+
+To define a transducer, create a ".txt" file in the "Transducer Library/" folder in the Walnut directory with the desired name of the transducer. Transducers are defined similarly to automata, with the exception of an output at the end of each transition. The accepted format for writing transitions is as follows:
+
+	<input> -> <new state> / <output>
+
+Below is an example transducer definition with three states, computing the XOR of adjacent bits in a sequence over {0, 1} (with the first output always being 0):
+
+
+# XOR.txt
+
+{0, 1}
+
+0
+0 -> 1 / 0
+1 -> 2 / 0
+
+1
+0 -> 1 / 0
+1 -> 2 / 1
+
+2
+0 -> 1 / 1
+1 -> 2 / 0

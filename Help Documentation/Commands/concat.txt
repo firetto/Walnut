@@ -1,0 +1,15 @@
+The syntax for the "concat" command is as follows:
+
+	concat <new> <old1> ... <oldN>
+
+Results saved in: Result/, Automata Library/.
+
+The "concat" command requires at least two input automata. All automata must have the same input alphabet.
+
+For example, to take the concatenation "res" of automata named "a1", "a2", "a3" and "a4", all saved in "Automata Library/", one uses the following command:
+
+	concat res a1 a2 a3 a4
+
+The resulting automaton "res" is saved in "Automata Library/", and accepts the concatenation of the inputs accepted by "a1", "a2", "a3" and "a4".
+
+NOTE: The alphabet of the resulting automaton "res" will be changed if one of the input alphabets of the input automata is not a set alphabet (i.e. {0, 1}) or of the form msd_k or lsd_k. Use the "alphabet" command to force an alphabet on the resulting automaton. For example, if "a1", "a2", "a3", "a4" above are msd_fib automata, "res" will be an msd_2 automaton.

@@ -1,132 +1,254 @@
 # Walnut
 Walnut is an automated theorem prover for automatic words.
 
-Please read the `Manual.pdf` file, included in the repository, to learn what Walnut is and how one would work with it. 
+To run Walnut, first run `build.sh` to build Walnut, then run the `walnut.sh` file.
 
-# Walnut 5 Documentation
+Please read the `Manual.pdf` file in `Help Documentation/` to learn what Walnut is and how one would work with it. 
 
-This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov, with direction from Jeffrey Shallit.
+Use the `help;` command to view documentation for all available commands.
+
+To run Walnut tests, run `build.sh` with the `-t` flag.
+
+
+# Walnut 6 Additional Documentation
+
+This new version of Walnut has new capabilities and changes added by Anatoly Zavyalov (anatoly.zavyalov@mail.utoronto.ca), with direction from Jeffrey Shallit (shallit@uwaterloo.ca). This version also features major performance improvements by John Nicol.
 
 The new capabilities are as follows:
 
-1.	Transducing k-automatic sequences
-2. Converting number systems
-3. Reversing word automata
-4. Minimizing word automata
-5. Changes to the reversal (`` ` ``) operation
-6. Improvements to logging
-7. Bug fixes
+- Help documentation
+- Automata operations
+- `alphabet` command
+- Fixing leading and trailing zeroes
+- Delimiters for word automata
+- Drawing automata and word automata
+- Reversing automata
+- Bug fixes and performance improvements
 
-## 1. Transducing k-automatic sequences
 
-One may now transduce automata (that have at most one edge per input per two states) with the following syntax:
+# Help documentation
 
+Walnut now provides built-in documentation for all commands using the `help` command. To view all commands for which documentation exists, one writes:
 ```
-transduce <new> <TRANSDUCER> <old>
-```
-
-For example, to transduce a word automaton `T` saved in `Word Automata Library/T.txt` using a transducer named `RUNSUM2` saved in `Transducer Library/RUNSUM2.txt`, one writes the following:
-
-```
-transduce new_T RUNSUM2 T;
+help;
 ```
 
-The above command saves a new word automaton `new_T` in the directory `Word Automata Library/`.
-
-To transduce automata saved in `Automata Library/`, one may add a prefix of `$` to the automaton name. For example, if trying to transduce the automaton `xda` saved in `Automata Library/xda.txt` using a transducer named `RUNSUM2` saved in `Transducer Library/RUNSUM2.txt`, one writes the following:
-
-```transduce another_T RUNSUM2 $xda;```
-
-The above command will save a new word automaton `another_T` in the directory Word Automata Library/.
-
-To define a transducer, create a `.txt` file in the `Transducer Library/` folder in the Walnut directory with the desired name of the transducer. Transducers are defined similarly to automata, with the exception of an output at the end of each transition. The accepted format for writing transitions is as follows:
-
-````<input> -> <new state> / <output>````
-
-Below is an example transducer definition with three states, computing the XOR of adjacent bits in a sequence over `{0, 1}` (with the first output always being 0):
-
+To view documentation for a specific command, one writes:
 ```
-# XOR.txt
-
-{0, 1}
-
-0
-0 -> 1 / 0
-1 -> 2 / 0
-
-1
-0 -> 1 / 0
-1 -> 2 / 1
-
-2
-0 -> 1 / 1
-1 -> 2 / 0
+help <command>;
 ```
 
-## 2. Converting number systems
 
-One may now convert the number system of an Automaton or a Word Automaton with one input from a base of k^i to /k^j, where k, i and j are positive integers with k >= 2. Note that this allows for conversions from msd to lsd, lsd to msd and vice versa, and lsd to lsd. The following syntax is used:
+# Automata operations
 
+One can now perform basic automata operations. The operations, along with their commands, are:
+
+ - Union of automata, using the `union` command
+ - Intersection of automata, using the `intersect` command
+ - Kleene star of automata, using the `star` command
+ - Concatenation of automata, using the `concat` command
+ - Left quotient of automata, using the `leftquo` command
+ - Right quotient of automata, using the `rightquo` command
+ 
+ 
+## Union of automata
+
+The syntax for the `union` command is as follows:
 ```
-convert <new> <numberSystem> <old>
+union <new> <old1> [old2] [old3] ... [oldN]
 ```
 
-For example, to transduce a Word Automaton `T` saved in `Word Automata Library/T.txt` to `msd_8` (assuming `T` is in `msd_2`), one runs:
+The `union` command requires at least one input automaton. All automata must have the same input alphabet.
 
-```convert T_new msd_8 T;```
+For example, to take the union `res` of automata named `a1` and `a2` both saved in `Automata Library/`, one uses the following command:
+```
+union res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the union of the inputs accepted by `a1` and `a2`.
 
-The above command will save a new word automaton `T_new` in the directory `Word Automata Library/`.
 
-To convert the number system of an Automaton saved in `Automata Library/`, one may add a prefix of `$` to the old automaton's name. For example, if trying to convert the Automaton `quag` saved in `Automata Library/quag.txt` from `msd_2` to `lsd_16` and save it as a Word Automaton, one runs:
+## Intersection of automata
 
-```convert quag_new lsd_16 $quag;```
+The syntax for the `intersect` command is as follows:
+```
+intersect <new> <old1> [old2] [old3] ... [oldN]
+```
 
-The above command will save a new word automaton `quag_new` in the directory `Word Automata Library/`.
+The `intersect` command requires at least one input automaton. All automata must have the same input alphabet.
 
-If the resulting base of the new automaton is 2 (that is, the new number system is either msd_2 or lsd_2), then one may save the resulting automaton as an Automaton in the Automata Library/ directory, by adding a prefix of `$` to the new automaton's name. For example, if `elephant` is a Word Automaton over the number system `lsd_32`, one can run:
+For example, to take the intersection `res` of automata named `a1` and `a2` both saved in `Automata Library/`, one uses the following command:
+```
+intersect res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the intersection of the inputs accepted by `a1` and `a2`.
 
-```convert $elephant_new msd_2 elephant;```
 
-The above command will save a new automaton `elephant_new` in the directory `Automata Library/`.
+## Kleene star of automata
 
-## 3. Reversing word automata
+The syntax for the `star` command is as follows:
+```
+star <new> <old>
+```
+For example, to take the Kleene star `res` of the automaton `aut` saved in `Automata Library/`, one uses the following command:
+```
+star res aut;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the Kleene star of the inputs accepted by `aut`.
 
-One may now reverse a Word Automaton, with the following syntax:
+NOTE: The alphabet of the resulting automaton `res` will be changed if one of the input alphabets of `aut` is not a set alphabet (i.e. {0, 1}) or of the form `msd_k` or `lsd_k`. Use the `alphabet` command to force an alphabet on the resulting automaton. For example, if `aut` is an `msd_fib` automaton, `res` will be an `msd_2` automaton.
 
-```reverse <new> <old>```
 
-**NOTE**: Reversing an automaton will flip the number system from msd to lsd, and vice versa.
+## Concatenation of automata
 
-For example, if reversing a word automaton `DEJ` saved in `Word Automata Library/DEJ.txt` with a number system of `msd_19`, one runs:
+The syntax for the `concat` command is as follows:
+```
+concat <new> <old1> <old2> [old3] ... [oldN]
+```
+The `concat` command requires at least two input automata. All automata must have the same input alphabet.
 
-```reverse DEJ_new DEJ;```
+For example, to take the concatenation `res` of automata named `a1`, `a2`, `a3` and `a4`, all saved in `Automata Library/`, one uses the following command:
+```
+concat res a1 a2 a3 a4;
+```
+The resulting automaton `res` is saved in `Automata Library/`, and accepts the concatenation of the inputs accepted by `a1`, `a2`, `a3`, and `a4`.
 
-`DEJ_new` will be a Word Automaton that is the reverse of `DEJ`, with a number system of `lsd_19`, and will be saved in `Word Automata Library/`.
+NOTE: The alphabet of the resulting automaton `res` will be changed if one of the input alphabets of the input automata is not a set alphabet (i.e. {0, 1}) or of the form `msd_k` or `lsd_k`. Use the `alphabet` command to force an alphabet on the resulting automaton. For example, if `a1`, `a2`, `a3`, `a4` above are `msd_fib` automata, `res` will be an `msd_2` automaton.
 
-**NOTE**: To reverse Automata (those saved in `Automata Library/`), use the already existing `` ` `` operation.
 
-## 4. Minimizing word automata
+## Left quotient of automata
 
-One may now minimize a Word Automaton, with the following syntax:
+The left quotient of two automata `M1` and `M2` is defined to be the automaton that accepts the left quotient `L2\L1 = {w | exists x in L2 : xw is in L1}`, where `L1` and `L2` are the languages accepted by `M1` and `M2` respectively.
 
-```minimize <new> <old>```
+The syntax for the `leftquo` command is as follows:
+```
+leftquo <new> <old1> <old2>
+```
+For example, to take the left quotient `res` of automata named `a1` and `a2` all saved in `Automata Library/`, one uses the following command:
+```
+leftquo res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`.
 
-For example, if minimizing a word automaton `NOTMIN` saved in `Word Automata Library/NOTMIN.txt`, one runs:
 
-```minimize MIN NOTMIN;```
+## Right quotient of automata
 
-`MIN` will be a minimal Word Automaton equivalent to `NOTMIN`, and will be saved in `Word Automata Library/`.
+The right quotient of two automata `M1` and `M2` is defined to be the automaton that accepts the right quotient `L1/L2 = {w | exists x in L2 : wx is in L1}`, where `L1` and `L2` are the languages accepted by `M1` and `M2` respectively.
 
-## 5. Changes to the reversal `` ` `` operation
+The syntax for the `rightquo` command is as follows:
+```
+rightquo <new> <old1> <old2>
+```
+For example, to take the right quotient `res` of automata named `a1` and `a2` all saved in `Automata Library/`, one uses the following command:
+```
+rightquo res a1 a2;
+```
+The resulting automaton `res` is saved in `Automata Library/`.
 
-Reversing an automaton using the `` ` `` operation will now change its number system(s) from msd to lsd, and vice versa.
 
-## 6. Improvements to logging
+# `alphabet` command: set the number system of Word Automata and Automata
 
-Commands that involve determinizing or taking the cross product of automata that are ran with the `:` or `::` suffices (without the quotation marks) will now include further logging that update the user on how many states have been added so far, how many states remain in the queue, and how many states have been reached in total so far.
+One may change the alphabet of a Word Automaton using the "alphabet" command as follows:
 
-## 7. Bug fixes
+	alphabet <new> <alphabet1> [alphabet2] ... [alphabetN] <old>
 
-- Fixed bug that prevented subset construction of automata with large amounts of states in certain cases.
-- Fixed bug that did not allow to combine automata with negative integer outputs.
-- Fixed bug that produced incorrect automata when defining regular expressions with negative integers.
+Results saved in: Result/, Word Automata Library/.
+
+The alphabet of the resulting automaton <new> is set to the input alphabets, and all invalid transitions are removed from the new automaton.
+
+The number of alphabets in the command must equal to the number of input alphabets of the <old> automaton.
+
+For example, if "AUT" (saved in "Word Automata Library/") has the alphabets "msd_2 msd_2 msd_fib", to set its alphabets to "msd_fib msd_fib msd_4", one writes
+
+	alphabet RES msd_fib msd_fib msd_4 AUT
+
+To apply the "alphabet" command to regular automata (that is, not Word Automata), one prepends the "$" symbol (without the quotation marks) to the old automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, if "foo" (saved in "Automata Library/") has alphabet "msd_fib", to set its alphabet to "msd_2" one writes
+
+	alphabet bar msd_2 $foo
+
+The resulting automaton "bar" will be saved in "Automata Library/".
+
+
+# Fixing leading and trailing zeroes
+
+One can now "fix" leading and trailing zeroes for Automata (not Word Automata) using the "fixleadzero" and "fixtrailzero" commands. The syntax is as follows: for an automaton "foo" saved in "Automata Library/", one writes
+```
+fixleadzero bar foo;
+```
+
+The resulting automaton bar accepts an input 0* x' if and only if foo accepts an input x, where x' is x with its leading zeroes removed.
+
+
+Similarly, for trailing zeroes, one writes
+```
+fixtrailzero bar foo;
+```
+
+The resulting automaton bar accepts an input x' 0* if and only if foo accepts an input x, where x' is x with its trailing zeroes removed.
+
+
+For both cases, the resulting automaton "bar" will be saved in the "Automata Library/" directory.
+
+
+# Delimiters for Word Automata
+
+In previous versions of Walnut, word automata names could not begin with A, E, or I. This restriction has now been lifted using a new delimiter for word automata: putting "." (without quotation marks) before the name of a word automaton now signals that the following string of characters is the name of the word automaton. 
+
+If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
+```
+def test ".AUTOMATON[n] = @1";
+```
+    
+	
+# Drawing automata and word automata
+
+The new `draw` command creates a `.gv` file from the `.txt` definition of a Word Automaton saved in `Word Automata Library/`, or of an ordinary automaton saved in `Automata Library/`.
+
+The syntax for the `draw` command for Word Automata is as follows:
+```
+draw <name>
+```
+
+For ordinary automata, prepend the `$` symbol to the automaton name:
+```
+draw $<name>
+```
+
+For example, to draw a Word Automaton named `AUT` saved in `Word Automata Library/`, one writes
+```
+draw AUT;
+```
+This will save the file `AUT.gv` in `Result/`.
+
+To draw an automaton named `aut` saved in `Automata Library/`, one writes
+```
+draw $aut;
+```
+This will save the file `aut.gv` in `Result/`.
+
+
+# Reversing automata
+
+One can now use the "reverse" command to reverse ordinary automata saved in the "Automata Library/" directory.
+
+To reverse Automata, one prepends the "$" symbol (without the quotation marks) to the old Automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, to reverse an Automaton named "foo" saved in "Automata Library/", one writes
+
+	reverse bar $foo;
+
+The resulting automaton bar will be saved in "Automata Library/".
+
+
+# Bug fixes
+
+- Fixed a bug where the resulting Word Automaton after running the "combine" command was not totalized
+- Fixed a bug where reversing an automaton that does not have a number system (i.e. uses {0, 1} as a number system) will throw an error
+- Fixed a bug where whitespace and new lines in regular expressions could result in differing automata
+- Fixed a bug where using the `combine` command on one automaton would not totalize the resulting Word Automaton and apply the valid representations
+
+
+# Performance improvements
+- Significant memory and time improvements; thanks to John Nicol for his contributions!
+- Multiplication has been drastically sped up

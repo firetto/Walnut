@@ -1,0 +1,12 @@
+The "rsplit" command is sort of an inverse to "split". Given a DFAO with input in a positive base, this produces a DFAO in the corresponding negative
+base. The syntax of the "rsplit" command is
+
+	rsplit <new> [<sign1>] ... [<signN>] <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+For example, if M is a DFAO with inputs in msd_2, msd_3, and msd_2 then
+
+	rsplit N [+] [-] [] M
+
+produces a new DFAO (Word Automaton) M such that N[x'][y'][z] = M[x][y][z] where x' is in msd_neg_2, x is in msd_2, y' is in msd_neg_3, y in msd_3, [x']_-2 = [x]_2, and [y']_-3 = [-y]_3. Moreover N[x'][y'][z] = 0 when x' < 0 or y' > 0.

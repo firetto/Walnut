@@ -1,0 +1,13 @@
+The "star" command produces the Kleene star of an input automaton. The syntax for the "star" command is as follows:
+
+	star <new> <old>
+
+Results saved in: Result/, Automata Library/.
+
+For example, to take the Kleene star "res" of the automaton "aut" saved in "Automata Library/", one uses the following command:
+
+	star res aut
+
+The resulting automaton "res" is saved in "Automata Library/", and accepts the Kleene star of the inputs accepted by "aut".
+
+NOTE: The alphabet of the resulting automaton "res" will be changed if one of the input alphabets of "aut" is not a set alphabet (i.e. {0, 1}) or of the form msd_k or lsd_k. Use the "alphabet" command to force an alphabet on the resulting automaton. For example, if "aut" is an "msd_fib" automaton, "res" will be an "msd_2" automaton.

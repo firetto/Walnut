@@ -1,0 +1,5 @@
+The "test" command outputs the first n values accepted by an automaton in lexicographic order, where n is a number supplied by the user. The syntax for the "test" command is as follows:
+	
+	test <name> <number>
+	
+If fewer than n values are accepted, all accepted values are printed in lexicographic order.

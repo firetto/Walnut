@@ -1,0 +1,13 @@
+The syntax for the "union" command is as follows:
+
+	union <new> <old1> [old2] [old3] ... [oldN]
+
+Results saved in: Result/, Automata Library/.
+
+The "union" command requires at least one input automaton. All automata must have the same input alphabet.
+
+For example, to take the union "res" of automata named "a1" and "a2" both saved in "Automata Library/", one uses the following command:
+
+	union res a1 a2
+
+The resulting automaton "res" is saved in "Automata Library/", and accepts the union of the inputs accepted by "a1" and "a2".

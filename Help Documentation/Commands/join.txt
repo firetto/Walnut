@@ -1,0 +1,17 @@
+Given multiple DFAO's (Word Automata), the "join" command produces a DFAO with output equal to the first non-zero output. The syntax of the "join" command is
+
+	join <new> <DFAO1> ... <DFAOn>
+
+Results saved in: Result/, Word Automata Library/.
+
+For example, if N1, N2, N3 are DFAO's with two inputs, then
+
+	join M N1[a][b] N2[b][c] N3[a][c]
+
+produces a new DFAO M which, on inputs (a,b,c), outputs 
+
+N1[a][b] if it is nonzero
+
+N2[b][c] if it is nonzero, but N1[a][b] is zero
+
+N3[a][c] if it is nonzero, but both N1[a][b] and N2[b][c] are zero.

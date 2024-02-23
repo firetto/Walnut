@@ -1,0 +1,21 @@
+The "ost" command allows Walnut to work in an arbitrary Ostrowski numeration system associated with the irrational number a. The syntax for the "ost" command is as follows:
+
+	ost <name> <preperiod> <period>
+	
+Results saved in: Custom Bases/.
+	
+The command takes three parameters:
+	1. <name>, the name we want to give to the new numeration system;
+	2. <preperiod>, the non-repeating initial part of the continued fraction of a; and
+	3. <period>, the repeating tail of the continued fraction.
+For example, for a = (5 + sqrt(13))/6 = [0; 3, 1, bar{1, 2}], we type in the following command in Walnut:
+	
+	ost numsys [0 3 1] [1 2];
+	
+This command will create two new files in the directory "/Walnut/Custom Bases/" with the names "msd_numsys.txt" and "msd_numsys_addition.txt".
+
+These files contain the representation and the adder automaton that Walnut created for this numeration system. We can now use this numeration system like usual in any predicate. For example, to create an automaton that accepts the Ostrowski-a representations of all even integers n we input the following predicate in Walnut:
+	
+	eval isEven "?msd_numsys Ey x=2*y";
+	
+For more detailed documentation on the "ost" command, visit the following article: https://cs.uwaterloo.ca/~shallit/Walnut-2.0.pdf

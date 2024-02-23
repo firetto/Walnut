@@ -1,0 +1,15 @@
+The "combine" command produces a DFAO whose output on a given input corresponds to the highest index automaton in the list supplied that accepts said input. The syntax for the "combine" command is:
+
+	combine <new> <automaton exp> ... <automaton exp>
+
+Results saved in: Result/, Word Automata Library/.
+
+An automaton expression is either the name of an automaton on its own, (eg. myAutomaton) or the name with a value assigned by an equals sign (eg. myAutomaton=3). Each automaton is assumed to be in "Automata Library/". Walnut assigns a default value equal to the index of the automaton in the list, beginning with 1. For example,
+
+	combine A A1 A2=10 A3 
+	
+produces the same output as
+
+	combine A A1=1 A2=10 A3=3 
+
+This output is a DFAO called A that outputs 0 if none of A1, A2, or A3 accepts an input, 1 if A1 accepts but A2 and A3 do not, 10 if A2 accepts but A3 does not, and 3 if A3 accepts.

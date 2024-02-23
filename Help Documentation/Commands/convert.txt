@@ -1,0 +1,23 @@
+The "convert" command allows to convert the number system of an Automaton or a Word Automaton with one input from a base of k^i to /k^j, where k, i and j are positive integers with k >= 2. Note that this allows for conversions from msd to lsd, lsd to msd and vice versa, and lsd to lsd. The "convert" command uses the following syntax:
+
+	convert <new> <numberSystem> <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+For example, to transduce a Word Automaton "T" in msd_2 saved in "Word Automata Library/T.txt" to msd_8, one runs:
+
+	convert TNEW msd_8 T
+
+The above command will save a new word automaton "TNEW" in the directory "Word Automata Library/".
+
+To convert the number system of an Automaton saved in "Automata Library/", one may add a prefix of "$" to the old automaton's name. For example, if trying to convert the Automaton "aut" saved in "Automata Library/aut.txt" from "msd_2" to "lsd_16" and save it as a Word Automaton, one runs:
+
+	convert quag_new lsd_16 $aut
+
+The above command will save a new word automaton "quag_new" in the directory "Word Automata Library/".
+
+If the resulting base of the new automaton is 2 (that is, the new number system is either msd_2 or lsd_2), then one may save the resulting automaton as an Automaton in the Automata Library/ directory, by adding a prefix of "$" to the new automaton's name. For example, if "AUT" is a Word Automaton over the number system lsd_32, one can run:
+
+	convert $aut msd_2 AUT
+
+The above command will save a new automaton "aut" in the directory "Automata Library/".

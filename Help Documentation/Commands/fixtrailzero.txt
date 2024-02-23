@@ -1,0 +1,15 @@
+The syntax for the "fixtrailzero" command is as follows:
+
+	fixtrailzero <new> <old>
+
+Results saved in: Result/, Automata Library/.
+
+The automaton <old> should be saved in "Automata Library/" and be a regular automaton (not a Word Automaton).
+
+The resulting automaton <new> accepts an input x' 0* if and only if <old> accepts an input x, where x' is x with its trailing zeroes removed.
+
+For example, if "aut" is saved in "Automata Library/", one writes
+	
+	fixtrailzero res aut
+	
+Then the resulting automaton "res" is saved in "Automata Library/".

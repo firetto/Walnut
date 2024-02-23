@@ -1,0 +1,22 @@
+One may change the alphabet of a Word Automaton using the "alphabet" command as follows:
+
+	alphabet <new> <alphabet1> [alphabet2] ... [alphabetN] <old>
+
+Results saved in: Result/, Word Automata Library/.
+
+The alphabet of the resulting automaton <new> is set to the input alphabets, and all invalid transitions are removed from the new automaton.
+
+The number of alphabets in the command must equal to the number of input alphabets of the <old> automaton.
+
+For example, if "AUT" (saved in "Word Automata Library/") has the alphabets "msd_2 msd_2 msd_fib", to set its alphabets to "msd_fib msd_fib msd_4", one writes
+
+	alphabet RES msd_fib msd_fib msd_4 AUT
+
+
+To apply the "alphabet" command to regular automata (that is, not Word Automata), one prepends the "$" symbol (without the quotation marks) to the old automaton's name. The result will be saved in the "Automata Library/" directory.
+
+For example, if "foo" (saved in "Automata Library/") has alphabet "msd_fib", to set its alphabet to "msd_2" one writes
+
+	alphabet bar msd_2 $foo
+
+The resulting automaton "bar" will be saved in "Automata Library/".

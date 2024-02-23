@@ -1,0 +1,17 @@
+The "eval" command allows to create automata from a given predicate. The syntax for the "eval" command is as follows:
+
+	eval <name> <predicate>
+	
+Results saved in: Result/.
+	
+For example, to create an automaton that accepts an input of "a" if and only if a is the msd_2 representation of 4 (i.e. it belongs to 0*100), one can create the following automaton:
+
+	eval four "a=4";
+	
+One can also use the "def" command (with identical syntax) to save the result in "Automata Library/" for later use.
+	
+In previous versions of Walnut, word automata names in eval/def commands could not begin with A, E, or I. This restriction has now been lifted using a new delimiter for word automata: putting "." (without quotation marks) before the name of a word automaton now signals that the following string of characters is the name of the word automaton. If there is a word automaton named AUTOMATON, you can write ".AUTOMATON" (without quotation marks) to refer to it in eval/def commands. For example, the following is now valid:
+
+	eval test ".AUTOMATON[n] = @1";
+	
+Please refer to section 7 of "Manual.pdf" saved in "Help Directory/" for a more detailed description of the "eval", "def", and "macro" commands and what one can do with them.

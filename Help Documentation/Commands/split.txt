@@ -1,0 +1,13 @@
+The "split" command allows to take a DFAO defined in a negative base and split it into two or more DFAOs that work in a positive base, handling the positive and negative numbers separately. The syntax of the "split" command is
+
+	split <new> <old> [<sign1>] ... [<signN>]
+
+Results saved in: Result/, Word Automata Library/.
+
+Here <old> is the name of a DFAO (possibly with multiple inputs) that takes inputs in a negative base, and produces a new DFAO with name <new> in the corresponding positive base, that handles the numbers with the given sign(s) of inputs.
+
+For example, if "N" is a DFAO taking inputs (x,y,z) where x is represented in msd_neg_2 y in msd_neg_3, and z in msd_2, then the command
+
+	split M N [+] [-] []
+
+produces a new DFAO (Word Automaton) M such that M[x][y][z] = N[x'][y'][z], where x is represented in msd_2, y is represented in msd_3, z is represented in msd_2, and M[x][y][z] = N[x'][y'][z], and [x]_2 = [x']_{-2} and [y]_3 = [-y']_{-3}.
