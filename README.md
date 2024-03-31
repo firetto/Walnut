@@ -1,5 +1,9 @@
-# Walnut
+# Walnut 6
 Walnut is an automated theorem prover for automatic words.
+
+<ins>**Looking for older Walnut?**</ins> The previous version of Walnut (Walnut 5) is available [here](https://github.com/firetto/Walnut/tree/walnut5). 
+
+<br>
 
 To run Walnut, first run `build.sh` to build Walnut, then run the `walnut.sh` file.
 
@@ -8,7 +12,6 @@ Please read the `Manual.pdf` file in `Help Documentation/` to learn what Walnut 
 Use the `help;` command to view documentation for all available commands.
 
 To run Walnut tests, run `build.sh` with the `-t` flag.
-
 
 # Walnut 6 Additional Documentation
 
