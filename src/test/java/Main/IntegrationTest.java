@@ -846,7 +846,14 @@ public class IntegrationTest {
 		L.add("alphabet test618 msd_2 test610;");
 		L.add("alphabet test619 msd_fib test610;");
 
+		// combine with at least two automata
+		L.add("reg test620 {0,1} {0,1} \"([0,0]|[0,1][1,1]*[1,0])*\";"); // reg shift {0,1} {0,1} "([0,0]|[0,1][1,1]*[1,0])*":
+		L.add("def test621 \"?msd_fib (s=0 & n=0) | Ex $test620(n-1,x) & s=x+1\";"); // def phin "?msd_fib (s=0 & n=0) | Ex $shift(n-1,x) & s=x+1":
+		L.add("def test622 \"?msd_fib Ex,y $test621(3*n,x) & $test621(n,y) & x=3*y+1\";"); // def phid3a "?msd_fib Ex,y $phin(3*n,x) & $phin(n,y) & x=3*y+1":
+		L.add("def test623 \"?msd_fib Ex,y $test621(3*n,x) & $test621(n,y) & x=3*y+2\";"); // def phid3b "?msd_fib Ex,y $phin(3*n,x) & $phin(n,y) & x=3*y+2":
+		L.add("combine test624 test622=1 test623=2;"); // combine FD3 phid3a=1 phid3b=2:
 	}
+
 	public void runPerformanceTest(String name,int numberOfRuns) throws Exception{
 		PrintWriter out = new PrintWriter(new FileOutputStream(new File(directoryAddress+performanceTestFileName), true /* append = true */));
 		out.println("----------------------------------------");

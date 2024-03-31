@@ -1638,6 +1638,9 @@ public class Automaton {
                 case "first":
                     N.O.add(O.getInt(p) == 0 ? M.O.getInt(q) : O.getInt(p));
                     break;
+                case "if_other":
+                    N.O.add(M.O.getInt(q) != 0 ? O.getInt(p) : 0);
+                    break;
             }
 
             for(int x:d.get(p).keySet()){
@@ -1996,7 +1999,8 @@ public class Automaton {
 
     public Automaton combine(List<String> automataNames, IntList outputs, boolean print, String prefix, StringBuilder log) throws Exception {
         Queue<Automaton> subautomata =  new LinkedList<>();
-		for (String name : automataNames) {
+
+        for (String name : automataNames) {
 			Automaton M = new Automaton(UtilityMethods.get_address_for_automata_library()+name+".txt");
 			subautomata.add(M);
 		}
@@ -2004,6 +2008,7 @@ public class Automaton {
     }
 
     public Automaton combine(Queue<Automaton> subautomata, IntList outputs, boolean print, String prefix, StringBuilder log) throws Exception {
+
         Automaton first = this.clone();
 
         // In an automaton without output, every non-zero output value represents an accepting state
@@ -2046,16 +2051,16 @@ public class Automaton {
 
         // totalize the resulting automaton
         first.totalize(print, prefix+" ", log);
-//        first.canonizeAndApplyAllRepresentations();
+        first.canonizeAndApplyAllRepresentationsWithOutput(print, prefix+" ", log);
 
         return first;
     }
 
     // For use in the "combine" command.
-    public void canonizeAndApplyAllRepresentations() throws Exception {
+    public void canonizeAndApplyAllRepresentationsWithOutput(boolean print, String prefix, StringBuilder log) throws Exception {
         this.canonized = false;
         this.canonize();
-        this.applyAllRepresentations();
+        this.applyAllRepresentationsWithOutput(print, prefix, log);
     }
 
     /**
@@ -2518,7 +2523,7 @@ public class Automaton {
             M.minimize(null, print, prefix, log);
         }
 
-        M.canonizeAndApplyAllRepresentations();
+        M.canonizeAndApplyAllRepresentationsWithOutput(print, prefix+" ", log);
 
         copy(M);
 
@@ -2898,6 +2903,30 @@ public class Automaton {
                 if(N != null && NS.get(i).should_we_use_allRepresentations()) {
                     N.bind(label.get(i));
                     K = K.and(N,false,null,null);
+                }
+            }
+        }
+        if(flag)
+            unlabel();
+        copy(K);
+    }
+
+    public void applyAllRepresentationsWithOutput(boolean print, String prefix, StringBuilder log) throws Exception{
+        // this can be a word automaton
+        boolean flag = false;
+        if(label == null || label.size() != A.size()){
+            flag = true;
+            randomLabel();
+        }
+        Automaton K = this;
+        for(int i = 0 ; i < A.size();i++){
+            if(NS.get(i) != null){
+                Automaton N = NS.get(i).getAllRepresentations();
+                if(N != null && NS.get(i).should_we_use_allRepresentations()) {
+                    N.bind(label.get(i));
+
+                    K = crossProduct(N,"if_other",print,prefix,log);
+//                    K.minimizeSelfWithOutput(print, prefix, log);
                 }
             }
         }
